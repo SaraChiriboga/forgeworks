@@ -1,6 +1,4 @@
 class AppServer < Lucky::BaseAppServer
-  # Learn about middleware with HTTP::Handlers:
-  # https://luckyframework.org/guides/http-and-routing/http-handlers
   def middleware : Array(HTTP::Handler)
     [
       Lucky::RequestIdHandler.new,
@@ -9,11 +7,8 @@ class AppServer < Lucky::BaseAppServer
       Lucky::LogHandler.new,
       Lucky::ErrorHandler.new(action: Errors::Show),
       Lucky::RemoteIpHandler.new,
-      Lucky::RouteHandler.new,
-
-      # Disabled in API mode:
-      # Lucky::StaticCompressionHandler.new("./public", file_ext: "gz", content_encoding: "gzip"),
-      # Lucky::StaticFileHandler.new("./public", fallthrough: false, directory_listing: false),
+      CORSHandler.new,          # <-- Aquí, antes de RouteHandler
+      Lucky::RouteHandler.new,  # <-- El enrutador final
       Lucky::RouteNotFoundHandler.new,
     ] of HTTP::Handler
   end

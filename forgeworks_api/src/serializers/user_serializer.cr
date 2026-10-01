@@ -3,6 +3,9 @@ class UserSerializer < BaseSerializer
   end
 
   def render
-    {email: @user.email}
+    {
+    id: @user.id,  
+    email: @user.email,
+    role: @user.role.to_s}
   end
 end
