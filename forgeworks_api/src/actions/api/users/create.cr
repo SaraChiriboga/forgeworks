@@ -4,7 +4,7 @@ class Api::Users::Create < ApiAction
       if user
         json UserSerializer.new(user), status: 201
       else
-        json ErrorSerializer.new(operation), status: 422
+        raise Avram::InvalidOperationError.new(operation)
       end
     end
   end

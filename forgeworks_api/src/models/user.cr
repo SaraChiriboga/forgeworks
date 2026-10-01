@@ -2,9 +2,9 @@ class User < BaseModel
   include Carbon::Emailable
   include Authentic::PasswordAuthenticatable
 
-  avram_enum Role do: # enum de tipos de roles de usuario
-    Regular = 0
-    Admin = 1
+  enum Role  # enum de tipos de roles de usuario
+    Regular
+    Admin
   end
 
   table do

@@ -1,4 +1,6 @@
 # src/handlers/cors_handler.cr
+require "http/server"
+
 class CORSHandler
   include HTTP::Handler
 

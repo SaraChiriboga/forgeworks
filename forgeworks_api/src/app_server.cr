@@ -1,3 +1,5 @@
+require "./handlers/cors_handler"
+
 class AppServer < Lucky::BaseAppServer
   def middleware : Array(HTTP::Handler)
     [
@@ -7,8 +9,8 @@ class AppServer < Lucky::BaseAppServer
       Lucky::LogHandler.new,
       Lucky::ErrorHandler.new(action: Errors::Show),
       Lucky::RemoteIpHandler.new,
-      CORSHandler.new,          # <-- Aquí, antes de RouteHandler
-      Lucky::RouteHandler.new,  # <-- El enrutador final
+      CORSHandler.new,          
+      Lucky::RouteHandler.new,  
       Lucky::RouteNotFoundHandler.new,
     ] of HTTP::Handler
   end

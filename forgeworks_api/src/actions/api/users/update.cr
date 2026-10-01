@@ -7,7 +7,7 @@ class Api::Users::Update < ApiAction
         if updated_user
             json UserSerializer.new(updated_user), status: 200 # actualizacion con exito
         else
-            json ErrorSerializer.new(operation), status: 422 # error de validacion
+            raise Avram::InvalidOperationError.new(operation) # error de validacion
         end
     end
   end
