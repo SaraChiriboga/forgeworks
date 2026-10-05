@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   imports: [FormsModule], // permite usar [(ngModel)] en el formulario
@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
+
 export class Login implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);

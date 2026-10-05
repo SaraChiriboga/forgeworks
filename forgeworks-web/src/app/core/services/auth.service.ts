@@ -18,7 +18,7 @@ export class AuthService {
   private router = inject(Router);
 
   // url del baclkend y la clave bajo la cual se guardará el token en el navegador
-  private apiUrl = 'http://localhost:5000/api';
+  private apiUrl = 'http://localhost:3000/api';
   private tokenKey = 'jwt_token';
 
   // metodo para login
