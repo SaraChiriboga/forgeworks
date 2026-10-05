@@ -1,4 +1,5 @@
 class Api::Users::Create < ApiAction
+  before require_admin
   post "/api/users" do
     SignUpUser.create(params) do |operation, user|
       if user

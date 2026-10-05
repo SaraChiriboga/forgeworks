@@ -1,4 +1,5 @@
 class Api::Users::Update < ApiAction
+  before require_admin
   put "/api/users/:user_id" do
     user =UserQuery.find(user_id) # busca el usuario por id
 

@@ -14,4 +14,13 @@ abstract class ApiAction < Lucky::Action
   # By default all actions are required to use underscores to separate words.
   # Add 'include Lucky::SkipRouteStyleCheck' to your actions if you wish to ignore this check for specific routes.
   include Lucky::EnforceUnderscoredRoute
+
+  # si el usuario autenticado no es admin, responde 403 Forbidden
+  private def require_admin
+    if current_user.role.admin?
+      continue
+    else
+      json({ message: "Acceso denegado: se requieren permisos para acceder." }, status: 403)
+    end
+  end
 end

@@ -6,6 +6,11 @@ import { tap } from 'rxjs';
 // estructura de la respuesta que se espera del backend al hacer login
 interface LoginResponse {
   token: string;
+  user: {
+    id: number;
+    email: string;
+    role: string;
+  };
 }
 
 @Injectable({
@@ -35,8 +40,13 @@ export class AuthService {
       // 'tap' nos permite hacer una acción secundaria cuando la respuesta llega con éxito
       tap(response => {
         this.saveToken(response.token);
+        localStorage.setItem('user_role', response.user.role); // guardar el usuario en localStorage
       })
     );
+  }
+
+  isAdmin(): boolean {
+    return localStorage.getItem('user_role') === 'Admin';
   }
 
   // guardar el token en el localStorage del navegador
@@ -56,7 +66,8 @@ export class AuthService {
 
   // logout
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.tokenKey); // eliminar el token del localStorage
+    localStorage.removeItem('user_role'); // eliminar el rol del usuario al hacer logout
     this.router.navigate(['/login']);
   }
 }

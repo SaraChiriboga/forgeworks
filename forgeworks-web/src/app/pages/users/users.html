@@ -1,2 +1,29 @@
-<p>users works!</p>
-<button (click)="logout()">Logout</button>
+<div class="users-container">
+    <h1>Gestión de Usuarios</h1>
+    <button (click)="logout()">Cerrar sesión</button>
+    @if (errorMessage) {
+        <p class="error-message">{{ errorMessage }}</p>
+    }
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>email</th>
+                <th>rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (user of users; track user.id) {
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                </tr>
+            } @empty {
+                <tr>
+                <td>No hay usuarios registrados.</td>
+                </tr>
+            }       
+        </tbody>
+    </table>
+</div>
