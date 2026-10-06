@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service'
@@ -16,7 +16,7 @@ export class Login implements OnInit {
 
   email = '';
   password = '';
-  errorMessage = '';
+  errorMessage = signal('');
 
   ngOnInit() {
     // si ya tiene sesion activa, lo mandamos directo al CRUD
@@ -26,7 +26,7 @@ export class Login implements OnInit {
   }
 
   onSubmit() {
-    this.errorMessage = '';
+    this.errorMessage.set('');
 
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
@@ -34,7 +34,7 @@ export class Login implements OnInit {
         this.router.navigate(['/users']);
       },
       error: (err) => {
-        this.errorMessage = 'Credenciales incorrectas o servidor no disponible';
+        this.errorMessage.set('Credenciales incorrectas o servidor no disponible');
         console.error(err);
       }
     });

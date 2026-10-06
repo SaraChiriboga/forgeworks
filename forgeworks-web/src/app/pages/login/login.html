@@ -12,7 +12,7 @@
         <button type="submit">Iniciar sesión</button>
     </form>
     
-    @if (errorMessage) {
-        <p class="error-message">{{ errorMessage }}</p>
+    @if (errorMessage()) {
+        <p class="error-message">{{ errorMessage() }}</p>
     }
 </div>

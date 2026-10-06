@@ -1,4 +1,4 @@
 # src/operations/update_user.cr
 class UpdateUser < User::SaveOperation
-  permit_columns email
+  permit_columns email, name, last_name, phone
 end

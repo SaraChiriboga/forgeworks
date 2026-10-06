@@ -1,21 +1,27 @@
 <div class="users-container">
     <h1>Gestión de Usuarios</h1>
     <button (click)="logout()">Cerrar sesión</button>
-    @if (errorMessage) {
-        <p class="error-message">{{ errorMessage }}</p>
+    @if (errorMessage()) {
+        <p class="error-message">{{ errorMessage() }}</p>
     }
     <table>
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
                 <th>email</th>
                 <th>rol</th>
             </tr>
         </thead>
         <tbody>
-            @for (user of users; track user.id) {
+            @for (user of users(); track user.id) {
                 <tr>
                     <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.phone }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.role }}</td>
                 </tr>

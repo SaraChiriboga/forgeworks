@@ -1,4 +1,4 @@
-import { Component, inject, OnInit} from '@angular/core';
+import { Component, inject, OnInit, signal} from '@angular/core';
 import {AuthService} from "../../core/services/auth.service";
 import { User, UserService } from '../../core/services/user.service';
 
@@ -12,8 +12,8 @@ export class Users implements OnInit {
   private authService = inject(AuthService);
   private userService = inject(UserService);
 
-  users: User[] = [];
-  errorMessage = '';
+  users = signal<User[]>([]); // señal con array vacio
+  errorMessage = signal('');
 
   ngOnInit(): void {
     this.loadUsers();
@@ -22,10 +22,10 @@ export class Users implements OnInit {
   loadUsers(): void{
     this.userService.getUsers().subscribe({ // los observables son asincrónicos, por eso usamos subscribe para recibir la respuesta cuando llegue
       next: (data) => {
-        this.users = data; //se guarda la lista de usuarios obtenida del backend
+        this.users.set(data); //se guarda la lista de usuarios obtenida del backend
       },
       error: (err) => {
-        this.errorMessage = 'Error al cargar los usuarios';
+        this.errorMessage.set('Error al cargar los usuarios.'); // se guarda el mensaje de error en caso de que falle la petición
         console.error(err);
       }
     });

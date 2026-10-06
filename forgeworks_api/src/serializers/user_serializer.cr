@@ -6,6 +6,10 @@ class UserSerializer < BaseSerializer
     {
     id: @user.id,  
     email: @user.email,
-    role: @user.role.to_s}
+    role: @user.role.to_s,
+    name: @user.name,
+    last_name: @user.last_name,
+    phone: @user.phone
+  }
   end
 end

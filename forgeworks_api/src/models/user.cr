@@ -11,6 +11,10 @@ class User < BaseModel
     column email : String
     column encrypted_password : String
     column role : User::Role
+
+    column name :  String
+    column last_name : String
+    column phone : String
   end
 
   def emailable : Carbon::Address
