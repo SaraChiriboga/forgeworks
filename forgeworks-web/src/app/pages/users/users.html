@@ -30,10 +30,12 @@
                 <label for="password_confirmation">Confirmar Contraseña:</label>
                 <input [(ngModel)]="newUser.password_confirmation" placeholder="Confirmar Contraseña" name="password_confirmation" id="password_confirmation" type="password" />
             </div>
-            <button type="submit">{{ updatingUserId() ? 'Guardar Cambios' : 'Crear Usuario' }}</button>
-            @if (updatingUserId()) {
-                <button type="button" (click)="cancelUpdate()">Cancelar</button>
-            }
+            <div class="fields-buttons">
+                <button type="submit">{{ updatingUserId() ? 'Guardar Cambios' : 'Crear Usuario' }}</button>
+                @if (updatingUserId()) {
+                    <button type="button" (click)="cancelUpdate()">Cancelar</button>
+                }
+            </div>
         </form>
     </section>
     <section class="users-container">

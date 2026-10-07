@@ -1,33 +1,244 @@
-/* grilla de formulario */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
+/* fondo principal y estilos base para toda la pantalla */
+:host {
+  background-color: #0E131F;
+  display: block;
+  min-height: 100dvh;
+  padding: 20px 40px;
+  color: #ECE8DF;
+  box-sizing: border-box;
 }
 
-/* tarjetas para la vista mobile */
+/* si estamos en celular reducimos los margenes a los lados */
+.top-bar.mobile,
+.fields-container.mobile {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* estilo base que comparten casi todos los botones */
+button {
+  background-color: #2DD4BF;
+  color: #0E131F;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+/* efecto suave cuando pasas el mouse por encima del boton */
+button:hover {
+  opacity: 0.85;
+}
+
+/* barra superior con el titulo y el boton de salir */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #263149;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+/* si es celular ponemos el titulo arriba y el boton abajo */
+.top-bar.mobile {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* contenedor del formulario de usuario */
+.fields-container {
+  margin-bottom: 2rem;
+}
+
+.fields-container h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #2DD4BF;
+}
+
+/* caja que envuelve todo el formulario */
+form {
+  background-color: #141B2D;
+  border: 1px solid #263149;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap; /* si no caben en una fila bajan a la siguiente */
+  gap: 15px;
+  align-items: flex-end;
+}
+
+/* cada grupito con su etiqueta y su input */
+form div {
+  display: flex;
+  flex-direction: column; /* pone el texto de la etiqueta arriba del input */
+  gap: 5px;
+  flex: 1 1 200px; /* permite que cada campo se adapte al ancho disponible */
+}
+
+/* texto de las etiquetas */
+label {
+  font-size: 0.85rem;
+  color: #ECE8DF;
+}
+
+/* cajitas de texto para escribir */
+input {
+  background-color: #0E131F;
+  color: #ECE8DF;
+  border: 1px solid #263149;
+  border-radius: 5px;
+  padding: 9px 12px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+/* cuando haces clic adentro del input para escribir */
+input:focus {
+  border-color: #2DD4BF;
+}
+
+/* contenedor de los botones guardar y cancelar */
+.fields-buttons {
+  display: flex;
+  flex-direction: column; /* los botones quedan uno encima del otro */
+  gap: 8px; /* espacio entre el boton guardar y el de cancelar */
+  min-width: 150px;
+}
+
+/* boton de cancelar con color secundario para no confundir */
+.fields-buttons button[type="button"] {
+  background-color: #263149;
+  color: #ECE8DF;
+}
+
+/* contenedor de la tabla con borde y scroll por si la pantalla se achica */
+.users-container {
+  margin-top: 2rem;
+  background-color: #141B2D;
+  border: 1px solid #263149;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+/* mensaje de error en rojo */
+.error-message {
+  color: #EF4444;
+  padding: 10px 15px;
+  margin: 0;
+}
+
+/* estilos generales de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse; /* quita los espacios dobles entre bordes */
+  text-align: left;
+}
+
+/* fila de encabezados de la tabla */
+thead {
+  background-color: #1A233A;
+  border-bottom: 2px solid #263149;
+}
+
+th {
+  padding: 12px 16px;
+  color: #2DD4BF;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+/* celdas con los datos de los usuarios */
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #263149;
+  font-size: 0.95rem;
+}
+
+/* efecto cuando pasas el mouse por encima de una fila */
+tbody tr:hover {
+  background-color: rgba(38, 49, 73, 0.4);
+}
+
+/* quitamos el borde a la ultima fila para que se vea limpio */
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* celda que tiene los botones de eliminar, editar y ver */
+td:last-child {
+  display: flex;
+  gap: 8px;
+}
+
+/* boton eliminar en color rojo */
+td button:first-child,
+.btn-delete {
+  background-color: #EF4444;
+  color: #FFFFFF;
+}
+
+/* boton ver con color gris pizarra */
+td button:last-child {
+  background-color: #263149;
+  color: #ECE8DF;
+}
+
+/* ==========================================================
+   vista para celulares (cuando responsiveService.isMobile() es true)
+   ========================================================== */
+
+/* contenedor de las tarjetas en celular */
 .cards-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 15px;
+  padding: 15px;
 }
 
+/* cada tarjeta individual de usuario */
 .user-card {
-  padding: 1rem;
-  border: 1px solid #e0e0e0;
+  background-color: #141B2D;
+  border: 1px solid #263149;
   border-radius: 8px;
-  background: #fafafa;
+  padding: 15px;
 }
 
+.user-card p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+}
+
+/* cabecera de la tarjeta con nombre y rol */
 .user-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
 }
 
+/* insignia para resaltar el rol del usuario */
+.user-badge {
+  background-color: #263149;
+  color: #2DD4BF;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* botones de accion al pie de la tarjeta */
 .card-actions {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: 8px;
+  margin-top: 12px;
 }
