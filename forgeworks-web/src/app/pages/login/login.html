@@ -1,4 +1,4 @@
-<div class="login-container">
+<div class="login-container" [class.mobile]="responsiveService.isMobile()">
     <form (ngSubmit)="onSubmit()">
         <h1>Iniciar sesión</h1>
         <div>

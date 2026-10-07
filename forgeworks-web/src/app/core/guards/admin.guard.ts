@@ -12,6 +12,5 @@ export const adminGuard: CanActivateFn = () => {
   }
 
   // redirigir a login si no es admin (en un futuro poner una ventana de error))
-  alert('No tienes permisos de Administrador para acceder a esta sección.');
   return router.parseUrl('/login');
 };

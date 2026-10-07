@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
@@ -25,6 +25,8 @@ export class AuthService {
   // url del baclkend y la clave bajo la cual se guardará el token en el navegador
   private apiUrl = 'http://localhost:3000/api';
   private tokenKey = 'jwt_token';
+
+  authErrorMessage = signal('');
 
   // metodo para login
   login(email: string, password: string) {

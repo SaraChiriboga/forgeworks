@@ -1,9 +1,9 @@
 <div>
-    <div class="top-bar">
+    <section class="top-bar" [class.mobile]="responsiveService.isMobile()">
         <h1>Gestión de Usuarios</h1>
         <button (click)="logout()">Cerrar sesión</button>
-    </div>
-    <div class="fields-container">
+    </section>
+    <section class="fields-container" [class.mobile]="responsiveService.isMobile()" >
         <h2>{{updatingUserId() ? 'Editar Usuario' : 'Crear Nuevo Usuario'}}</h2>
         <form (ngSubmit)="saveUser()">
             <div>
@@ -35,44 +35,67 @@
                 <button type="button" (click)="cancelUpdate()">Cancelar</button>
             }
         </form>
-    </div>
-    <div class="users-container">
+    </section>
+    <section class="users-container">
         @if (errorMessage()) {
             <p class="error-message">{{ errorMessage() }}</p>
         }
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+        
+        @if (!responsiveService.isMobile()){
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (user of users(); track user.id) {
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.phone }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>
+                                <button (click)="deleteUser(user.id)">Eliminar</button>
+                                <button (click)="selectUserToUpdate(user)">Editar</button>
+                                <button (click)="readUser(user)">Ver</button>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr>
+                        <td>No hay usuarios registrados.</td>
+                        </tr>
+                    }       
+                </tbody>
+            </table>
+        } @else {
+            <div class="cards-list">
                 @for (user of users(); track user.id) {
-                    <tr>
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.last_name }}</td>
-                        <td>{{ user.phone }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>
-                            <button (click)="deleteUser(user.id)">Eliminar</button>
-                            <button (click)="selectUserToUpdate(user)">Editar</button>
+                    <article class="user-card">
+                        <div class="user-card-header">
+                            <strong>{{ user.name }} {{ user.last_name }}</strong>
+                            <span class="user-badge">{{ user.role }}</span>
+                        </div>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Teléfono:</strong> {{ user.phone }}</p>
+                        <div class="card-actions">
                             <button (click)="readUser(user)">Ver</button>
-                        </td>
-                    </tr>
+                            <button (click)="selectUserToUpdate(user)">Editar</button>
+                            <button class="btn-delete" (click)="deleteUser(user.id)">Eliminar</button>
+                        </div>
+                    </article>
                 } @empty {
-                    <tr>
-                    <td>No hay usuarios registrados.</td>
-                    </tr>
-                }       
-            </tbody>
-        </table>
-    </div>
+                    <p>No hay usuarios registrados.</p>
+                }
+            </div>
+        }
+    </section>
 </div>

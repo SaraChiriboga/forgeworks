@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import {AuthService} from "../../core/services/auth.service";
 import { NewUser, User, UserService } from '../../core/services/user.service';
 import Swal from 'sweetalert2';
+import { ResponsiveService } from '../../core/services/responsive.service';
 
 @Component({
   imports: [FormsModule], // permite usar [(ngModel)] en el formulario
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2';
 export class Users implements OnInit {
   private authService = inject(AuthService);
   private userService = inject(UserService);
+  public responsiveService = inject(ResponsiveService);
 
   users = signal<User[]>([]); // señal con array vacio
   errorMessage = signal('');
