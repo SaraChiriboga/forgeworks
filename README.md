@@ -26,16 +26,11 @@ El sistema cuenta con **seguridad de doble capa**: protección perimetral en cli
 ---
 
 ## 📹 Video Demostrativo
-
-> [!IMPORTANT]
-> **Enlace al video explicativo (máx. 3 minutos):**
-> 🔗 **[Ver Video en Loom / YouTube](https://www.loom.com/)** *(Reemplazar con tu enlace final)*
-
-### Contenido evaluado en el video:
-- **0:00 - 0:45 | Demostración del Login:** Inicio de sesión con credenciales válidas y manejo de feedback visual ante errores.
-- **0:45 - 1:30 | Verificación de Rutas Protegidas:** Demostración de que es imposible acceder a `/users` sin autenticación (redirección forzada al login en frontend y respuesta `401 Unauthorized` / `403 Forbidden` a nivel API).
-- **1:30 - 2:15 | Operaciones CRUD:** Creación de un usuario, lectura detallada en modal, actualización de información y eliminación reactiva en tiempo real.
-- **2:15 - 3:00 | Tech Stack a Fondo y Encriptación:** Explicación del orden de las cosas en la arquitectura MVC (Angular + Lucky + PostgreSQL) y cómo viaja y se encripta la contraseña usando Bcrypt.
+<p align="center">
+  <a href="https://youtu.be/98zBya63qEE">
+    <img src="https://img.youtube.com/vi/98zBya63qEE/maxresdefault.jpg" alt="Demostración del proyecto" width="700">
+  </a>
+</p>
 
 ---
 
