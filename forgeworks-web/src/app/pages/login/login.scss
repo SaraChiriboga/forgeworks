@@ -73,14 +73,14 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 1.75rem 2.5rem;
+    padding: 2.25rem 3rem;
     background: #ffffff;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(35, 31, 32, 0.15) transparent;
 
     @include m.respond-to(tablet) {
-      padding: 1.5rem 1.75rem;
+      padding: 1.75rem 2rem;
     }
 
     @include m.respond-to(mobile) {
@@ -89,10 +89,10 @@
     }
   }
 
-  // logo oficial integrado dentro del panel izquierdo
+  // logo oficial con la ilustracion hero visible a traves de las letras
   &__logo {
     display: block;
-    margin-bottom: 0.85rem;
+    margin-bottom: 1.15rem;
     background: transparent;
     border: none;
     padding: 0;
@@ -100,18 +100,20 @@
     @include m.respond-to(mobile) {
       display: flex;
       justify-content: center;
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
     }
   }
 
-  &__logo-img {
-    width: 210px;
+  &__logo-svg {
+    width: 270px;
     max-width: 100%;
     height: auto;
     display: block;
+    // sombra suave que le da presencia tridimensional elegante sobre el fondo blanco
+    filter: drop-shadow(0 3px 10px rgba(35, 31, 32, 0.18));
 
     @include m.respond-to(mobile) {
-      width: 180px;
+      width: 210px;
     }
   }
 
@@ -120,14 +122,14 @@
     display: inline-flex;
     background-color: #f1f5f9;
     border-radius: v.$radius-pill;
-    padding: 0.2rem;
+    padding: 0.25rem;
     margin-bottom: 0.85rem;
     width: fit-content;
   }
 
   &__tab {
-    padding: 0.35rem 1rem;
-    font-size: 0.825rem;
+    padding: 0.4rem 1.15rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: v.$text-secondary;
     border: none;
@@ -147,27 +149,17 @@
     }
   }
 
-  // encabezado del formulario
+  // subtitulo sobrio y refinado
   &__header {
-    margin-bottom: 0.85rem;
-  }
-
-  &__title {
-    margin: 0 0 0.2rem 0;
-    font-family: v.$font-title;
-    font-size: 1.35rem;
-    font-weight: 400;
-    color: v.$accent-color;
-    letter-spacing: 0.01em;
-    line-height: 1.2;
+    margin-bottom: 1.15rem;
   }
 
   &__subtitle {
     margin: 0;
     font-family: v.$font-body;
-    font-size: 0.825rem;
+    font-size: 0.85rem;
     color: v.$text-secondary;
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   // formulario
