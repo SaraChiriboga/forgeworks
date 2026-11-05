@@ -22,6 +22,7 @@
     background-image: url('/images/auth-hero.jpg');
     background-size: cover;
     background-position: center center;
+    background-attachment: fixed; // sincronizado con el logo para transparencia perfecta
     background-repeat: no-repeat;
   }
 
@@ -92,6 +93,7 @@
   // logo oficial con la ilustracion hero visible a traves de las letras
   &__logo {
     display: block;
+    width: 100%;
     margin-bottom: 1.15rem;
     background: transparent;
     border: none;
@@ -100,20 +102,32 @@
     @include m.respond-to(mobile) {
       display: flex;
       justify-content: center;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
   }
 
-  &__logo-svg {
-    width: 270px;
-    max-width: 100%;
-    height: auto;
-    display: block;
-    // sombra suave que le da presencia tridimensional elegante sobre el fondo blanco
-    filter: drop-shadow(0 3px 10px rgba(35, 31, 32, 0.18));
+  // logo que abarca todo el ancho del panel izquierdo y revela el hero trasero en exacta alineacion
+  &__logo-cutout {
+    width: 100%;
+    max-width: 440px;
+    height: 85px;
+    background-image: url('/images/auth-hero.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    -webkit-mask: url('/images/logo.svg') no-repeat left center / contain;
+    mask: url('/images/logo.svg') no-repeat left center / contain;
+    filter: drop-shadow(0 3px 6px rgba(35, 31, 32, 0.22));
+
+    @include m.respond-to(tablet) {
+      height: 72px;
+    }
 
     @include m.respond-to(mobile) {
-      width: 210px;
+      height: 56px;
+      -webkit-mask-position: center;
+      mask-position: center;
     }
   }
 
