@@ -43,18 +43,18 @@
   border: none;
   border-radius: v.$radius-pill;
   cursor: pointer;
-  box-shadow: v.$shadow-btn;
+  box-shadow: 0 8px 18px -4px rgba($bg-color, 0.35);
   transition: all 0.2s ease-in-out;
 
   &:hover {
     background-color: $hover-color;
     transform: translateY(-1px);
-    box-shadow: 0 12px 22px -4px rgba(11, 122, 111, 0.45);
+    box-shadow: 0 12px 22px -4px rgba($hover-color, 0.45);
   }
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 4px 10px -2px rgba(11, 122, 111, 0.3);
+    box-shadow: 0 4px 10px -2px rgba($bg-color, 0.3);
   }
 
   &:disabled {

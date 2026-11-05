@@ -19,6 +19,8 @@
     height: 100%;
     z-index: 0;
     background-image: 
+      url('/images/auth-backdrop.jpg'),
+      url('/images/auth-hero.webp'),
       url('/images/auth-hero.jpg'),
       url('/images/auth-hero.webp'),
       url('/images/auth-bg.webp'),
@@ -43,11 +45,13 @@
   // tarjeta principal con bordes muy redondeados y marco blanco
   &__card {
     position: relative;
-    @include m.glass-card;
+    border-radius: v.$radius-card;
+    border: 3.5px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 24px 60px -12px rgba(35, 31, 32, 0.28);
     display: grid;
     grid-template-columns: 1.15fr 1fr;
     min-height: 640px;
-    background: rgba(255, 255, 255, 0.95);
+    background: transparent; // transparente para dar efecto de continuidad con el fondo
     overflow: visible; // permite que el logo sobrepase el borde superior izquierdo
 
     @include m.respond-to(tablet) {
@@ -55,6 +59,7 @@
       min-height: auto;
       max-width: 560px;
       margin: 0 auto;
+      background: #ffffff;
     }
   }
 
@@ -268,9 +273,9 @@
     }
   }
 
-  // boton de submit principal con estilo pill
+  // boton de submit principal con estilo pill (color terracota artesanal)
   &__submit-btn {
-    @include m.pill-btn(v.$primary-color, #ffffff, v.$primary-hover);
+    @include m.pill-btn(v.$accent-color, #ffffff, v.$accent-hover);
     margin-top: 0.6rem;
     height: 48px;
   }
@@ -344,7 +349,7 @@
     }
   }
 
-  // seccion derecha: panel visual con ventana a la ilustracion
+  // seccion derecha: panel visual transparente para dar continuidad al fondo
   &__visual-pane {
     position: relative;
     border-top-right-radius: v.$radius-card;
@@ -354,16 +359,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 2.5rem;
-    background: 
-      url('/images/auth-hero.jpg'),
-      url('/images/auth-hero.webp'),
-      url('/images/auth-bg.webp'),
-      url('/images/auth-bg.jpg'),
-      url('/images/auth-bg.jpeg'),
-      url('/images/auth-bg.png'),
-      linear-gradient(135deg, v.$color-rust 0%, v.$color-forest 60%, v.$color-charcoal 100%);
-    background-size: cover;
-    background-position: center;
+    background: transparent; // completamente transparente para que se vea el fondo general continuo
 
     @include m.respond-to(tablet) {
       display: none; // en pantallas pequeñas damos prioridad absoluta al formulario
