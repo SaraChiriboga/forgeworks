@@ -1,0 +1,301 @@
+<div class="inventory-layout" [class.mobile]="responsiveService.isMobile()">
+  <!-- barra superior con datos del taller y navegacion -->
+  <header class="top-bar">
+    <div class="workshop-info">
+      <h1>Inventario del Taller</h1>
+      @if (workshop(); as ws) {
+        <span class="workshop-badge">{{ ws.name }} ({{ ws.category }}) — RUC/CI: {{ ws.id_gov }}</span>
+      }
+    </div>
+    <div class="top-actions">
+      <button class="btn-secondary" (click)="goToUsers()">Personal del Taller</button>
+      <button class="btn-danger" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- contenedor principal -->
+  <main class="main-content">
+    
+    <!-- aviso explicativo de la cascada para la evaluacion -->
+    <div class="info-card">
+      <div class="info-icon">ℹ️</div>
+      <div class="info-text">
+        <strong>Relación en Cascada (Sin Inputs Manuales de FK):</strong>
+        Al seleccionar el <em>Tipo de Recurso</em>, el segundo selector consulta automáticamente al servidor y carga únicamente los recursos que pertenecen a este taller. Al elegir el recurso, el lote se vincula de forma transparente a su clave foránea.
+      </div>
+    </div>
+
+    <!-- mensaje de error devuelto por el backend (422) -->
+    @if (errorMessage()) {
+      <div class="server-error-banner" role="alert">
+        <span class="error-badge">🚨 Rechazado por el Back-End</span>
+        <p>{{ errorMessage() }}</p>
+      </div>
+    }
+
+    <!-- seccion del formulario con dropdown en cascada -->
+    <section class="card cascade-card">
+      <div class="card-header">
+        <h2>1. Selección en Cascada e Ingreso de Lote</h2>
+        <button class="btn-outline" (click)="showNewResourceModal.set(true)">+ Crear Nuevo Insumo</button>
+      </div>
+
+      <div class="cascade-controls">
+        <!-- paso 1: dropdown de tipo de recurso -->
+        <div class="field-group">
+          <label for="type-select"><strong>Paso 1:</strong> Tipo de Insumo (Filtro)</label>
+          <select id="type-select" [ngModel]="selectedType()" (ngModelChange)="onTypeChange($event)">
+            <option value="">-- Todos los insumos del taller --</option>
+            <option value="consumible">Consumibles (Madera, Tornillos, Cartón)</option>
+            <option value="perecedero">Perecederos con Lote (Flores, Pegamento, Resinas)</option>
+            <option value="capacidad">Capacidad / Tiempo (Horas de Máquina Láser)</option>
+          </select>
+        </div>
+
+        <!-- paso 2: dropdown dependiente de recursos del taller -->
+        <div class="field-group">
+          <label for="resource-select"><strong>Paso 2:</strong> Recurso del Taller (Clave Foránea)</label>
+          <select id="resource-select" [ngModel]="selectedResourceId() || ''" (ngModelChange)="onResourceChange($event)">
+            <option value="">-- Selecciona un recurso de la lista --</option>
+            @for (res of resources(); track res.id) {
+              <option [value]="res.id">
+                {{ res.name }} ({{ res.resource_type }} — Stock disp: {{ res.available_stock }} {{ res.unit }})
+              </option>
+            }
+          </select>
+          @if (resources().length === 0) {
+            <small class="helper-text">No hay recursos cargados para este tipo. Crea uno con el botón superior.</small>
+          }
+        </div>
+      </div>
+
+      <!-- detalle del recurso seleccionado y formulario del lote -->
+      @if (selectedResource(); as res) {
+        <div class="resource-preview">
+          <div class="preview-tag">
+            <span class="tag-title">Insumo:</span> <strong>{{ res.name }}</strong>
+          </div>
+          <div class="preview-tag">
+            <span class="tag-title">Tipo:</span> <span class="badge" [class.perecedero]="res.resource_type === 'perecedero'">{{ res.resource_type }}</span>
+          </div>
+          <div class="preview-tag">
+            <span class="tag-title">Unidad:</span> {{ res.unit }}
+          </div>
+          <div class="preview-tag">
+            <span class="tag-title">Costo base:</span> ${{ res.cost_dollars }}
+          </div>
+          <div class="preview-tag">
+            <span class="tag-title">Stock actual:</span> {{ res.available_stock }} {{ res.unit }}
+          </div>
+        </div>
+
+        <!-- formulario para registrar lote -->
+        <form class="lot-form" (ngSubmit)="saveLot()">
+          <h3>Registrar Lote Físico para «{{ res.name }}»</h3>
+
+          <div class="form-grid">
+            <div class="field-group">
+              <label for="lot_number">Código / Número de Lote *</label>
+              <input id="lot_number" [(ngModel)]="newLot.lot_number" name="lot_number" placeholder="Ej: LOT-2026-001" required />
+            </div>
+
+            <div class="field-group">
+              <label for="quantity">Cantidad a ingresar (en {{ res.unit }}) *</label>
+              <input id="quantity" type="number" step="0.01" [(ngModel)]="newLot.quantity" name="quantity" required min="0.01" />
+            </div>
+
+            <div class="field-group">
+              <label for="received_at">Fecha y Hora de Ingreso *</label>
+              <input id="received_at" type="datetime-local" [(ngModel)]="newLot.received_at" name="received_at" required />
+            </div>
+
+            <!-- fecha de caducidad (dato sensible validado en backend) -->
+            <div class="field-group" [class.highlight-field]="res.resource_type === 'perecedero'">
+              <label for="expires_at">
+                Fecha de Caducidad
+                @if (res.resource_type === 'perecedero') {
+                  <span class="required-alert">🚨 OBLIGATORIO (Validado en Back-End)</span>
+                } @else {
+                  <span class="optional-text">(Opcional)</span>
+                }
+              </label>
+              <input id="expires_at" type="datetime-local" [(ngModel)]="newLot.expires_at" name="expires_at" />
+              @if (res.resource_type === 'perecedero') {
+                <small class="helper-alert">El servidor Lucky rechazará con 422 si la fecha es pasada o menor al ingreso.</small>
+              }
+            </div>
+
+            <div class="field-group">
+              <label for="notes">Notas / Procedencia</label>
+              <input id="notes" [(ngModel)]="newLot.notes" name="notes" placeholder="Ej: Proveedor Maderas del Norte" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Guardar Lote de Inventario</button>
+          </div>
+        </form>
+      }
+    </section>
+
+    <!-- seccion de tabla de lotes registrados -->
+    <section class="card table-card">
+      <div class="card-header">
+        <h2>2. Lotes Físicos Registrados en el Taller</h2>
+        <span class="counter-badge">{{ lots().length }} lotes</span>
+      </div>
+
+      @if (lots().length === 0) {
+        <p class="empty-state">No hay lotes registrados para el recurso seleccionado. Usa el formulario para agregar existencias.</p>
+      } @else {
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Lote</th>
+                <th>Cantidad</th>
+                <th>Ingreso</th>
+                <th>Caducidad</th>
+                <th>Estado</th>
+                <th>Notas</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (lot of lots(); track lot.id) {
+                <tr [class.expired-row]="lot.is_expired">
+                  <td><strong>{{ lot.lot_number }}</strong></td>
+                  <td>{{ lot.quantity }}</td>
+                  <td>{{ lot.received_at }}</td>
+                  <td>
+                    @if (lot.expires_at) {
+                      <span [class.text-danger]="lot.is_expired">{{ lot.expires_at }}</span>
+                    } @else {
+                      <span class="text-muted">No perecedero</span>
+                    }
+                  </td>
+                  <td>
+                    @if (lot.is_expired) {
+                      <span class="status-badge badge-expired">Vencido</span>
+                    } @else {
+                      <span class="status-badge badge-active">Activo</span>
+                    }
+                  </td>
+                  <td>{{ lot.notes || '-' }}</td>
+                  <td>
+                    <button class="btn-sm btn-danger" (click)="deleteLot(lot.id)">Eliminar</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  </main>
+
+  <!-- modal: crear nuevo recurso -->
+  @if (showNewResourceModal()) {
+    <div class="modal-backdrop">
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h3>Crear Nuevo Insumo para el Taller</h3>
+          <button class="close-btn" (click)="showNewResourceModal.set(false)">×</button>
+        </div>
+        <form (ngSubmit)="saveResource()">
+          <div class="field-group">
+            <label for="res-name">Nombre del Insumo *</label>
+            <input id="res-name" [(ngModel)]="newResource.name" name="name" placeholder="Ej: Rosas Rojas Frescas" required />
+          </div>
+
+          <div class="field-group">
+            <label for="res-slug">Identificador Interno (Fórmulas del Core) *</label>
+            <input id="res-slug" [(ngModel)]="newResource.internal_name" name="internal_name" placeholder="Ej: rosa_roja (sin espacios)" required />
+            <small class="helper-text">Usado en el evaluador como r.rosa_roja. Solo letras minúsculas y guiones bajos.</small>
+          </div>
+
+          <div class="field-group">
+            <label for="res-type">Tipo de Recurso *</label>
+            <select id="res-type" [(ngModel)]="newResource.resource_type" name="resource_type" required>
+              <option value="consumible">Consumible (madera, tornillos)</option>
+              <option value="perecedero">Perecedero (flores, resina con caducidad)</option>
+              <option value="capacidad">Capacidad (horas de máquina láser o armado)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="res-unit">Unidad de Medida *</label>
+            <input id="res-unit" [(ngModel)]="newResource.unit" name="unit" placeholder="Ej: tallos, metros, horas" required />
+          </div>
+
+          <div class="field-group">
+            <label for="res-cost">Costo Base en Centavos (RNF-02) *</label>
+            <input id="res-cost" type="number" [(ngModel)]="newResource.cost_cents" name="cost_cents" placeholder="Ej: 450 ($4.50)" required min="1" />
+            <small class="helper-text">Se maneja en enteros para evitar errores de redondeo en la cotización.</small>
+          </div>
+
+          @if (newResource.resource_type === 'capacidad') {
+            <div class="field-group">
+              <label for="res-cap">Horas Semanales Disponibles</label>
+              <input id="res-cap" type="number" [(ngModel)]="newResource.capacity_per_week" name="capacity_per_week" placeholder="Ej: 40" />
+            </div>
+          }
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" (click)="showNewResourceModal.set(false)">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar Insumo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- modal: crear taller si no tiene asignado -->
+  @if (showNewWorkshopModal()) {
+    <div class="modal-backdrop">
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h3>Registrar Mi Taller Artesanal</h3>
+        </div>
+        <p class="modal-subtitle">Tu cuenta aún no tiene un taller asignado. Registra tu taller para habilitar el inventario:</p>
+        <form (ngSubmit)="saveWorkshop()">
+          <div class="field-group">
+            <label for="ws-name">Nombre Comercial del Taller *</label>
+            <input id="ws-name" [(ngModel)]="newWorkshop.name" name="name" placeholder="Ej: Taller Maquetería Andrea" required />
+          </div>
+
+          <div class="field-group highlight-field">
+            <label for="ws-id">Cédula o RUC del Taller (Dato Sensible Back-End) *</label>
+            <input id="ws-id" [(ngModel)]="newWorkshop.id_gov" name="id_gov" placeholder="Ej: 1710034065 o 1790016919001" required />
+            <small class="helper-alert">El servidor Lucky ejecuta el algoritmo de Módulo 10/11. Si no es válido, rechazará el guardado.</small>
+          </div>
+
+          <div class="field-group">
+            <label for="ws-cat">Rubro del Taller *</label>
+            <select id="ws-cat" [(ngModel)]="newWorkshop.category" name="category" required>
+              <option value="Carpintería">Carpintería / Muebles</option>
+              <option value="Maquetería y 3D">Maquetería Arquitectónica y Modelado 3D</option>
+              <option value="Floristería">Arreglos Florales</option>
+              <option value="Crochet y Textil">Crochet y Textil</option>
+              <option value="Cerámica">Cerámica y Alfarería</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="ws-loc">Ubicación / Ciudad *</label>
+            <input id="ws-loc" [(ngModel)]="newWorkshop.location" name="location" placeholder="Ej: Quito, Ecuador" required />
+          </div>
+
+          <div class="field-group">
+            <label for="ws-desc">Descripción Corta</label>
+            <input id="ws-desc" [(ngModel)]="newWorkshop.description" name="description" placeholder="Ej: Maquetas y corte láser a escala" />
+          </div>
+
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary">Crear Taller y Empezar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>
