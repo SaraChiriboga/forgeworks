@@ -149,15 +149,18 @@
   }
 
   &__title {
-    margin: 0 0 0.4rem 0;
-    font-size: 1.75rem;
-    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    font-family: v.$font-title;
+    font-size: 1.65rem;
+    font-weight: 400; // alfa slab one es un display slab pesado nativo
     color: v.$text-primary;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.01em;
+    line-height: 1.25;
   }
 
   &__subtitle {
     margin: 0;
+    font-family: v.$font-body;
     font-size: 0.925rem;
     color: v.$text-secondary;
     line-height: 1.4;

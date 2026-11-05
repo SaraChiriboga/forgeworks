@@ -61,19 +61,9 @@ La paleta institucional de ForgeWorks proviene de la identidad artesanal oficial
 | `$color-forest` | Verde Forja / Bosque Profundo | `#1F4032` | `31, 64, 50` | `81, 49, 74, 54` | Color primario institucional (`$primary-color`), logo oficial, botones principales, bordes de foco. |
 | `$color-charcoal` | Negro Carbón / Tinta | `#231F20` | `35, 31, 32` | `70, 67, 64, 74` | Texto principal (`$text-primary`), bordes oscuros, sombras profundas y máxima legibilidad. |
 
-
 ---
 
-## 4. Identidad Visual y Paleta Oficial de Colores (Frontend)
+## 5. Tipografía Oficial (Frontend)
 
-La paleta institucional de ForgeWorks proviene de la identidad artesanal oficial y rige todo el desarrollo de UI/UX en SCSS/CSS:
-
-| Variable SCSS | Tono Institucional | HEX | RGB | CMYK | Rol Semántico en la Aplicación |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `$color-rust` | Óxido / Terracota Artesanal | `#A14827` | `161, 72, 39` | `26, 80, 97, 19` | Color de acento (`$accent-color`), botones secundarios, badges, highlights de forja y fuego. |
-| `$color-cream` | Crema Arena Cálida | `#FFF3CA` | `255, 243, 202` | `0, 3, 24, 0` | Fondos cálidos (`$surface-cream`), fondos de tarjetas, contrastes orgánicos suaves. |
-| `$color-moss` | Verde Enebro / Musgo | `#384D3D` | `56, 77, 61` | `73, 48, 72, 43` | Tono complementario (`$secondary-color`), etiquetas de recursos, badges de lotes naturales. |
-| `$color-forest` | Verde Forja / Bosque Profundo | `#1F4032` | `31, 64, 50` | `81, 49, 74, 54` | Color primario institucional (`$primary-color`), logo oficial, botones principales, bordes de foco. |
-| `$color-charcoal` | Negro Carbón / Tinta | `#231F20` | `35, 31, 32` | `70, 67, 64, 74` | Texto principal (`$text-primary`), bordes oscuros, sombras profundas y máxima legibilidad. |
-
-
+- **Títulos y Encabezados (`h1`, `h2`, `h3`, `$font-title`):** `Alfa Slab One`, cursive, serif (display slab pesado de fuerte carácter artesanal y de forja).
+- **Cuerpo, Formularios y UI (`$font-body`):** `Roboto`, sans-serif (alta legibilidad técnica y sobria en todas las escalas).
