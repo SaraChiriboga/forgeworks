@@ -124,3 +124,4 @@ export class InventoryService {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/resource_lots/${lotId}`);
   }
 }
+

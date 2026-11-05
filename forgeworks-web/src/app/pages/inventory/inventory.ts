@@ -324,3 +324,4 @@ export class Inventory implements OnInit {
     this.authService.logout();
   }
 }
+
