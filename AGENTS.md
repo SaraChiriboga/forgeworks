@@ -47,3 +47,33 @@ Este repositorio contiene **ForgeWorks**, una plataforma multi-taller de encargo
 
 - **Especificación Completa:** Consulta siempre [docs/functional_spec_core_mvc.md](docs/functional_spec_core_mvc.md) para revisar requisitos funcionales (RF-01 al RF-34), requisitos no funcionales (RNF-01 al RNF-07), diagrama de clases, modelo entidad-relación y wireframes (W1 a W17).
 
+---
+
+## 4. Identidad Visual y Paleta Oficial de Colores (Frontend)
+
+La paleta institucional de ForgeWorks proviene de la identidad artesanal oficial y rige todo el desarrollo de UI/UX en SCSS/CSS:
+
+| Variable SCSS | Tono Institucional | HEX | RGB | CMYK | Rol Semántico en la Aplicación |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `$color-rust` | Óxido / Terracota Artesanal | `#A14827` | `161, 72, 39` | `26, 80, 97, 19` | Color de acento (`$accent-color`), botones secundarios, badges, highlights de forja y fuego. |
+| `$color-cream` | Crema Arena Cálida | `#FFF3CA` | `255, 243, 202` | `0, 3, 24, 0` | Fondos cálidos (`$surface-cream`), fondos de tarjetas, contrastes orgánicos suaves. |
+| `$color-moss` | Verde Enebro / Musgo | `#384D3D` | `56, 77, 61` | `73, 48, 72, 43` | Tono complementario (`$secondary-color`), etiquetas de recursos, badges de lotes naturales. |
+| `$color-forest` | Verde Forja / Bosque Profundo | `#1F4032` | `31, 64, 50` | `81, 49, 74, 54` | Color primario institucional (`$primary-color`), logo oficial, botones principales, bordes de foco. |
+| `$color-charcoal` | Negro Carbón / Tinta | `#231F20` | `35, 31, 32` | `70, 67, 64, 74` | Texto principal (`$text-primary`), bordes oscuros, sombras profundas y máxima legibilidad. |
+
+
+---
+
+## 4. Identidad Visual y Paleta Oficial de Colores (Frontend)
+
+La paleta institucional de ForgeWorks proviene de la identidad artesanal oficial y rige todo el desarrollo de UI/UX en SCSS/CSS:
+
+| Variable SCSS | Tono Institucional | HEX | RGB | CMYK | Rol Semántico en la Aplicación |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `$color-rust` | Óxido / Terracota Artesanal | `#A14827` | `161, 72, 39` | `26, 80, 97, 19` | Color de acento (`$accent-color`), botones secundarios, badges, highlights de forja y fuego. |
+| `$color-cream` | Crema Arena Cálida | `#FFF3CA` | `255, 243, 202` | `0, 3, 24, 0` | Fondos cálidos (`$surface-cream`), fondos de tarjetas, contrastes orgánicos suaves. |
+| `$color-moss` | Verde Enebro / Musgo | `#384D3D` | `56, 77, 61` | `73, 48, 72, 43` | Tono complementario (`$secondary-color`), etiquetas de recursos, badges de lotes naturales. |
+| `$color-forest` | Verde Forja / Bosque Profundo | `#1F4032` | `31, 64, 50` | `81, 49, 74, 54` | Color primario institucional (`$primary-color`), logo oficial, botones principales, bordes de foco. |
+| `$color-charcoal` | Negro Carbón / Tinta | `#231F20` | `35, 31, 32` | `70, 67, 64, 74` | Texto principal (`$text-primary`), bordes oscuros, sombras profundas y máxima legibilidad. |
+
+

@@ -1,58 +1,57 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
   <defs>
-    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#4CB8D4" />
-      <stop offset="50%" stop-color="#73CEE3" />
-      <stop offset="100%" stop-color="#AEE5F2" />
+    <!-- Paleta oficial ForgeWorks -->
+    <linearGradient id="warmSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3CA" />
+      <stop offset="60%" stop-color="#FCECC0" />
+      <stop offset="100%" stop-color="#F5DBA7" />
     </linearGradient>
-    <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0284C7" />
-      <stop offset="40%" stop-color="#0EA5E9" />
-      <stop offset="80%" stop-color="#38BDF8" />
-      <stop offset="100%" stop-color="#7DD3FC" />
+    <linearGradient id="waterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1F4032" />
+      <stop offset="45%" stop-color="#2D5A47" />
+      <stop offset="85%" stop-color="#384D3D" />
+      <stop offset="100%" stop-color="#55755E" />
     </linearGradient>
-    <linearGradient id="cliffGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#C2410C" />
-      <stop offset="40%" stop-color="#EA580C" />
-      <stop offset="80%" stop-color="#F97316" />
-      <stop offset="100%" stop-color="#FB923C" />
+    <linearGradient id="rustCliffs" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#803419" />
+      <stop offset="40%" stop-color="#A14827" />
+      <stop offset="80%" stop-color="#B85530" />
+      <stop offset="100%" stop-color="#C76742" />
     </linearGradient>
-    <linearGradient id="sandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FDE68A" />
-      <stop offset="50%" stop-color="#F5D0A1" />
-      <stop offset="100%" stop-color="#ECD4B0" />
+    <linearGradient id="sandCoast" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3CA" />
+      <stop offset="50%" stop-color="#F7E6B5" />
+      <stop offset="100%" stop-color="#ECD69C" />
     </linearGradient>
   </defs>
 
   <!-- Sky Base -->
-  <rect width="1920" height="1080" fill="url(#skyGrad)" />
+  <rect width="1920" height="1080" fill="url(#warmSky)" />
 
-  <!-- Distant Ocean Horizon -->
-  <rect y="420" width="1920" height="660" fill="url(#oceanGrad)" />
+  <!-- Artisan Deep Waters -->
+  <rect y="420" width="1920" height="660" fill="url(#waterGrad)" />
 
-  <!-- Artisan Ochre Cliffs / Rock Formations -->
-  <path d="M 850 420 Q 1100 200, 1400 120 Q 1700 60, 1920 100 L 1920 650 L 980 650 Z" fill="url(#cliffGrad)" />
-  <path d="M 980 430 Q 1200 350, 1450 320 Q 1650 300, 1920 340 L 1920 620 L 1050 620 Z" fill="#9A3412" opacity="0.45" />
+  <!-- Artisan Rust Earth & Rock Formations (#A14827) -->
+  <path d="M 850 420 Q 1100 200, 1400 120 Q 1700 60, 1920 100 L 1920 650 L 980 650 Z" fill="url(#rustCliffs)" />
+  <path d="M 980 430 Q 1200 350, 1450 320 Q 1650 300, 1920 340 L 1920 620 L 1050 620 Z" fill="#231F20" opacity="0.3" />
 
-  <!-- Natural Arch / Cave Shadow -->
-  <path d="M 1250 550 C 1300 440, 1500 440, 1580 550 C 1520 540, 1330 540, 1250 550 Z" fill="#7C2D12" />
+  <!-- Natural Arch / Cave Shadow (#231F20) -->
+  <path d="M 1250 550 C 1300 440, 1500 440, 1580 550 C 1520 540, 1330 540, 1250 550 Z" fill="#231F20" opacity="0.8" />
 
-  <!-- Golden Artisan Sand Coastline -->
-  <path d="M 0 680 Q 500 660, 950 620 Q 1400 580, 1920 590 L 1920 1080 L 0 1080 Z" fill="url(#sandGrad)" />
+  <!-- Warm Sand Coastline (#FFF3CA) -->
+  <path d="M 0 680 Q 500 660, 950 620 Q 1400 580, 1920 590 L 1920 1080 L 0 1080 Z" fill="url(#sandCoast)" />
 
-  <!-- Turquoise Shallows & Surf Waves -->
-  <path d="M 0 620 C 350 620, 600 690, 850 710 C 1200 740, 1600 680, 1920 730 L 1920 900 C 1500 860, 1100 930, 700 880 C 350 840, 100 890, 0 870 Z" fill="#38BDF8" opacity="0.6" />
-  <path d="M 0 740 C 250 750, 520 830, 800 840 C 1250 860, 1550 790, 1920 840 L 1920 990 C 1400 950, 950 1020, 500 980 C 200 950, 0 990, 0 990 Z" fill="#7DD3FC" opacity="0.75" />
+  <!-- Forest & Moss Shallows (#384D3D / #1F4032) -->
+  <path d="M 0 620 C 350 620, 600 690, 850 710 C 1200 740, 1600 680, 1920 730 L 1920 900 C 1500 860, 1100 930, 700 880 C 350 840, 100 890, 0 870 Z" fill="#384D3D" opacity="0.65" />
+  <path d="M 0 740 C 250 750, 520 830, 800 840 C 1250 860, 1550 790, 1920 840 L 1920 990 C 1400 950, 950 1020, 500 980 C 200 950, 0 990, 0 990 Z" fill="#1F4032" opacity="0.75" />
 
-  <!-- Foamy Wave Crests (Organic Sea Patches) -->
-  <path d="M 20 850 Q 80 820, 160 840 Q 240 870, 320 840 Q 400 810, 480 840 Q 600 890, 750 860 Q 900 830, 1050 870 Q 1200 910, 1400 860 Q 1600 820, 1850 880 L 1820 920 Q 1550 880, 1350 910 Q 1100 940, 900 890 Q 700 920, 500 880 Q 300 910, 100 870 Z" fill="#FFFFFF" opacity="0.9" />
-
+  <!-- Foamy Wave Crests -->
+  <path d="M 20 850 Q 80 820, 160 840 Q 240 870, 320 840 Q 400 810, 480 840 Q 600 890, 750 860 Q 900 830, 1050 870 Q 1200 910, 1400 860 Q 1600 820, 1850 880 L 1820 920 Q 1550 880, 1350 910 Q 1100 940, 900 890 Q 700 920, 500 880 Q 300 910, 100 870 Z" fill="#FFF3CA" opacity="0.8" />
   <path d="M 50 960 Q 180 930, 320 950 Q 500 970, 680 940 Q 900 920, 1150 960 Q 1400 980, 1700 940 L 1650 990 Q 1300 1020, 1000 980 Q 650 1020, 350 980 Q 150 1010, 30 980 Z" fill="#FFFFFF" opacity="0.95" />
 
-  <!-- Delicate artistic ripples -->
-  <ellipse cx="280" cy="910" rx="90" ry="25" fill="#E0F2FE" opacity="0.8" />
-  <ellipse cx="520" cy="940" rx="140" ry="30" fill="#E0F2FE" opacity="0.85" />
-  <ellipse cx="860" cy="930" rx="180" ry="35" fill="#E0F2FE" opacity="0.7" />
-  <ellipse cx="1280" cy="890" rx="110" ry="20" fill="#E0F2FE" opacity="0.8" />
+  <!-- Delicate organic ripples -->
+  <ellipse cx="280" cy="910" rx="90" ry="25" fill="#FFF3CA" opacity="0.5" />
+  <ellipse cx="520" cy="940" rx="140" ry="30" fill="#FFF3CA" opacity="0.6" />
+  <ellipse cx="860" cy="930" rx="180" ry="35" fill="#FFF3CA" opacity="0.45" />
+  <ellipse cx="1280" cy="890" rx="110" ry="20" fill="#FFF3CA" opacity="0.5" />
 </svg>
-

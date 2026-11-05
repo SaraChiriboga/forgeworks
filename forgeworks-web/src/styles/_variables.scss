@@ -1,25 +1,36 @@
-// variables globales de estilo para forgeworks
-$primary-color: #0B7A6F;
-$primary-hover: #086057;
-$primary-light: #E6F4F2;
+// paleta de colores oficial de forgeworks
+// valores extraidos del manual de marca institucional
+$color-rust: #A14827;       // oxido / terracota artesanal (rgb: 161, 72, 39)
+$color-cream: #FFF3CA;      // crema arena calida (rgb: 255, 243, 202)
+$color-moss: #384D3D;       // verde enebro / musgo (rgb: 56, 77, 61)
+$color-forest: #1F4032;     // verde forja / bosque profundo (rgb: 31, 64, 50)
+$color-charcoal: #231F20;   // negro carbon / tinta (rgb: 35, 31, 32)
 
-$accent-color: #EA580C;
-$accent-hover: #C2410C;
-$accent-light: #FFEDD5;
+// mapeo semantico para componentes de ui
+$primary-color: $color-forest;
+$primary-hover: #163025;
+$primary-light: #EBF2EE;
 
-$surface-bg: #F8FAFC;
+$accent-color: $color-rust;
+$accent-hover: #863B1F;
+$accent-light: #FBEFE9;
+
+$secondary-color: $color-moss;
+$surface-cream: $color-cream;
+
+$surface-bg: #FAF9F5;
 $card-bg: rgba(255, 255, 255, 0.96);
-$card-border: rgba(255, 255, 255, 0.8);
+$card-border: rgba(255, 255, 255, 0.85);
 
-$text-primary: #0F172A;
-$text-secondary: #475569;
-$text-muted: #94A3B8;
+$text-primary: $color-charcoal;
+$text-secondary: #4A4A4A;
+$text-muted: #8C8C8C;
 
-$border-color: #E2E8F0;
-$border-focus: #0B7A6F;
+$border-color: #E6E2D8;
+$border-focus: $color-forest;
 $error-color: #EF4444;
 $error-bg: #FEF2F2;
-$success-color: #10B981;
+$success-color: #1F4032;
 
 // bordes redondeados sobrios pero modernos
 $radius-card: 32px;
@@ -28,11 +39,10 @@ $radius-input: 14px;
 $radius-tab: 12px;
 
 // sombras suaves
-$shadow-card: 0 24px 50px -12px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
-$shadow-input: 0 1px 3px rgba(15, 23, 42, 0.05);
-$shadow-btn: 0 8px 18px -4px rgba(11, 122, 111, 0.35);
+$shadow-card: 0 24px 50px -12px rgba(35, 31, 32, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+$shadow-input: 0 1px 3px rgba(35, 31, 32, 0.05);
+$shadow-btn: 0 8px 18px -4px rgba(31, 64, 50, 0.35);
 
 // breakpoints responsive
 $bp-mobile: 640px;
 $bp-tablet: 1024px;
-

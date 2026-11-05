@@ -21,7 +21,7 @@
     background-image: 
       url('/images/auth-bg.webp'),
       url('/images/auth-backdrop.svg'),
-      linear-gradient(135deg, #aee5f2 0%, #ea580c 50%, #fde68a 100%);
+      linear-gradient(135deg, v.$color-cream 0%, v.$color-rust 50%, v.$color-forest 100%);
     background-size: cover;
     background-position: center bottom;
     background-repeat: no-repeat;
@@ -67,7 +67,7 @@
     background: #ffffff;
     border: 3px solid rgba(255, 255, 255, 0.9);
     border-radius: v.$radius-pill;
-    box-shadow: 0 16px 36px -8px rgba(11, 122, 111, 0.28), 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 16px 36px -8px rgba(31, 64, 50, 0.28), 0 4px 12px rgba(0, 0, 0, 0.06);
     cursor: pointer;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 
@@ -350,7 +350,7 @@
     background: 
       url('/images/auth-bg.webp'),
       url('/images/auth-backdrop.svg'),
-      linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+      linear-gradient(135deg, v.$color-rust 0%, v.$color-forest 60%, v.$color-charcoal 100%);
     background-size: cover;
     background-position: center;
 
@@ -380,34 +380,6 @@
       color: #ffffff;
       opacity: 0.9;
     }
-  }
-
-  // pie del panel visual con cita artesanal
-  &__visual-footer {
-    position: relative;
-    z-index: 10;
-    background: rgba(15, 23, 42, 0.45);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 1.25rem 1.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-  }
-
-  &__visual-quote {
-    margin: 0 0 0.25rem 0;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-
-  &__visual-author {
-    margin: 0;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.75);
-    text-transform: uppercase;
-    letter-spacing: 1px;
   }
 }
 
