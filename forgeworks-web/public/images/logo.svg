@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none">
+  <defs>
+    <linearGradient id="fwGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B7A6F" />
+      <stop offset="50%" stop-color="#0E9F8F" />
+      <stop offset="100%" stop-color="#E2725B" />
+    </linearGradient>
+    <linearGradient id="emberGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#EF4444" />
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0B7A6F" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Anvil & Spark Mark -->
+  <g transform="translate(10, 10)" filter="url(#softGlow)">
+    <!-- Artisan Spark / Flame -->
+    <path d="M 38 6 C 36 16, 46 20, 42 30 C 40 24, 34 22, 34 16 C 34 11, 37 8, 38 6 Z" fill="url(#emberGrad)" />
+    <!-- Stylized Anvil / Craft Horn -->
+    <path d="M 12 28 C 18 28, 24 24, 30 24 L 54 24 C 57 24, 59 26, 56 29 L 51 34 L 16 34 C 13 34, 11 31, 12 28 Z" fill="url(#fwGrad)" />
+    <!-- Anvil Base / Waist -->
+    <path d="M 23 34 L 44 34 L 46 44 C 47 48, 52 50, 56 52 L 12 52 C 16 50, 21 48, 22 44 Z" fill="#1E293B" />
+    <!-- Forge Glow Dot -->
+    <circle cx="48" cy="18" r="3" fill="#FBBF24" />
+  </g>
+
+  <!-- ForgeWorks Wordmark -->
+  <text x="82" y="44" font-family="'Space Grotesk', 'Outfit', 'Segoe UI', system-ui, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5" fill="#0F172A">
+    Forge<tspan fill="#0B7A6F">Works</tspan>
+  </text>
+  <text x="84" y="59" font-family="'Inter', 'Segoe UI', system-ui, sans-serif" font-size="10" font-weight="600" letter-spacing="3" text-transform="uppercase" fill="#94A3B8">
+    TALLERES A MEDIDA
+  </text>
+</svg>

@@ -1,0 +1,412 @@
+// estilos para la vista de login y registro usando bem y sass
+@use '../../../styles/variables' as v;
+@use '../../../styles/mixins' as m;
+
+.auth {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  @include m.flex-center;
+  padding: 2rem 1.5rem;
+  overflow-x: hidden;
+  background-color: #f0f7f8;
+
+  // fondo con la ilustracion artesanal estilo la imagen de referencia
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-image: 
+      url('/images/auth-bg.webp'),
+      url('/images/auth-backdrop.svg'),
+      linear-gradient(135deg, #aee5f2 0%, #ea580c 50%, #fde68a 100%);
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+  }
+
+  // contenedor que centra y limita el ancho maximo de la tarjeta
+  &__container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1080px;
+    margin: auto;
+  }
+
+  // tarjeta principal con bordes muy redondeados y marco blanco
+  &__card {
+    position: relative;
+    @include m.glass-card;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    min-height: 640px;
+    background: rgba(255, 255, 255, 0.95);
+    overflow: visible; // permite que el logo sobrepase el borde superior izquierdo
+
+    @include m.respond-to(tablet) {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+  }
+
+  // logo superpuesto rompiendo el borde superior izquierdo como el welcome
+  &__logo-badge {
+    position: absolute;
+    top: -34px;
+    left: -24px;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.4rem;
+    background: #ffffff;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: v.$radius-pill;
+    box-shadow: 0 16px 36px -8px rgba(11, 122, 111, 0.28), 0 4px 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 20px 40px -8px rgba(11, 122, 111, 0.35);
+    }
+
+    @include m.respond-to(mobile) {
+      top: -24px;
+      left: 12px;
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  &__logo-img {
+    height: 42px;
+    width: auto;
+    display: block;
+
+    @include m.respond-to(mobile) {
+      height: 32px;
+    }
+  }
+
+  // seccion izquierda: formulario de login y registro
+  &__form-pane {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4.5rem 3.5rem 3rem 3.5rem;
+    border-top-left-radius: v.$radius-card;
+    border-bottom-left-radius: v.$radius-card;
+    background: #ffffff;
+
+    @include m.respond-to(tablet) {
+      border-radius: v.$radius-card;
+      padding: 3.5rem 2rem 2.5rem 2rem;
+    }
+  }
+
+  // selector de pestañas (iniciar sesion / registrarse)
+  &__tabs {
+    display: inline-flex;
+    background-color: #f1f5f9;
+    border-radius: v.$radius-pill;
+    padding: 0.25rem;
+    margin-bottom: 2rem;
+    width: fit-content;
+  }
+
+  &__tab {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: v.$text-secondary;
+    border: none;
+    background: transparent;
+    border-radius: v.$radius-pill;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: v.$text-primary;
+    }
+
+    &--active {
+      background: #ffffff;
+      color: v.$primary-color;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  // encabezado del formulario
+  &__header {
+    margin-bottom: 1.75rem;
+  }
+
+  &__title {
+    margin: 0 0 0.4rem 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: v.$text-primary;
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 0.925rem;
+    color: v.$text-secondary;
+    line-height: 1.4;
+  }
+
+  // formulario
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  // fila de dos columnas para nombre y apellido en el registro
+  &__form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @include m.respond-to(mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // grupo de campo con etiqueta
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: v.$text-secondary;
+  }
+
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    @include m.form-input;
+
+    // espacio para el icono o boton derecho
+    &--has-icon {
+      padding-right: 2.75rem;
+    }
+  }
+
+  // icono derecho dentro del input (como el checkmark de la imagen)
+  &__input-icon {
+    position: absolute;
+    right: 0.85rem;
+    display: flex;
+    align-items: center;
+    color: v.$text-muted;
+    pointer-events: none;
+
+    &--success {
+      color: v.$primary-color;
+    }
+  }
+
+  // boton de mostrar u ocultar contraseña
+  &__toggle-btn {
+    position: absolute;
+    right: 0.6rem;
+    background: transparent;
+    border: none;
+    color: v.$text-muted;
+    cursor: pointer;
+    padding: 0.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: v.$text-primary;
+    }
+  }
+
+  // enlace de olvidé mi contraseña
+  &__forgot-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: v.$primary-color;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: v.$primary-hover;
+      text-decoration: underline;
+    }
+  }
+
+  // boton de submit principal con estilo pill
+  &__submit-btn {
+    @include m.pill-btn(v.$primary-color, #ffffff, v.$primary-hover);
+    margin-top: 0.6rem;
+    height: 48px;
+  }
+
+  // divisor 'or continue with' igual a la imagen de referencia
+  &__divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0 1.25rem 0;
+    color: v.$text-muted;
+    font-size: 0.8rem;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    &-text {
+      padding: 0 0.85rem;
+      text-transform: lowercase;
+      letter-spacing: 0.02em;
+    }
+  }
+
+  // botones sociales redondos minimalistas como en la imagen de referencia
+  &__socials {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  &__social-btn {
+    @include m.flex-center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #e2e8f0;
+      color: v.$text-primary;
+      transform: translateY(-1px);
+    }
+  }
+
+  // avisos de alerta
+  &__alert {
+    padding: 0.75rem 1rem;
+    border-radius: v.$radius-input;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+
+    &--error {
+      background-color: v.$error-bg;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    &--success {
+      background-color: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+  }
+
+  // seccion derecha: panel visual con ventana a la ilustracion
+  &__visual-pane {
+    position: relative;
+    border-top-right-radius: v.$radius-card;
+    border-bottom-right-radius: v.$radius-card;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.5rem;
+    background: 
+      url('/images/auth-bg.webp'),
+      url('/images/auth-backdrop.svg'),
+      linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+    background-size: cover;
+    background-position: center;
+
+    @include m.respond-to(tablet) {
+      display: none; // en pantallas pequeñas damos prioridad absoluta al formulario
+    }
+  }
+
+  // navegacion sutil en la parte superior derecha de la imagen como en el wireframe
+  &__visual-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  &__visual-link {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: color 0.15s ease, opacity 0.15s ease;
+
+    &:hover {
+      color: #ffffff;
+      opacity: 0.9;
+    }
+  }
+
+  // pie del panel visual con cita artesanal
+  &__visual-footer {
+    position: relative;
+    z-index: 10;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 1.25rem 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  &__visual-quote {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  &__visual-author {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}

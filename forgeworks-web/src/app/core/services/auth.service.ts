@@ -3,14 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 
-// estructura de la respuesta que se espera del backend al hacer login
+// estructura de la respuesta que se espera del backend al hacer login o registro
 interface LoginResponse {
   token: string;
   user: {
     id: number;
     email: string;
     role: string;
+    name?: string;
+    last_name?: string;
+    phone?: string;
+    workshop_id?: number | null;
   };
+}
+
+export interface SignUpPayload {
+  email: string;
+  password: string;
+  password_confirmation: string;
+  name?: string;
+  last_name?: string;
+  phone?: string;
 }
 
 @Injectable({
@@ -47,8 +60,34 @@ export class AuthService {
     );
   }
 
+  // registrarse como nuevo usuario cliente
+  signUp(userData: SignUpPayload) {
+    const body = {
+      user: userData
+    };
+
+    return this.http.post<LoginResponse>(`${this.apiUrl}/sign_ups`, body).pipe(
+      tap(response => {
+        if (response.token) {
+          this.saveToken(response.token);
+          if (response.user?.role) {
+            localStorage.setItem('user_role', response.user.role);
+          }
+        }
+      })
+    );
+  }
+
   isAdmin(): boolean {
     return localStorage.getItem('user_role') === 'Admin';
+  }
+
+  isVendor(): boolean {
+    return localStorage.getItem('user_role') === 'Vendor';
+  }
+
+  getUserRole(): string | null {
+    return localStorage.getItem('user_role');
   }
 
   // guardar el token en el localStorage del navegador

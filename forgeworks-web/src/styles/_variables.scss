@@ -1,0 +1,37 @@
+// variables globales de estilo para forgeworks
+$primary-color: #0B7A6F;
+$primary-hover: #086057;
+$primary-light: #E6F4F2;
+
+$accent-color: #EA580C;
+$accent-hover: #C2410C;
+$accent-light: #FFEDD5;
+
+$surface-bg: #F8FAFC;
+$card-bg: rgba(255, 255, 255, 0.96);
+$card-border: rgba(255, 255, 255, 0.8);
+
+$text-primary: #0F172A;
+$text-secondary: #475569;
+$text-muted: #94A3B8;
+
+$border-color: #E2E8F0;
+$border-focus: #0B7A6F;
+$error-color: #EF4444;
+$error-bg: #FEF2F2;
+$success-color: #10B981;
+
+// bordes redondeados sobrios pero modernos
+$radius-card: 32px;
+$radius-pill: 9999px;
+$radius-input: 14px;
+$radius-tab: 12px;
+
+// sombras suaves
+$shadow-card: 0 24px 50px -12px rgba(15, 23, 42, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+$shadow-input: 0 1px 3px rgba(15, 23, 42, 0.05);
+$shadow-btn: 0 8px 18px -4px rgba(11, 122, 111, 0.35);
+
+// breakpoints responsive
+$bp-mobile: 640px;
+$bp-tablet: 1024px;
