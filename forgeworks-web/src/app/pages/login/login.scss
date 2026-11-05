@@ -63,44 +63,46 @@
     }
   }
 
-  // logo superpuesto transparente rompiendo el borde superior izquierdo como el welcome
+  // logo superpuesto transparente que cruza ambos paneles como el welcome de la referencia
   &__logo-badge {
     position: absolute;
-    top: 2rem;
-    left: -3.5rem;
+    top: 1.5rem;
+    left: 2.5rem;
+    right: 0;
     z-index: 30;
     display: block;
-    background: transparent; // completamente transparente, sin recuadro ni pildora
+    background: transparent;
     border: none;
     border-radius: 0;
     box-shadow: none;
     padding: 0;
     margin: 0;
-    cursor: pointer;
-    transition: transform 0.25s ease;
-
-    &:hover {
-      transform: translateY(-2px) scale(1.02);
-    }
+    pointer-events: none; // no bloquea clicks en lo que hay debajo
 
     @include m.respond-to(tablet) {
       position: static;
-      margin: 0 auto 1.5rem auto;
+      margin: 0 auto 1rem auto;
       display: flex;
       justify-content: center;
     }
   }
 
   &__logo-img {
-    width: 340px;
-    max-width: 85vw;
+    width: 85%;
+    max-width: 680px;
     height: auto;
     display: block;
-    // sombra suave para resaltar el trazo svg tanto sobre la foto como sobre el blanco
-    filter: drop-shadow(0 4px 12px rgba(35, 31, 32, 0.22));
+    // sombra suave para resaltar el trazo svg sobre el blanco y sobre la imagen
+    filter: drop-shadow(0 6px 18px rgba(35, 31, 32, 0.25));
+    pointer-events: auto; // el logo si es clickeable
+
+    @include m.respond-to(tablet) {
+      width: 280px;
+      max-width: 80vw;
+    }
 
     @include m.respond-to(mobile) {
-      width: 250px;
+      width: 220px;
     }
   }
 
@@ -111,7 +113,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6.5rem 3.5rem 3rem 3.5rem; // espacio para que el logo superpuesto respire
+    padding: 9rem 3.5rem 3rem 3.5rem; // espacio amplio para que el logo enorme superpuesto respire
     border-top-left-radius: v.$radius-card;
     border-bottom-left-radius: v.$radius-card;
     background: #ffffff;
