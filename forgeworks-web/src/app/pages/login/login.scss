@@ -4,45 +4,41 @@
 
 .auth {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   width: 100%;
   @include m.flex-center;
-  padding: 2rem 1.5rem;
-  overflow-x: hidden;
-  background-color: #f0f7f8;
+  padding: 1.25rem;
+  overflow: hidden; // pantalla ajustada al 100% del viewport sin scrolls
+  box-sizing: border-box;
 
-  // fondo con la ilustracion artesanal estilo la imagen de referencia
+  // fondo con la ilustracion artesanal que se aprecia a traves del panel transparente
   &__backdrop {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
-    background-image: 
-      url('/images/auth-backdrop.jpg'),
-      url('/images/auth-hero.webp'),
-      url('/images/auth-hero.jpg'),
-      url('/images/auth-hero.webp'),
-      url('/images/auth-bg.webp'),
-      url('/images/auth-bg.jpg'),
-      url('/images/auth-bg.jpeg'),
-      url('/images/auth-bg.png'),
-      linear-gradient(135deg, v.$color-cream 0%, v.$color-rust 50%, v.$color-forest 100%);
+    background-image: url('/images/auth-hero.jpg');
     background-size: cover;
-    background-position: center bottom;
+    background-position: center center;
     background-repeat: no-repeat;
   }
 
-  // contenedor que centra y limita el ancho maximo de la tarjeta
+  // contenedor que centra la tarjeta y respeta la altura disponible
   &__container {
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 1080px;
-    margin: auto;
+    max-width: 1040px;
+    height: 100%;
+    max-height: calc(100vh - 2.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  // tarjeta principal con bordes muy redondeados y marco blanco
+  // tarjeta principal: marco blanco con panel izquierdo blanco y derecho 100% transparente
   &__card {
     position: relative;
     border-radius: v.$radius-card;
@@ -50,16 +46,23 @@
     box-shadow: 0 24px 60px -12px rgba(35, 31, 32, 0.28);
     display: grid;
     grid-template-columns: 1.15fr 1fr;
-    min-height: 640px;
-    background: transparent; // transparente para dar efecto de continuidad con el fondo
-    overflow: hidden; // recorta perfectamente el contenido al marco redondeado sin esquinas vacias
+    width: 100%;
+    height: 100%;
+    max-height: 590px;
+    background: transparent; // siempre transparente para efecto de continuidad con el hero
+    overflow: hidden; // cero esquinas vacias
 
     @include m.respond-to(tablet) {
+      grid-template-columns: 1.1fr 1fr;
+      max-width: 920px;
+      background: transparent; // se mantiene transparente en tablet
+    }
+
+    @include m.respond-to(mobile) {
       grid-template-columns: 1fr;
-      min-height: auto;
-      max-width: 560px;
-      margin: 0 auto;
-      background: #ffffff;
+      max-width: 480px;
+      max-height: calc(100vh - 2rem);
+      background: transparent;
     }
   }
 
@@ -70,22 +73,26 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 3rem 3.5rem;
+    padding: 1.75rem 2.5rem;
     background: #ffffff;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(35, 31, 32, 0.15) transparent;
 
     @include m.respond-to(tablet) {
-      padding: 2.5rem 2rem;
+      padding: 1.5rem 1.75rem;
     }
 
     @include m.respond-to(mobile) {
-      padding: 2rem 1.25rem;
+      padding: 1.5rem 1.25rem;
+      border-radius: v.$radius-card;
     }
   }
 
-  // logo oficial integrado dentro del panel izquierdo, sin fondo ni pildora
+  // logo oficial integrado dentro del panel izquierdo
   &__logo {
     display: block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.85rem;
     background: transparent;
     border: none;
     padding: 0;
@@ -93,18 +100,18 @@
     @include m.respond-to(mobile) {
       display: flex;
       justify-content: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.75rem;
     }
   }
 
   &__logo-img {
-    width: 260px;
+    width: 210px;
     max-width: 100%;
     height: auto;
     display: block;
 
     @include m.respond-to(mobile) {
-      width: 200px;
+      width: 180px;
     }
   }
 
@@ -113,14 +120,14 @@
     display: inline-flex;
     background-color: #f1f5f9;
     border-radius: v.$radius-pill;
-    padding: 0.25rem;
-    margin-bottom: 2rem;
+    padding: 0.2rem;
+    margin-bottom: 0.85rem;
     width: fit-content;
   }
 
   &__tab {
-    padding: 0.5rem 1.25rem;
-    font-size: 0.875rem;
+    padding: 0.35rem 1rem;
+    font-size: 0.825rem;
     font-weight: 600;
     color: v.$text-secondary;
     border: none;
@@ -142,39 +149,39 @@
 
   // encabezado del formulario
   &__header {
-    margin-bottom: 1.75rem;
+    margin-bottom: 0.85rem;
   }
 
   &__title {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.2rem 0;
     font-family: v.$font-title;
-    font-size: 1.65rem;
-    font-weight: 400; // alfa slab one es un display slab pesado nativo
+    font-size: 1.35rem;
+    font-weight: 400;
     color: v.$accent-color;
     letter-spacing: 0.01em;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 
   &__subtitle {
     margin: 0;
     font-family: v.$font-body;
-    font-size: 0.925rem;
+    font-size: 0.825rem;
     color: v.$text-secondary;
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
   // formulario
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    gap: 0.75rem;
   }
 
   // fila de dos columnas para nombre y apellido en el registro
   &__form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
 
     @include m.respond-to(mobile) {
       grid-template-columns: 1fr;
@@ -185,14 +192,14 @@
   &__field {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.25rem;
   }
 
   &__label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: v.$text-secondary;
   }
@@ -205,10 +212,11 @@
 
   &__input {
     @include m.form-input;
+    padding: 0.65rem 0.95rem;
+    font-size: 0.875rem;
 
-    // espacio para el icono o boton derecho
     &--has-icon {
-      padding-right: 2.75rem;
+      padding-right: 2.5rem;
     }
   }
 
@@ -264,18 +272,19 @@
   // boton de submit principal con estilo pill (color terracota artesanal)
   &__submit-btn {
     @include m.pill-btn(v.$accent-color, #ffffff, v.$accent-hover);
-    margin-top: 0.6rem;
-    height: 48px;
+    margin-top: 0.35rem;
+    height: 42px;
+    font-size: 0.9rem;
   }
 
-  // divisor 'or continue with' igual a la imagen de referencia
+  // divisor 'o continua con'
   &__divider {
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 1.5rem 0 1.25rem 0;
+    margin: 0.75rem 0;
     color: v.$text-muted;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 
     &::before,
     &::after {
@@ -285,23 +294,23 @@
     }
 
     &-text {
-      padding: 0 0.85rem;
+      padding: 0 0.65rem;
       text-transform: lowercase;
       letter-spacing: 0.02em;
     }
   }
 
-  // botones sociales redondos minimalistas como en la imagen de referencia
+  // botones sociales redondos
   &__socials {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   &__social-btn {
     @include m.flex-center;
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background-color: #f1f5f9;
     border: 1px solid #e2e8f0;
@@ -318,11 +327,11 @@
 
   // avisos de alerta
   &__alert {
-    padding: 0.75rem 1rem;
+    padding: 0.65rem 0.85rem;
     border-radius: v.$radius-input;
-    font-size: 0.875rem;
-    line-height: 1.4;
-    margin-bottom: 1rem;
+    font-size: 0.825rem;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
 
     &--error {
       background-color: v.$error-bg;
@@ -344,11 +353,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 2.5rem;
+    padding: 2rem;
     background: transparent; // completamente transparente para que se vea el fondo general continuo
 
-    @include m.respond-to(tablet) {
-      display: none; // en pantallas pequeñas damos prioridad absoluta al formulario
+    @include m.respond-to(mobile) {
+      display: none; // solo se oculta en telefonos moviles estrechos (<640px)
     }
   }
 
@@ -357,16 +366,16 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 
   &__visual-link {
-    color: rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.95);
     font-size: 0.85rem;
     font-weight: 600;
     text-decoration: none;
     letter-spacing: 0.02em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     transition: color 0.15s ease, opacity 0.15s ease;
 
     &:hover {
@@ -375,4 +384,3 @@
     }
   }
 }
-
