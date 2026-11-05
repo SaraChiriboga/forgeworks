@@ -43,6 +43,7 @@ $shadow-card: 0 24px 50px -12px rgba(35, 31, 32, 0.22), 0 0 0 1px rgba(255, 255,
 $shadow-input: 0 1px 3px rgba(35, 31, 32, 0.05);
 $shadow-btn: 0 8px 18px -4px rgba(31, 64, 50, 0.35);
 
-// breakpoints responsive
+// breakpoints responsive sincronizados con responsive.service.ts
 $bp-mobile: 640px;
 $bp-tablet: 1024px;
+$bp-desktop: 1025px;

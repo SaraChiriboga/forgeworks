@@ -9,9 +9,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class ResponsiveService {
   private breakpointObserver = inject(BreakpointObserver);
 
-  private readonly small = '(max-width: 600px)';
-  private readonly medium = '(min-width: 601px) and (max-width: 1000px)';
-  private readonly large = '(min-width: 1001px)';
+  // puntos de quiebre sincronizados con el sass (640px y 1024px)
+  private readonly small = '(max-width: 640px)';
+  private readonly medium = '(min-width: 641px) and (max-width: 1024px)';
+  private readonly large = '(min-width: 1025px)';
 
   private screenWidth = toSignal(
     this.breakpointObserver.observe([this.small, this.medium, this.large])
