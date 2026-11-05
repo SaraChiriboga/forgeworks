@@ -63,12 +63,11 @@
     }
   }
 
-  // logo superpuesto transparente que cruza ambos paneles como el welcome de la referencia
+  // logo superpuesto que rompe el borde superior izquierdo, solo en la zona del form
   &__logo-badge {
     position: absolute;
-    top: 1.5rem;
-    left: 2.5rem;
-    right: 0;
+    top: -3.5rem; // sobresale por encima de la card para que el backdrop se vea detras
+    left: 1.5rem;
     z-index: 30;
     display: block;
     background: transparent;
@@ -77,10 +76,13 @@
     box-shadow: none;
     padding: 0;
     margin: 0;
-    pointer-events: none; // no bloquea clicks en lo que hay debajo
+    // limitar el ancho al panel izquierdo (1.15 de 2.15 = ~53%)
+    width: 50%;
+    pointer-events: none;
 
     @include m.respond-to(tablet) {
       position: static;
+      width: auto;
       margin: 0 auto 1rem auto;
       display: flex;
       justify-content: center;
@@ -88,21 +90,21 @@
   }
 
   &__logo-img {
-    width: 85%;
-    max-width: 680px;
+    width: 100%;
+    max-width: 480px;
     height: auto;
     display: block;
-    // sombra suave para resaltar el trazo svg sobre el blanco y sobre la imagen
-    filter: drop-shadow(0 6px 18px rgba(35, 31, 32, 0.25));
-    pointer-events: auto; // el logo si es clickeable
+    // sombra para resaltar el svg sobre el fondo artesanal que se ve detras
+    filter: drop-shadow(0 4px 16px rgba(35, 31, 32, 0.3));
+    pointer-events: auto;
 
     @include m.respond-to(tablet) {
-      width: 280px;
+      width: 260px;
       max-width: 80vw;
     }
 
     @include m.respond-to(mobile) {
-      width: 220px;
+      width: 200px;
     }
   }
 
@@ -113,7 +115,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 9rem 3.5rem 3rem 3.5rem; // espacio amplio para que el logo enorme superpuesto respire
+    padding: 5rem 3.5rem 3rem 3.5rem; // espacio moderado ya que el logo sobresale por encima de la card
     border-top-left-radius: v.$radius-card;
     border-bottom-left-radius: v.$radius-card;
     background: #ffffff;
