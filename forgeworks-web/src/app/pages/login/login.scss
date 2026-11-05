@@ -49,7 +49,7 @@
     grid-template-columns: 1.15fr 1fr;
     width: 100%;
     height: 100%;
-    max-height: 590px;
+    max-height: min(630px, calc(100vh - 2rem));
     background: transparent; // siempre transparente para efecto de continuidad con el hero
     overflow: hidden; // cero esquinas vacias
 
@@ -67,50 +67,57 @@
     }
   }
 
-  // seccion izquierda: formulario de login y registro
+  // seccion izquierda: formulario de login y registro sin scroll
   &__form-pane {
     position: relative;
     z-index: 20;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 2.25rem 3rem;
+    padding: 1.75rem 2.5rem;
     background: #ffffff;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(35, 31, 32, 0.15) transparent;
+    overflow: hidden; // elimina completamente cualquier barra de scroll
 
     @include m.respond-to(tablet) {
-      padding: 1.75rem 2rem;
+      padding: 1.5rem 1.75rem;
     }
 
     @include m.respond-to(mobile) {
       padding: 1.5rem 1.25rem;
       border-radius: v.$radius-card;
+      overflow-y: auto;
     }
   }
 
-  // logo oficial con la ilustracion hero visible a traves de las letras
+  // logo oficial extendido para topar el borde izquierdo del contenedor
   &__logo {
     display: block;
-    width: 100%;
-    margin-bottom: 1.15rem;
+    width: calc(100%);
+    margin-left: -2.5rem; // topa el contenedor izquierdo
+    margin-bottom: 0.75rem;
     background: transparent;
     border: none;
     padding: 0;
 
+    @include m.respond-to(tablet) {
+      width: calc(100% + 1.75rem);
+      margin-left: -1.75rem;
+    }
+
     @include m.respond-to(mobile) {
+      width: 100%;
+      margin-left: 0;
       display: flex;
       justify-content: center;
-      margin-bottom: 0.85rem;
+      margin-bottom: 0.65rem;
     }
   }
 
   // logo que abarca todo el ancho del panel izquierdo y revela el hero trasero en exacta alineacion
   &__logo-cutout {
     width: 100%;
-    max-width: 440px;
-    height: 85px;
+    max-width: 520px;
+    height: 98px;
     background-image: url('/images/auth-hero.jpg');
     background-size: cover;
     background-position: center center;
@@ -121,7 +128,8 @@
     filter: drop-shadow(0 3px 6px rgba(35, 31, 32, 0.22));
 
     @include m.respond-to(tablet) {
-      height: 72px;
+      height: 82px;
+      max-width: 460px;
     }
 
     @include m.respond-to(mobile) {
@@ -137,13 +145,13 @@
     background-color: #f1f5f9;
     border-radius: v.$radius-pill;
     padding: 0.25rem;
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.65rem;
     width: fit-content;
   }
 
   &__tab {
-    padding: 0.4rem 1.15rem;
-    font-size: 0.85rem;
+    padding: 0.35rem 1.1rem;
+    font-size: 0.825rem;
     font-weight: 600;
     color: v.$text-secondary;
     border: none;
@@ -165,29 +173,29 @@
 
   // subtitulo sobrio y refinado
   &__header {
-    margin-bottom: 1.15rem;
+    margin-bottom: 0.85rem;
   }
 
   &__subtitle {
     margin: 0;
     font-family: v.$font-body;
-    font-size: 0.85rem;
+    font-size: 0.825rem;
     color: v.$text-secondary;
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
   // formulario
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.65rem;
   }
 
   // fila de dos columnas para nombre y apellido en el registro
   &__form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+    gap: 0.65rem;
 
     @include m.respond-to(mobile) {
       grid-template-columns: 1fr;
@@ -198,14 +206,14 @@
   &__field {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.2rem;
   }
 
   &__label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: v.$text-secondary;
   }
@@ -218,8 +226,8 @@
 
   &__input {
     @include m.form-input;
-    padding: 0.65rem 0.95rem;
-    font-size: 0.875rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.85rem;
 
     &--has-icon {
       padding-right: 2.5rem;
@@ -262,7 +270,7 @@
 
   // enlace de olvidé mi contraseña
   &__forgot-link {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: v.$primary-color;
     text-decoration: none;
@@ -278,9 +286,9 @@
   // boton de submit principal con estilo pill (color terracota artesanal)
   &__submit-btn {
     @include m.pill-btn(v.$accent-color, #ffffff, v.$accent-hover);
-    margin-top: 0.35rem;
+    margin-top: 0.25rem;
     height: 42px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 
   // divisor 'o continua con'
@@ -288,9 +296,9 @@
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 0.75rem 0;
+    margin: 0.65rem 0;
     color: v.$text-muted;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
 
     &::before,
     &::after {
@@ -310,13 +318,13 @@
   &__socials {
     display: flex;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.65rem;
   }
 
   &__social-btn {
     @include m.flex-center;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background-color: #f1f5f9;
     border: 1px solid #e2e8f0;
