@@ -52,7 +52,7 @@
     grid-template-columns: 1.15fr 1fr;
     min-height: 640px;
     background: transparent; // transparente para dar efecto de continuidad con el fondo
-    overflow: visible; // permite que el logo sobrepase el borde superior izquierdo
+    overflow: hidden; // recorta perfectamente el contenido al marco redondeado sin esquinas vacias
 
     @include m.respond-to(tablet) {
       grid-template-columns: 1fr;
@@ -63,51 +63,6 @@
     }
   }
 
-  // logo superpuesto que rompe el borde superior izquierdo, solo en la zona del form
-  &__logo-badge {
-    position: absolute;
-    top: -3.5rem; // sobresale por encima de la card para que el backdrop se vea detras
-    left: 1.5rem;
-    z-index: 30;
-    display: block;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-    // limitar el ancho al panel izquierdo (1.15 de 2.15 = ~53%)
-    width: 50%;
-    pointer-events: none;
-
-    @include m.respond-to(tablet) {
-      position: static;
-      width: auto;
-      margin: 0 auto 1rem auto;
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  &__logo-img {
-    width: 100%;
-    max-width: 480px;
-    height: auto;
-    display: block;
-    // sombra para resaltar el svg sobre el fondo artesanal que se ve detras
-    filter: drop-shadow(0 4px 16px rgba(35, 31, 32, 0.3));
-    pointer-events: auto;
-
-    @include m.respond-to(tablet) {
-      width: 260px;
-      max-width: 80vw;
-    }
-
-    @include m.respond-to(mobile) {
-      width: 200px;
-    }
-  }
-
   // seccion izquierda: formulario de login y registro
   &__form-pane {
     position: relative;
@@ -115,14 +70,41 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 5rem 3.5rem 3rem 3.5rem; // espacio moderado ya que el logo sobresale por encima de la card
-    border-top-left-radius: v.$radius-card;
-    border-bottom-left-radius: v.$radius-card;
+    padding: 3rem 3.5rem;
     background: #ffffff;
 
     @include m.respond-to(tablet) {
-      border-radius: v.$radius-card;
-      padding: 2.5rem 2rem 2.5rem 2rem;
+      padding: 2.5rem 2rem;
+    }
+
+    @include m.respond-to(mobile) {
+      padding: 2rem 1.25rem;
+    }
+  }
+
+  // logo oficial integrado dentro del panel izquierdo, sin fondo ni pildora
+  &__logo {
+    display: block;
+    margin-bottom: 1.5rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+
+    @include m.respond-to(mobile) {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  &__logo-img {
+    width: 260px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+
+    @include m.respond-to(mobile) {
+      width: 200px;
     }
   }
 
@@ -358,8 +340,6 @@
   // seccion derecha: panel visual transparente para dar continuidad al fondo
   &__visual-pane {
     position: relative;
-    border-top-right-radius: v.$radius-card;
-    border-bottom-right-radius: v.$radius-card;
     overflow: hidden;
     display: flex;
     flex-direction: column;
