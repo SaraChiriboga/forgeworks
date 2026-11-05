@@ -19,8 +19,12 @@
     height: 100%;
     z-index: 0;
     background-image: 
+      url('/images/auth-hero.jpg'),
+      url('/images/auth-hero.webp'),
       url('/images/auth-bg.webp'),
-      url('/images/auth-backdrop.svg'),
+      url('/images/auth-bg.jpg'),
+      url('/images/auth-bg.jpeg'),
+      url('/images/auth-bg.png'),
       linear-gradient(135deg, v.$color-cream 0%, v.$color-rust 50%, v.$color-forest 100%);
     background-size: cover;
     background-position: center bottom;
@@ -351,8 +355,12 @@
     justify-content: space-between;
     padding: 2.5rem;
     background: 
+      url('/images/auth-hero.jpg'),
+      url('/images/auth-hero.webp'),
       url('/images/auth-bg.webp'),
-      url('/images/auth-backdrop.svg'),
+      url('/images/auth-bg.jpg'),
+      url('/images/auth-bg.jpeg'),
+      url('/images/auth-bg.png'),
       linear-gradient(135deg, v.$color-rust 0%, v.$color-forest 60%, v.$color-charcoal 100%);
     background-size: cover;
     background-position: center;
