@@ -138,13 +138,14 @@
     }
   }
 
-  // selector de pestañas (iniciar sesion / registrarse)
+  // selector de pestañas centrado (iniciar sesion / registrarse)
   &__tabs {
     display: inline-flex;
+    align-self: center;
     background-color: #f1f5f9;
     border-radius: v.$radius-pill;
     padding: 0.25rem;
-    margin-bottom: 0.65rem;
+    margin: 0 auto 0.75rem auto;
     width: fit-content;
   }
 
