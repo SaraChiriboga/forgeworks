@@ -36,9 +36,6 @@
           <h1 class="auth__accessible-heading visually-hidden">
             {{ activeTab() === 'login' ? 'Iniciar sesión en ForgeWorks' : 'Crear cuenta en ForgeWorks' }}
           </h1>
-          <p class="auth__subtitle">
-            {{ activeTab() === 'login' ? 'Ingresa tus credenciales para acceder al taller' : 'Regístrate para solicitar y seguir encargos personalizados' }}
-          </p>
         </div>
 
         <!-- mensajes de retroalimentacion accesibles -->
@@ -274,7 +271,7 @@
               @if (loading()) {
                 <span>Creando cuenta...</span>
               } @else {
-                <span>Crear cuenta en ForgeWorks</span>
+                <span>Crear cuenta</span>
               }
             </button>
           </form>
