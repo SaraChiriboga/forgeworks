@@ -39,6 +39,8 @@ export class DropdownComponent implements ControlValueAccessor {
   placeholder = input<string>('Seleccione una opción...');
   disabled = input<boolean>(false);
   name = input<string>('');
+  searchable = input<boolean>(false);
+  searchPlaceholder = input<string>('Buscar...');
   
   // Opciones: acepta array de strings o array de objetos DropdownOption
   options = input<Array<string | DropdownOption>>([]);
@@ -49,9 +51,10 @@ export class DropdownComponent implements ControlValueAccessor {
   // Evento al cambiar
   selectionChange = output<string>();
 
-  // Estado interno de apertura y direccion
+  // Estado interno de apertura, busqueda y direccion
   isOpen = signal<boolean>(false);
   openUpward = signal<boolean>(false);
+  searchTerm = signal<string>('');
 
   // Normalizacion de opciones a objetos DropdownOption
   normalizedOptions = computed<DropdownOption[]>(() => {
@@ -60,6 +63,21 @@ export class DropdownComponent implements ControlValueAccessor {
         return { value: opt, label: opt };
       }
       return opt;
+    });
+  });
+
+  // Opciones filtradas por el termino de busqueda
+  filteredOptions = computed<DropdownOption[]>(() => {
+    const list = this.normalizedOptions();
+    const query = this.searchTerm().trim().toLowerCase();
+    if (!this.searchable() || !query) {
+      return list;
+    }
+    return list.filter((opt) => {
+      const matchLabel = opt.label.toLowerCase().includes(query);
+      const matchSub = opt.subtitle ? opt.subtitle.toLowerCase().includes(query) : false;
+      const matchVal = opt.value.toLowerCase().includes(query);
+      return matchLabel || matchSub || matchVal;
     });
   });
 
@@ -80,6 +98,7 @@ export class DropdownComponent implements ControlValueAccessor {
     if (this.disabled()) return;
     const willOpen = !this.isOpen();
     if (willOpen) {
+      this.searchTerm.set('');
       // calcular si hay espacio inferior suficiente dentro de la ventana/contenedor
       const rect = this.elementRef.nativeElement.getBoundingClientRect();
       const spaceBelow = window.innerHeight - rect.bottom;
@@ -95,8 +114,14 @@ export class DropdownComponent implements ControlValueAccessor {
   close(): void {
     if (this.isOpen()) {
       this.isOpen.set(false);
+      this.searchTerm.set('');
       this.onTouched();
     }
+  }
+
+  onSearchInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.set(input.value || '');
   }
 
   selectOption(opt: DropdownOption, event?: Event): void {

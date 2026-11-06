@@ -23,8 +23,28 @@
 
   @if (isOpen()) {
     <div class="fw-dropdown__menu" [class.fw-dropdown__menu--up]="openUpward()" role="listbox" [attr.aria-label]="placeholder()">
+      @if (searchable()) {
+        <div class="fw-dropdown__search-box" (click)="$event.stopPropagation()">
+          <span class="fw-dropdown__search-icon" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input
+            type="text"
+            class="fw-dropdown__search-input"
+            [placeholder]="searchPlaceholder()"
+            [value]="searchTerm()"
+            (input)="onSearchInput($event)"
+            (keydown.escape)="close()"
+            autofocus
+          />
+        </div>
+      }
+
       <div class="fw-dropdown__options">
-        @for (opt of normalizedOptions(); track opt.value) {
+        @for (opt of filteredOptions(); track opt.value) {
           <div 
             class="fw-dropdown__option" 
             [class.fw-dropdown__option--selected]="opt.value === value()"
@@ -48,7 +68,7 @@
           </div>
         } @empty {
           <div class="fw-dropdown__empty">
-            No hay opciones disponibles
+            {{ searchTerm() ? 'No se encontraron resultados' : 'No hay opciones disponibles' }}
           </div>
         }
       </div>

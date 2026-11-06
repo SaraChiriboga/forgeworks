@@ -5,6 +5,7 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  font-family: v.$font-body;
 
   &__trigger {
     width: 100%;
@@ -17,7 +18,7 @@
     background-color: #ffffff;
     border: 1.5px solid #e2e8f0;
     border-radius: v.$radius-input;
-    font-family: v.$font-body;
+    font-family: v.$font-body !important;
     font-size: 0.825rem;
     color: v.$text-primary;
     text-align: left;
@@ -96,6 +97,48 @@
     }
   }
 
+  &__search-box {
+    position: relative;
+    padding: 0.45rem 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: #fafbfc;
+    display: flex;
+    align-items: center;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 0.85rem;
+    display: flex;
+    align-items: center;
+    color: #94a3b8;
+    pointer-events: none;
+  }
+
+  &__search-input {
+    width: 100%;
+    height: 30px;
+    padding: 0 0.5rem 0 1.75rem;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: v.$font-body !important;
+    font-size: 0.775rem;
+    color: v.$text-primary;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &::placeholder {
+      color: #94a3b8;
+    }
+
+    &:focus {
+      border-color: v.$primary-color;
+      box-shadow: 0 0 0 2px rgba(31, 64, 50, 0.1);
+    }
+  }
+
   &__options {
     max-height: 180px;
     overflow-y: auto;
@@ -116,6 +159,7 @@
   }
 
   &__option {
+    font-family: v.$font-body !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
