@@ -54,6 +54,7 @@ export interface NewResource {
   cost_cents: number;
   capacity_per_week?: number;
   description?: string;
+  tags?: string[];
 }
 
 export interface NewResourceLot {
@@ -105,6 +106,16 @@ export class InventoryService {
     return this.http.post<Resource>(`${this.apiUrl}/resources`, { resource: data });
   }
 
+  // actualizar un recurso existente
+  updateResource(resourceId: number, data: Partial<NewResource>): Observable<Resource> {
+    return this.http.put<Resource>(`${this.apiUrl}/resources/${resourceId}`, { resource: data });
+  }
+
+  // dar de baja / eliminar recurso (baja logica)
+  deleteResource(resourceId: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/resources/${resourceId}`);
+  }
+
   // listar lotes de inventario (opcionalmente filtrados por recurso)
   getResourceLots(resourceId?: number): Observable<ResourceLot[]> {
     let url = `${this.apiUrl}/resource_lots`;
@@ -117,6 +128,11 @@ export class InventoryService {
   // crear un lote asociando la clave foranea del recurso
   createResourceLot(data: NewResourceLot): Observable<ResourceLot> {
     return this.http.post<ResourceLot>(`${this.apiUrl}/resource_lots`, { resource_lot: data, resource_id: data.resource_id });
+  }
+
+  // actualizar un lote de inventario
+  updateResourceLot(lotId: number, data: Partial<NewResourceLot>): Observable<ResourceLot> {
+    return this.http.put<ResourceLot>(`${this.apiUrl}/resource_lots/${lotId}`, { resource_lot: data });
   }
 
   // eliminar un lote de inventario
