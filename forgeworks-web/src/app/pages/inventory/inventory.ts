@@ -124,7 +124,33 @@ export class Inventory implements OnInit {
   });
 
   artisanName = computed(() => {
-    return 'Martín Valdés';
+    const profile = this.authService.getUserProfile();
+    if (profile) {
+      const full = `${profile.name || ''} ${profile.last_name || ''}`.trim();
+      if (full) return full;
+      if (profile.email) return profile.email.split('@')[0];
+    }
+    return 'Sara Chiriboga';
+  });
+
+  workshopName = computed(() => {
+    const ws = this.workshop();
+    if (ws && ws.name) return ws.name;
+    const profile = this.authService.getUserProfile();
+    if (profile?.name) return `Taller de ${profile.name}`;
+    return 'Taller Ébano & Forja';
+  });
+
+  avatarInitials = computed(() => {
+    const name = this.artisanName();
+    if (name) {
+      const parts = name.split(' ').filter(Boolean);
+      if (parts.length >= 2) {
+        return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+      }
+      return name.slice(0, 2).toUpperCase();
+    }
+    return 'SC';
   });
 
   ngOnInit(): void {

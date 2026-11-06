@@ -1,0 +1,29 @@
+<main class="client-home">
+  <div class="client-home__container">
+    <header class="client-home__header">
+      <div class="client-home__brand">
+        <img src="/images/logo.svg" alt="ForgeWorks" class="client-home__logo" />
+      </div>
+      <button type="button" class="client-home__logout-btn" (click)="logout()">
+        Cerrar sesión
+      </button>
+    </header>
+
+    <section class="client-home__card">
+      <div class="client-home__badge">Portal de Clientes</div>
+      <h1 class="client-home__title">
+        Bienvenido{{ userProfile?.name ? ', ' + userProfile?.name : '' }}
+      </h1>
+      <p class="client-home__text">
+        El catálogo público y la experiencia de exploración de talleres para clientes se encuentra actualmente en desarrollo activo.
+      </p>
+      <div class="client-home__notice">
+        <span class="client-home__dot" aria-hidden="true"></span>
+        <span class="client-home__notice-text">
+          Próximamente podrás encargar piezas únicas, cotizar en caliente y seguir el proceso artesanal paso a paso.
+        </span>
+      </div>
+    </section>
+  </div>
+</main>
+

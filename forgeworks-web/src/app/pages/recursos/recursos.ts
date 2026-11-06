@@ -47,6 +47,16 @@ export class Recursos implements OnInit {
   showNewWorkshopModal = signal<boolean>(false);
   showNewSubstituteModal = signal<boolean>(false);
 
+  // dropdown en cascada para registrar lote fisico (plan de implementacion seccion 1.3 y 4.2)
+  lotResourceType = signal<string>('todos');
+
+  filteredResourcesForLot = computed(() => {
+    const type = this.lotResourceType();
+    const all = this.resources();
+    if (type === 'todos' || !type) return all;
+    return all.filter(r => r.resource_type === type);
+  });
+
   // parametro de ensamble
   minShelfLifeDays = signal<number>(7);
 
@@ -124,7 +134,33 @@ export class Recursos implements OnInit {
   });
 
   artisanName = computed(() => {
-    return 'Martín Valdés';
+    const profile = this.authService.getUserProfile();
+    if (profile) {
+      const full = `${profile.name || ''} ${profile.last_name || ''}`.trim();
+      if (full) return full;
+      if (profile.email) return profile.email.split('@')[0];
+    }
+    return 'Sara Chiriboga';
+  });
+
+  workshopName = computed(() => {
+    const ws = this.workshop();
+    if (ws && ws.name) return ws.name;
+    const profile = this.authService.getUserProfile();
+    if (profile?.name) return `Taller de ${profile.name}`;
+    return 'Taller Ébano & Forja';
+  });
+
+  avatarInitials = computed(() => {
+    const name = this.artisanName();
+    if (name) {
+      const parts = name.split(' ').filter(Boolean);
+      if (parts.length >= 2) {
+        return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+      }
+      return name.slice(0, 2).toUpperCase();
+    }
+    return 'SC';
   });
 
   ngOnInit(): void {
@@ -416,9 +452,10 @@ export class Recursos implements OnInit {
 
   openNewLotModal(): void {
     const res = this.selectedResource();
-    if (!res) return;
+    const currentType = res ? res.resource_type : 'todos';
+    this.lotResourceType.set(currentType);
     this.newLot = {
-      resource_id: res.id,
+      resource_id: res ? res.id : (this.resources()[0]?.id || 0),
       lot_number: `Lote ${String(this.lots().length + 1).padStart(2, '0')}`,
       quantity: 20,
       received_at: this.getTodayDateString(),
@@ -428,8 +465,17 @@ export class Recursos implements OnInit {
     this.showNewLotModal.set(true);
   }
 
+  onLotResourceTypeChange(type: string): void {
+    this.lotResourceType.set(type);
+    const available = this.filteredResourcesForLot();
+    if (available.length > 0) {
+      this.newLot.resource_id = available[0].id;
+    }
+  }
+
   saveLot(): void {
-    const res = this.selectedResource();
+    const targetResourceId = this.newLot.resource_id;
+    const res = this.resources().find(r => r.id === targetResourceId) || this.selectedResource();
     if (!res) return;
 
     this.inventoryService.createResourceLot(this.newLot).subscribe({

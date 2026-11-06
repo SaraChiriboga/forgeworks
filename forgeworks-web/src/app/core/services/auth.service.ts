@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { tap, switchMap } from 'rxjs';
 
 // estructura de la respuesta que se espera del backend al hacer login o registro
 interface LoginResponse {
@@ -24,6 +24,24 @@ export interface SignUpPayload {
   name?: string;
   last_name?: string;
   phone?: string;
+}
+
+export interface WorkshopPayload {
+  name: string;
+  id_gov: string;
+  category: string;
+  location: string;
+  description?: string;
+}
+
+export interface WorkshopResponse {
+  id: number;
+  name: string;
+  id_gov: string;
+  category: string;
+  location: string;
+  description?: string;
+  created_at: string;
 }
 
 @Injectable({
@@ -56,6 +74,7 @@ export class AuthService {
       tap(response => {
         this.saveToken(response.token);
         localStorage.setItem('user_role', response.user.role); // guardar el usuario en localStorage
+        localStorage.setItem('user_profile', JSON.stringify(response.user));
       })
     );
   }
@@ -73,8 +92,39 @@ export class AuthService {
           if (response.user?.role) {
             localStorage.setItem('user_role', response.user.role);
           }
+          if (response.user) {
+            localStorage.setItem('user_profile', JSON.stringify(response.user));
+          }
         }
       })
+    );
+  }
+
+  // crear un taller para el usuario autenticado
+  createWorkshop(workshopData: WorkshopPayload) {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const body = {
+      workshop: workshopData
+    };
+
+    return this.http.post<WorkshopResponse>(`${this.apiUrl}/workshops`, body, { headers }).pipe(
+      tap(workshop => {
+        const profile = this.getUserProfile();
+        if (profile) {
+          profile.workshop_id = workshop.id;
+          profile.role = 'Admin';
+          localStorage.setItem('user_profile', JSON.stringify(profile));
+        }
+        localStorage.setItem('user_role', 'Admin');
+      })
+    );
+  }
+
+  // registrar artesano y dar de alta su taller en flujo continuo
+  registerWorkshop(userData: SignUpPayload, workshopData: WorkshopPayload) {
+    return this.signUp(userData).pipe(
+      switchMap(() => this.createWorkshop(workshopData))
     );
   }
 
@@ -88,6 +138,16 @@ export class AuthService {
 
   getUserRole(): string | null {
     return localStorage.getItem('user_role');
+  }
+
+  getUserProfile(): { id?: number; email?: string; role?: string; name?: string; last_name?: string; phone?: string; workshop_id?: number | null } | null {
+    const raw = localStorage.getItem('user_profile');
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
   }
 
   // guardar el token en el localStorage del navegador
@@ -109,6 +169,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey); // eliminar el token del localStorage
     localStorage.removeItem('user_role'); // eliminar el rol del usuario al hacer logout
+    localStorage.removeItem('user_profile');
     this.router.navigate(['/login']);
   }
 }

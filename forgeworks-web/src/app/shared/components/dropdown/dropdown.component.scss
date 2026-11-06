@@ -1,0 +1,204 @@
+@use '../../../../styles/variables' as v;
+@use '../../../../styles/mixins' as m;
+
+.fw-dropdown {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__trigger {
+    width: 100%;
+    min-height: 38px;
+    padding: 0.42rem 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background-color: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: v.$radius-input;
+    font-family: v.$font-body;
+    font-size: 0.825rem;
+    color: v.$text-primary;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease-out;
+    box-sizing: border-box;
+
+    &:hover:not(:disabled) {
+      border-color: rgba(31, 64, 50, 0.4);
+      background-color: #fafbfc;
+    }
+
+    &:focus-visible {
+      border-color: v.$primary-color;
+      box-shadow: 0 0 0 3px rgba(31, 64, 50, 0.12);
+    }
+  }
+
+  &--open &__trigger {
+    border-color: v.$primary-color;
+    box-shadow: 0 0 0 3px rgba(31, 64, 50, 0.12);
+  }
+
+  &--disabled &__trigger {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+  }
+
+  &__text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--placeholder {
+      color: #94a3b8;
+    }
+  }
+
+  &__chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    transition: transform 0.25s ease-out;
+    flex-shrink: 0;
+  }
+
+  &--open &__chevron {
+    transform: rotate(180deg);
+    color: v.$primary-color;
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: v.$radius-input;
+    box-shadow: 0 10px 25px -5px rgba(35, 31, 32, 0.18), 0 8px 10px -6px rgba(35, 31, 32, 0.1);
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    box-sizing: border-box;
+
+    &--up {
+      top: auto;
+      bottom: calc(100% + 4px);
+      box-shadow: 0 -10px 25px -5px rgba(35, 31, 32, 0.18), 0 -8px 10px -6px rgba(35, 31, 32, 0.1);
+      animation: dropdownFadeInUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  }
+
+  &__options {
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 0.35rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(31, 64, 50, 0.25) transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(31, 64, 50, 0.25);
+      border-radius: 4px;
+    }
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: calc(v.$radius-input - 2px);
+    font-size: 0.81rem;
+    color: v.$text-primary;
+    cursor: pointer;
+    transition: all 0.15s ease-out;
+
+    &:hover:not(&--disabled) {
+      background-color: #f1f5f9;
+      color: v.$primary-color;
+    }
+
+    &--selected {
+      background-color: rgba(31, 64, 50, 0.08);
+      color: v.$primary-color;
+      font-weight: 600;
+
+      &:hover {
+        background-color: rgba(31, 64, 50, 0.12);
+      }
+    }
+
+    &--disabled {
+      color: #cbd5e1;
+      cursor: not-allowed;
+    }
+  }
+
+  &__option-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__option-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__option-sub {
+    font-size: 0.7rem;
+    color: #64748b;
+  }
+
+  &__check {
+    display: flex;
+    align-items: center;
+    color: v.$primary-color;
+    flex-shrink: 0;
+  }
+
+  &__empty {
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: #94a3b8;
+  }
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dropdownFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+

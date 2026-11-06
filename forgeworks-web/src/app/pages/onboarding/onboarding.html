@@ -1,0 +1,311 @@
+<main class="onboarding">
+  <!-- fondo ilustrado artesanal -->
+  <div class="onboarding__backdrop" aria-hidden="true"></div>
+
+  <div class="onboarding__container">
+    <section class="onboarding__card" aria-label="Asistente de registro de taller">
+      
+      <!-- CONTENEDOR 1: ASISTENTE PROGRESIVO DE REGISTRO (IZQUIERDA) -->
+      <div class="onboarding__pane onboarding__pane--form">
+        
+        <header class="onboarding__header">
+          <div class="onboarding__brand">
+            <span class="onboarding__brand-badge">ForgeWorks</span>
+            <span class="onboarding__title">Registro de taller</span>
+          </div>
+
+          <!-- indicador de progreso sobrio -->
+          <div class="onboarding__stepper" role="tablist" aria-label="Progreso">
+            <div class="onboarding__step" [class.onboarding__step--active]="currentStep() === 1" [class.onboarding__step--done]="currentStep() > 1">
+              <span class="onboarding__step-number">1</span>
+              <span class="onboarding__step-label">Titular</span>
+            </div>
+            <div class="onboarding__step-divider"></div>
+            <div class="onboarding__step" [class.onboarding__step--active]="currentStep() === 2" [class.onboarding__step--done]="currentStep() > 2">
+              <span class="onboarding__step-number">2</span>
+              <span class="onboarding__step-label">Taller</span>
+            </div>
+            <div class="onboarding__step-divider"></div>
+            <div class="onboarding__step" [class.onboarding__step--active]="currentStep() === 3">
+              <span class="onboarding__step-number">3</span>
+              <span class="onboarding__step-label">Oficio</span>
+            </div>
+          </div>
+        </header>
+
+        @if (errorMessage()) {
+          <div class="onboarding__alert" role="alert">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <!-- CUERPO DEL PASO ACTUAL -->
+        <div class="onboarding__body">
+
+          <!-- PASO 1: CUENTA DEL ARTESANO TITULAR -->
+          @if (currentStep() === 1) {
+            <form (ngSubmit)="nextStep()" class="onboarding__form" novalidate>
+              <div class="onboarding__field">
+                <label for="step1-name" class="onboarding__label">Nombre del titular *</label>
+                <input
+                  id="step1-name"
+                  type="text"
+                  [ngModel]="name()"
+                  (ngModelChange)="name.set($event)"
+                  name="artisanName"
+                  placeholder="Sara Chiriboga"
+                  required
+                  class="onboarding__input"
+                />
+              </div>
+
+              <div class="onboarding__field">
+                <label for="step1-email" class="onboarding__label">Correo electrónico *</label>
+                <input
+                  id="step1-email"
+                  type="email"
+                  [ngModel]="email()"
+                  (ngModelChange)="email.set($event)"
+                  name="artisanEmail"
+                  placeholder="sara@ejemplo.com"
+                  required
+                  class="onboarding__input"
+                />
+              </div>
+
+              <div class="onboarding__field">
+                <label for="step1-pass" class="onboarding__label">Contraseña *</label>
+                <div class="onboarding__input-wrapper">
+                  <input
+                    id="step1-pass"
+                    [type]="showPassword() ? 'text' : 'password'"
+                    [ngModel]="password()"
+                    (ngModelChange)="password.set($event)"
+                    name="artisanPassword"
+                    placeholder="Mínimo 6 caracteres"
+                    required
+                    class="onboarding__input onboarding__input--has-icon"
+                  />
+                  <button
+                    type="button"
+                    (click)="togglePassword()"
+                    class="onboarding__toggle-btn"
+                    [attr.aria-label]="showPassword() ? 'Ocultar' : 'Ver'">
+                    @if (showPassword()) {
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                      </svg>
+                    } @else {
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <div class="onboarding__actions">
+                <a routerLink="/login" class="onboarding__link-btn">Ya tengo cuenta</a>
+                <button type="submit" class="onboarding__btn onboarding__btn--primary">Continuar</button>
+              </div>
+            </form>
+          }
+
+          <!-- PASO 2: IDENTIDAD DEL TALLER -->
+          @if (currentStep() === 2) {
+            <form (ngSubmit)="nextStep()" class="onboarding__form" novalidate>
+              <div class="onboarding__field">
+                <label for="step2-wsname" class="onboarding__label">Nombre del taller *</label>
+                <input
+                  id="step2-wsname"
+                  type="text"
+                  [ngModel]="workshopName()"
+                  (ngModelChange)="workshopName.set($event)"
+                  name="wsName"
+                  placeholder="Taller Ébano y Roble"
+                  required
+                  class="onboarding__input"
+                />
+              </div>
+
+              <div class="onboarding__field">
+                <label for="step2-idgov" class="onboarding__label">Cédula o RUC *</label>
+                <input
+                  id="step2-idgov"
+                  type="text"
+                  [ngModel]="idGov()"
+                  (ngModelChange)="idGov.set($event)"
+                  name="wsIdGov"
+                  placeholder="1316109626001"
+                  required
+                  inputmode="numeric"
+                  class="onboarding__input font-mono"
+                />
+              </div>
+
+              <!-- UBICACION EN CASCADA CON COUNTRIESNOW API: PAIS -> PROVINCIA -> CIUDAD -->
+              <div class="onboarding__grid-2">
+                <div class="onboarding__field">
+                  <label for="step2-country" class="onboarding__label">País *</label>
+                  <select
+                    id="step2-country"
+                    name="wsCountry"
+                    [ngModel]="selectedCountry()"
+                    (ngModelChange)="onCountryChange($event)"
+                    class="onboarding__input onboarding__select"
+                  >
+                    @for (c of countries(); track c.name) {
+                      <option [value]="c.name">{{ c.name }}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="onboarding__field">
+                  <label for="step2-state" class="onboarding__label">Provincia o estado *</label>
+                  <select
+                    id="step2-state"
+                    name="wsState"
+                    [ngModel]="selectedState()"
+                    (ngModelChange)="onStateChange($event)"
+                    class="onboarding__input onboarding__select"
+                  >
+                    @for (st of states(); track st.name) {
+                      <option [value]="st.name">{{ st.displayName }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div class="onboarding__field">
+                <label for="step2-city" class="onboarding__label">Ciudad o cantón *</label>
+                <select
+                  id="step2-city"
+                  name="wsCity"
+                  [ngModel]="selectedCity()"
+                  (ngModelChange)="onCityChange($event)"
+                  class="onboarding__input onboarding__select"
+                >
+                  @for (ct of cities(); track ct) {
+                    <option [value]="ct">{{ ct }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="onboarding__actions">
+                <button type="button" (click)="prevStep()" class="onboarding__btn onboarding__btn--secondary">Volver</button>
+                <button type="submit" class="onboarding__btn onboarding__btn--primary">Continuar</button>
+              </div>
+            </form>
+          }
+
+          <!-- PASO 3: OFICIO Y ESPECIALIDAD (DROPDOWN EN CASCADA) -->
+          @if (currentStep() === 3) {
+            <form (ngSubmit)="submit()" class="onboarding__form" novalidate>
+              <div class="onboarding__field">
+                <label for="step3-sector" class="onboarding__label">Sector artesanal *</label>
+                <select
+                  id="step3-sector"
+                  name="wsSector"
+                  [ngModel]="selectedSector()"
+                  (ngModelChange)="onSectorChange($event)"
+                  class="onboarding__input onboarding__select"
+                >
+                  @for (grp of categoryGroups; track grp.group) {
+                    <option [value]="grp.group">{{ grp.group }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="onboarding__field">
+                <label for="step3-cat" class="onboarding__label">Especialidad u oficio *</label>
+                <select
+                  id="step3-cat"
+                  name="wsCategory"
+                  [ngModel]="selectedCategory()"
+                  (ngModelChange)="selectedCategory.set($event)"
+                  class="onboarding__input onboarding__select"
+                >
+                  @for (item of availableCategories(); track item) {
+                    <option [value]="item">{{ item }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="onboarding__actions">
+                <button type="button" (click)="prevStep()" class="onboarding__btn onboarding__btn--secondary">Volver</button>
+                <button type="submit" [disabled]="loading()" class="onboarding__btn onboarding__btn--primary">
+                  {{ loading() ? 'Creando taller...' : 'Crear taller' }}
+                </button>
+              </div>
+            </form>
+          }
+
+        </div>
+
+      </div>
+
+      <!-- CONTENEDOR 2: FICHA INSTITUCIONAL EN VIVO DEL TALLER (DERECHA) -->
+      <div class="onboarding__pane onboarding__pane--preview">
+        
+        <div class="onboarding__preview-card">
+          <div class="onboarding__preview-header">
+            <div>
+              <span class="onboarding__preview-tag">Ficha institucional</span>
+              <h2 class="onboarding__preview-name">
+                {{ workshopName() || 'Nombre del taller' }}
+              </h2>
+            </div>
+            <div class="onboarding__preview-badge">
+              Paso {{ currentStep() }} de 3
+            </div>
+          </div>
+
+          <div class="onboarding__preview-grid">
+            <div class="onboarding__preview-item">
+              <span class="onboarding__preview-label">Identificación fiscal</span>
+              <span class="onboarding__preview-value font-mono">
+                {{ idGov() || 'RUC / Cédula' }}
+              </span>
+            </div>
+
+            <div class="onboarding__preview-item">
+              <span class="onboarding__preview-label">Ubicación</span>
+              <span class="onboarding__preview-value">
+                {{ location() || 'Ciudad o sede' }}
+              </span>
+            </div>
+
+            <div class="onboarding__preview-item">
+              <span class="onboarding__preview-label">Sector</span>
+              <span class="onboarding__preview-value">
+                {{ selectedSector() }}
+              </span>
+            </div>
+
+            <div class="onboarding__preview-item">
+              <span class="onboarding__preview-label">Oficio principal</span>
+              <span class="onboarding__preview-value">
+                {{ selectedCategory() }}
+              </span>
+            </div>
+
+            <div class="onboarding__preview-item onboarding__preview-item--full">
+              <span class="onboarding__preview-label">Titular responsable</span>
+              <span class="onboarding__preview-value">
+                {{ name() || 'Nombre del artesano' }}
+                @if (email()) {
+                  <span class="onboarding__preview-sub font-mono">({{ email() }})</span>
+                }
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+</main>
+

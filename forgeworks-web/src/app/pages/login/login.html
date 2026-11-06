@@ -8,286 +8,517 @@
       <!-- panel izquierdo con el formulario -->
       <div class="auth__form-pane">
         
-        <!-- logo de forgeworks como ventana transparente hacia la ilustracion hero trasera -->
-        <header class="auth__logo" title="ForgeWorks - Plataforma de Encargos">
-          <div class="auth__logo-cutout" role="img" aria-label="ForgeWorks"></div>
-        </header>
+        <div class="auth__form-content">
+          <!-- logo institucional centrado en el formulario con su color verde oficial -->
+          <header class="auth__logo" title="ForgeWorks">
+            <img src="/images/logo.svg" alt="ForgeWorks" class="auth__logo-img" />
+          </header>
 
-        <!-- selector elegante de pestañas -->
-        <nav class="auth__tabs" aria-label="Cambio de modo de acceso">
-          <button 
-            type="button" 
-            class="auth__tab" 
-            [class.auth__tab--active]="activeTab() === 'login'" 
-            (click)="switchTab('login')">
-            Iniciar sesión
-          </button>
-          <button 
-            type="button" 
-            class="auth__tab" 
-            [class.auth__tab--active]="activeTab() === 'register'" 
-            (click)="switchTab('register')">
-            Crear cuenta
-          </button>
-        </nav>
+          <!-- selector elegante de pestañas -->
+          <nav class="auth__tabs" aria-label="Cambio de modo de acceso">
+            <button 
+              type="button" 
+              class="auth__tab" 
+              [class.auth__tab--active]="activeTab() === 'login'" 
+              (click)="switchTab('login')">
+              Iniciar sesión
+            </button>
+            <button 
+              type="button" 
+              class="auth__tab" 
+              [class.auth__tab--active]="activeTab() === 'register'" 
+              (click)="switchTab('register')">
+              Crear cuenta
+            </button>
+          </nav>
 
-        <!-- subtitulo sutil sin repetir encabezados pesados -->
-        <div class="auth__header">
-          <h1 class="auth__accessible-heading visually-hidden">
+          <h1 class="visually-hidden">
             {{ activeTab() === 'login' ? 'Iniciar sesión en ForgeWorks' : 'Crear cuenta en ForgeWorks' }}
           </h1>
-        </div>
 
-        <!-- mensajes de retroalimentacion accesibles -->
-        @if (errorMessage()) {
-          <div class="auth__alert auth__alert--error" role="alert">
-            {{ errorMessage() }}
-          </div>
-        }
-
-        @if (successMessage()) {
-          <div class="auth__alert auth__alert--success" role="status">
-            {{ successMessage() }}
-          </div>
-        }
-
-        <!-- formulario de login -->
-        @if (activeTab() === 'login') {
-          <form (ngSubmit)="onSubmitLogin()" class="auth__form" novalidate>
-            <div class="auth__field">
-              <label for="login-email" class="auth__label">Correo electrónico</label>
-              <div class="auth__input-wrapper">
-                <input 
-                  id="login-email" 
-                  name="loginEmail" 
-                  type="email" 
-                  [(ngModel)]="loginEmail" 
-                  placeholder="maria@gmail.com" 
-                  autocomplete="username" 
-                  spellcheck="false" 
-                  required 
-                  enterkeyhint="next" 
-                  class="auth__input auth__input--has-icon" />
-              </div>
+          <!-- mensajes de retroalimentacion accesibles -->
+          @if (errorMessage()) {
+            <div class="auth__alert auth__alert--error" role="alert">
+              {{ errorMessage() }}
             </div>
+          }
 
-            <div class="auth__field">
-              <div class="auth__label">
-                <label for="login-password">Contraseña</label>
-                <a href="#recuperar" (click)="$event.preventDefault()" class="auth__forgot-link">¿Olvidaste tu contraseña?</a>
+          @if (successMessage()) {
+            <div class="auth__alert auth__alert--success" role="status">
+              {{ successMessage() }}
+            </div>
+          }
+
+          <!-- FORMULARIO DE LOGIN -->
+          @if (activeTab() === 'login') {
+            <form (ngSubmit)="onSubmitLogin()" class="auth__form" novalidate>
+              <div class="auth__field">
+                <label for="login-email" class="auth__label">Correo electrónico</label>
+                <div class="auth__input-wrapper">
+                  <input 
+                    id="login-email" 
+                    name="loginEmail" 
+                    type="email" 
+                    [(ngModel)]="loginEmail" 
+                    placeholder="maria@gmail.com" 
+                    autocomplete="username" 
+                    spellcheck="false" 
+                    required 
+                    enterkeyhint="next" 
+                    class="auth__input auth__input--has-icon" />
+                </div>
               </div>
-              <div class="auth__input-wrapper">
-                <input 
-                  id="login-password" 
-                  name="loginPassword" 
-                  [type]="showPassword() ? 'text' : 'password'" 
-                  [(ngModel)]="loginPassword" 
-                  placeholder="••••••••" 
-                  autocomplete="current-password" 
-                  required 
-                  enterkeyhint="done" 
-                  class="auth__input auth__input--has-icon" />
-                <button 
-                  type="button" 
-                  class="auth__toggle-btn" 
-                  (click)="togglePasswordVisibility('login')" 
-                  [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Ver contraseña'">
-                  @if (showPassword()) {
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                      <line x1="1" y1="1" x2="23" y2="23"></line>
-                    </svg>
-                  } @else {
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                  }
+
+              <div class="auth__field">
+                <div class="auth__label">
+                  <label for="login-password">Contraseña</label>
+                  <a href="#recuperar" (click)="$event.preventDefault()" class="auth__forgot-link">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="auth__input-wrapper">
+                  <input 
+                    id="login-password" 
+                    name="loginPassword" 
+                    [type]="showPassword() ? 'text' : 'password'" 
+                    [(ngModel)]="loginPassword" 
+                    placeholder="••••••••" 
+                    autocomplete="current-password" 
+                    required 
+                    enterkeyhint="done" 
+                    class="auth__input auth__input--has-icon" />
+                  <button 
+                    type="button" 
+                    class="auth__toggle-btn" 
+                    (click)="togglePasswordVisibility('login')" 
+                    [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Ver contraseña'">
+                    @if (showPassword()) {
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                      </svg>
+                    } @else {
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" class="auth__submit-btn" [disabled]="loading()">
+                @if (loading()) {
+                  <span>Iniciando sesión...</span>
+                } @else {
+                  <span>Iniciar sesión</span>
+                }
+              </button>
+
+              <!-- divisor minimalista -->
+              <div class="auth__divider">
+                <span class="auth__divider-text">o continúa con</span>
+              </div>
+
+              <!-- accesos sociales -->
+              <div class="auth__socials">
+                <button type="button" class="auth__social-btn" aria-label="Continuar con Google" title="Google">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.93 2.31-1.98 3.02v2.51h3.2c1.87-1.72 2.95-4.26 2.95-7.23 0-.44-.04-.87-.09-1.28z" />
+                    <path d="M12.18 21c2.65 0 4.88-.88 6.51-2.39l-3.2-2.51c-.88.59-2.01.94-3.31.94-2.55 0-4.71-1.72-5.48-4.04H3.39v2.59C5.03 18.84 8.35 21 12.18 21z" />
+                    <path d="M6.7 12.99a5.37 5.37 0 0 1 0-1.98V8.42H3.39a9.01 9.01 0 0 0 0 7.16l3.31-2.59z" />
+                    <path d="M12.18 6.96c1.44 0 2.74.5 3.76 1.48l2.82-2.82C17.06 3.97 14.83 3 12.18 3 8.35 3 5.03 5.16 3.39 8.42l3.31 2.59c.77-2.32 2.93-4.05 5.48-4.05z" />
+                  </svg>
+                </button>
+                <button type="button" class="auth__social-btn" aria-label="Continuar con Apple" title="Apple">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.77 1.06-1.85.94-2.93-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.95 2.82 1.02.08 2.06-.49 2.68-1.26z"/>
+                  </svg>
+                </button>
+                <button type="button" class="auth__social-btn" aria-label="Ingreso demostrativo de taller" title="Demo Taller" (click)="loginEmail = 'admin@forgeworks.com'; loginPassword = 'password123'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                  </svg>
                 </button>
               </div>
-            </div>
+            </form>
+          }
 
-            <button type="submit" class="auth__submit-btn" [disabled]="loading()">
-              @if (loading()) {
-                <span>Iniciando sesión...</span>
-              } @else {
-                <span>Iniciar sesión</span>
-              }
-            </button>
+          <!-- FORMULARIO DE REGISTRO COMPACTO Y CONTENIDO -->
+          @if (activeTab() === 'register') {
+            <form (ngSubmit)="onSubmitRegister()" class="auth__form" novalidate>
+              
+              <!-- SELECTOR DE MODO: CLIENTE / TALLER -->
+              <div class="auth__type-selector" role="group" aria-label="Tipo de registro">
+                <button 
+                  type="button" 
+                  class="auth__type-btn"
+                  [class.auth__type-btn--active]="accountType() === 'client'"
+                  (click)="setAccountType('client')">
+                  <svg class="auth__type-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <span>Soy cliente</span>
+                </button>
 
-            <!-- divisor minimalista como el wireframe -->
-            <div class="auth__divider">
-              <span class="auth__divider-text">o continúa con</span>
-            </div>
-
-            <!-- accesos sociales como en la imagen de referencia -->
-            <div class="auth__socials">
-              <button type="button" class="auth__social-btn" aria-label="Continuar con Google" title="Google">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M21.35 11.1h-9.17v2.98h5.27c-.23 1.25-.93 2.31-1.98 3.02v2.51h3.2c1.87-1.72 2.95-4.26 2.95-7.23 0-.44-.04-.87-.09-1.28z" />
-                  <path d="M12.18 21c2.65 0 4.88-.88 6.51-2.39l-3.2-2.51c-.88.59-2.01.94-3.31.94-2.55 0-4.71-1.72-5.48-4.04H3.39v2.59C5.03 18.84 8.35 21 12.18 21z" />
-                  <path d="M6.7 12.99a5.37 5.37 0 0 1 0-1.98V8.42H3.39a9.01 9.01 0 0 0 0 7.16l3.31-2.59z" />
-                  <path d="M12.18 6.96c1.44 0 2.74.5 3.76 1.48l2.82-2.82C17.06 3.97 14.83 3 12.18 3 8.35 3 5.03 5.16 3.39 8.42l3.31 2.59c.77-2.32 2.93-4.05 5.48-4.05z" />
-                </svg>
-              </button>
-              <button type="button" class="auth__social-btn" aria-label="Continuar con Apple" title="Apple">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.77 1.06-1.85.94-2.93-.91.04-2.02.61-2.67 1.37-.58.67-1.09 1.76-.95 2.82 1.02.08 2.06-.49 2.68-1.26z"/>
-                </svg>
-              </button>
-              <button type="button" class="auth__social-btn" aria-label="Ingreso demostrativo de taller" title="Demo Taller" (click)="loginEmail = 'admin@forgeworks.com'; loginPassword = 'password123'">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                  <polyline points="2 17 12 22 22 17"></polyline>
-                  <polyline points="2 12 12 17 22 12"></polyline>
-                </svg>
-              </button>
-            </div>
-          </form>
-        }
-
-        <!-- formulario de registro -->
-        @if (activeTab() === 'register') {
-          <form (ngSubmit)="onSubmitRegister()" class="auth__form" novalidate>
-            <div class="auth__form-row">
-              <div class="auth__field">
-                <label for="reg-name" class="auth__label">Nombre</label>
-                <input 
-                  id="reg-name" 
-                  name="registerName" 
-                  type="text" 
-                  [(ngModel)]="registerName" 
-                  placeholder="Sara" 
-                  autocomplete="given-name" 
-                  class="auth__input" />
+                <button 
+                  type="button" 
+                  class="auth__type-btn"
+                  [class.auth__type-btn--active]="accountType() === 'workshop'"
+                  (click)="setAccountType('workshop')">
+                  <svg class="auth__type-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                  </svg>
+                  <span>Soy un taller</span>
+                </button>
               </div>
-              <div class="auth__field">
-                <label for="reg-lastname" class="auth__label">Apellido</label>
-                <input 
-                  id="reg-lastname" 
-                  name="registerLastName" 
-                  type="text" 
-                  [(ngModel)]="registerLastName" 
-                  placeholder="Chiriboga" 
-                  autocomplete="family-name" 
-                  class="auth__input" />
-              </div>
-            </div>
 
-            <div class="auth__field">
-              <label for="reg-email" class="auth__label">Correo electrónico *</label>
-              <input 
-                id="reg-email" 
-                name="registerEmail" 
-                type="email" 
-                [(ngModel)]="registerEmail" 
-                placeholder="sara@ejemplo.com" 
-                autocomplete="email" 
-                spellcheck="false" 
-                required 
-                class="auth__input" />
-            </div>
+              <!-- REGISTRO SIMPLE DE CLIENTE -->
+              @if (accountType() === 'client') {
+                <div class="auth__client-flow">
+                  <div class="auth__form-row">
+                    <div class="auth__field">
+                      <label for="client-name" class="auth__label">Nombre completo *</label>
+                      <input 
+                        id="client-name" 
+                        name="registerName" 
+                        type="text" 
+                        [(ngModel)]="registerName" 
+                        placeholder="María Pérez" 
+                        required 
+                        class="auth__input" />
+                    </div>
 
-            <div class="auth__field">
-              <label for="reg-phone" class="auth__label">Teléfono (opcional)</label>
-              <input 
-                id="reg-phone" 
-                name="registerPhone" 
-                type="tel" 
-                [(ngModel)]="registerPhone" 
-                placeholder="0991234567" 
-                autocomplete="tel" 
-                inputmode="tel" 
-                class="auth__input" />
-            </div>
+                    <div class="auth__field">
+                      <label for="client-email" class="auth__label">Correo electrónico *</label>
+                      <input 
+                        id="client-email" 
+                        name="registerEmail" 
+                        type="email" 
+                        [(ngModel)]="registerEmail" 
+                        placeholder="maria@ejemplo.com" 
+                        required 
+                        class="auth__input" />
+                    </div>
+                  </div>
 
-            <div class="auth__form-row">
-              <div class="auth__field">
-                <label for="reg-password" class="auth__label">Contraseña *</label>
-                <div class="auth__input-wrapper">
-                  <input 
-                    id="reg-password" 
-                    name="registerPassword" 
-                    [type]="showRegisterPassword() ? 'text' : 'password'" 
-                    [(ngModel)]="registerPassword" 
-                    placeholder="Mínimo 6 carácteres" 
-                    autocomplete="new-password" 
-                    required 
-                    class="auth__input auth__input--has-icon" />
-                  <button 
-                    type="button" 
-                    class="auth__toggle-btn" 
-                    (click)="togglePasswordVisibility('reg')" 
-                    [attr.aria-label]="showRegisterPassword() ? 'Ocultar' : 'Ver'">
-                    @if (showRegisterPassword()) {
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                      </svg>
+                  <div class="auth__field">
+                    <label for="client-password" class="auth__label">Contraseña *</label>
+                    <div class="auth__input-wrapper">
+                      <input 
+                        id="client-password" 
+                        name="registerPassword" 
+                        [type]="showRegisterPassword() ? 'text' : 'password'" 
+                        [(ngModel)]="registerPassword" 
+                        placeholder="Mínimo 6 carácteres" 
+                        required 
+                        class="auth__input auth__input--has-icon" />
+                      <button 
+                        type="button" 
+                        class="auth__toggle-btn" 
+                        (click)="togglePasswordVisibility('reg')" 
+                        [attr.aria-label]="showRegisterPassword() ? 'Ocultar' : 'Ver'">
+                        @if (showRegisterPassword()) {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                          </svg>
+                        } @else {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        }
+                      </button>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="auth__submit-btn" [disabled]="loading()">
+                    @if (loading()) {
+                      <span>Creando cuenta...</span>
                     } @else {
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
+                      <span>Crear cuenta de cliente</span>
                     }
                   </button>
                 </div>
-              </div>
-
-              <div class="auth__field">
-                <label for="reg-password-conf" class="auth__label">Confirmar *</label>
-                <div class="auth__input-wrapper">
-                  <input 
-                    id="reg-password-conf" 
-                    name="registerPasswordConf" 
-                    [type]="showRegisterPasswordConf() ? 'text' : 'password'" 
-                    [(ngModel)]="registerPasswordConf" 
-                    placeholder="Repite la contraseña" 
-                    autocomplete="new-password" 
-                    required 
-                    class="auth__input auth__input--has-icon" />
-                  <button 
-                    type="button" 
-                    class="auth__toggle-btn" 
-                    (click)="togglePasswordVisibility('regConf')" 
-                    [attr.aria-label]="showRegisterPasswordConf() ? 'Ocultar' : 'Ver'">
-                    @if (showRegisterPasswordConf()) {
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                      </svg>
-                    } @else {
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                      </svg>
-                    }
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" class="auth__submit-btn" [disabled]="loading()">
-              @if (loading()) {
-                <span>Creando cuenta...</span>
-              } @else {
-                <span>Crear cuenta</span>
               }
-            </button>
-          </form>
-        }
+
+              <!-- ASISTENTE PROGRESIVO DE TALLER (3 PASOS EN EL MISMO CONTENEDOR) -->
+              @if (accountType() === 'workshop') {
+                <div class="auth__workshop-flow">
+                  <div class="auth__stepper" role="tablist" aria-label="Progreso">
+                    <div class="auth__step" [class.auth__step--active]="currentStep() === 1" [class.auth__step--done]="currentStep() > 1">
+                      <span class="auth__step-number">1</span>
+                      <span class="auth__step-label">Titular</span>
+                    </div>
+                    <div class="auth__step-divider"></div>
+                    <div class="auth__step" [class.auth__step--active]="currentStep() === 2" [class.auth__step--done]="currentStep() > 2">
+                      <span class="auth__step-number">2</span>
+                      <span class="auth__step-label">Taller</span>
+                    </div>
+                    <div class="auth__step-divider"></div>
+                    <div class="auth__step" [class.auth__step--active]="currentStep() === 3">
+                      <span class="auth__step-number">3</span>
+                      <span class="auth__step-label">Oficio</span>
+                    </div>
+                  </div>
+
+                  <!-- PASO 1: TITULAR -->
+                  @if (currentStep() === 1) {
+                    <div class="auth__step-content">
+                      <div class="auth__field">
+                        <label for="ws-name-owner" class="auth__label">Nombre del titular *</label>
+                        <input 
+                          id="ws-name-owner" 
+                          name="registerName" 
+                          type="text" 
+                          [(ngModel)]="registerName" 
+                          placeholder="Sara Chiriboga" 
+                          required 
+                          class="auth__input" />
+                      </div>
+
+                      <div class="auth__field">
+                        <label for="ws-email-owner" class="auth__label">Correo electrónico *</label>
+                        <input 
+                          id="ws-email-owner" 
+                          name="registerEmail" 
+                          type="email" 
+                          [(ngModel)]="registerEmail" 
+                          placeholder="sara@ejemplo.com" 
+                          required 
+                          class="auth__input" />
+                      </div>
+
+                      <div class="auth__field">
+                        <label for="ws-pass-owner" class="auth__label">Contraseña *</label>
+                        <div class="auth__input-wrapper">
+                          <input 
+                            id="ws-pass-owner" 
+                            name="registerPassword" 
+                            [type]="showRegisterPassword() ? 'text' : 'password'" 
+                            [(ngModel)]="registerPassword" 
+                            placeholder="Mínimo 6 caracteres" 
+                            required 
+                            class="auth__input auth__input--has-icon" />
+                          <button 
+                            type="button" 
+                            class="auth__toggle-btn" 
+                            (click)="togglePasswordVisibility('reg')" 
+                            [attr.aria-label]="showRegisterPassword() ? 'Ocultar' : 'Ver'">
+                            @if (showRegisterPassword()) {
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                              </svg>
+                            } @else {
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                              </svg>
+                            }
+                          </button>
+                        </div>
+                      </div>
+
+                      <button type="button" (click)="nextWorkshopStep()" class="auth__submit-btn">
+                        Continuar
+                      </button>
+                    </div>
+                  }
+
+                  <!-- PASO 2: TALLER Y UBICACION EN CASCADA (COUNTRIESNOW API) -->
+                  @if (currentStep() === 2) {
+                    <div class="auth__step-content">
+                      <div class="auth__field">
+                        <label for="ws-name-input" class="auth__label">Nombre del taller *</label>
+                        <input 
+                          id="ws-name-input" 
+                          name="workshopName" 
+                          type="text" 
+                          [(ngModel)]="workshopName" 
+                          placeholder="Taller Ébano y Roble" 
+                          required 
+                          class="auth__input" />
+                      </div>
+
+                      <div class="auth__field">
+                        <div class="auth__label">
+                          <label for="ws-id-input">Cédula o RUC *</label>
+                          @if (idGovValidation().touched) {
+                            @if (idGovValidation().valid) {
+                              <span class="auth__field-status auth__field-status--valid font-mono">Válido</span>
+                            } @else {
+                              <span class="auth__field-status auth__field-status--invalid font-mono">{{ idGovValidation().message }}</span>
+                            }
+                          }
+                        </div>
+                        <div class="auth__input-wrapper">
+                          <input 
+                            id="ws-id-input" 
+                            name="workshopIdGov" 
+                            type="text" 
+                            [(ngModel)]="workshopIdGov" 
+                            placeholder="1316109626001" 
+                            required 
+                            inputmode="numeric" 
+                            [class.auth__input--success]="idGovValidation().touched && idGovValidation().valid"
+                            [class.auth__input--error]="idGovValidation().touched && !idGovValidation().valid"
+                            class="auth__input auth__input--has-icon font-mono" />
+                          @if (idGovValidation().touched && idGovValidation().valid) {
+                            <span class="auth__input-icon auth__input-icon--success" aria-hidden="true">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                              </svg>
+                            </span>
+                          }
+                        </div>
+                      </div>
+
+                      <!-- DROPDOWNS EN CASCADA: PAIS -> PROVINCIA -> CIUDAD (VANILLA JS CUSTOM DROPDOWN) -->
+                      <div class="auth__grid-2">
+                        <div class="auth__field">
+                          <label for="ws-country-select" class="auth__label">País *</label>
+                          <app-dropdown
+                            id="ws-country-select"
+                            [options]="countryOptions()"
+                            [value]="selectedCountry()"
+                            (selectionChange)="onCountryChange($event)"
+                            placeholder="Seleccione país">
+                          </app-dropdown>
+                        </div>
+
+                        <div class="auth__field">
+                          <label for="ws-state-select" class="auth__label">Provincia o estado *</label>
+                          <app-dropdown
+                            id="ws-state-select"
+                            [options]="stateOptions()"
+                            [value]="selectedState()"
+                            (selectionChange)="onStateChange($event)"
+                            placeholder="Seleccione provincia">
+                          </app-dropdown>
+                        </div>
+                      </div>
+
+                      <div class="auth__field">
+                        <label for="ws-city-select" class="auth__label">Ciudad o cantón *</label>
+                        <app-dropdown
+                          id="ws-city-select"
+                          [options]="cities()"
+                          [value]="selectedCity()"
+                          (selectionChange)="onCityChange($event)"
+                          placeholder="Seleccione ciudad">
+                        </app-dropdown>
+                      </div>
+
+                      <div class="auth__stepper-actions">
+                        <button type="button" (click)="prevWorkshopStep()" class="auth__btn-secondary">
+                          Volver
+                        </button>
+                        <button type="button" (click)="nextWorkshopStep()" class="auth__submit-btn auth__submit-btn--inline">
+                          Continuar
+                        </button>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- PASO 3: OFICIO Y ESPECIALIDAD (DROPDOWN EN CASCADA) -->
+                  @if (currentStep() === 3) {
+                    <div class="auth__step-content">
+                      <div class="auth__field">
+                        <label for="ws-sector-select" class="auth__label">Sector artesanal *</label>
+                        <app-dropdown
+                          id="ws-sector-select"
+                          [options]="sectorOptions()"
+                          [value]="selectedSector()"
+                          (selectionChange)="onSectorChange($event)"
+                          placeholder="Seleccione sector">
+                        </app-dropdown>
+                      </div>
+
+                      <div class="auth__field">
+                        <label for="ws-category-select" class="auth__label">Especialidad u oficio *</label>
+                        <app-dropdown
+                          id="ws-category-select"
+                          [options]="availableCategories()"
+                          [value]="workshopCategory"
+                          (selectionChange)="workshopCategory = $event"
+                          placeholder="Seleccione especialidad">
+                        </app-dropdown>
+                      </div>
+
+                      <div class="auth__stepper-actions">
+                        <button type="button" (click)="prevWorkshopStep()" class="auth__btn-secondary">
+                          Volver
+                        </button>
+                        <button type="submit" [disabled]="loading()" class="auth__submit-btn auth__submit-btn--inline">
+                          {{ loading() ? 'Registrando...' : 'Crear taller' }}
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+
+            </form>
+          }
+
+        </div>
 
       </div>
 
-      <!-- panel derecho con la ilustracion artesanal costera como en la imagen -->
-      <aside class="auth__visual-pane" aria-label="Escena del taller artesanal">
-        <!-- navegacion superior sutil igual al wireframe (forecast webcams live map) -->
-        <nav class="auth__visual-nav" aria-label="Navegación general">
-          <a href="#talleres" (click)="$event.preventDefault()" class="auth__visual-link">Talleres</a>
-          <a href="#catalogo" (click)="$event.preventDefault()" class="auth__visual-link">Catálogo</a>
-          <a href="#proceso" (click)="$event.preventDefault()" class="auth__visual-link">Proceso</a>
-        </nav>
+      <!-- panel derecho: en modo taller muestra la Ficha Institucional en vivo; en modo login/cliente muestra la ilustracion artesanal -->
+      <aside class="auth__visual-pane" [class.auth__visual-pane--preview]="accountType() === 'workshop' && activeTab() === 'register'" aria-label="Información institucional del taller">
+        @if (accountType() === 'workshop' && activeTab() === 'register') {
+          <div class="auth__preview-card">
+            <div class="auth__preview-header">
+              <div>
+                <span class="auth__preview-tag">Ficha institucional</span>
+                <h2 class="auth__preview-name">{{ workshopName || 'Nombre del taller' }}</h2>
+              </div>
+              <div class="auth__preview-badge">Paso {{ currentStep() }} de 3</div>
+            </div>
 
+            <div class="auth__preview-grid">
+              <div class="auth__preview-item">
+                <span class="auth__preview-label">Identificación fiscal</span>
+                <span class="auth__preview-value font-mono">{{ workshopIdGov || 'RUC / Cédula' }}</span>
+              </div>
+
+              <div class="auth__preview-item">
+                <span class="auth__preview-label">Ubicación</span>
+                <span class="auth__preview-value">{{ workshopLocationComputed() || 'País / Ciudad' }}</span>
+              </div>
+
+              <div class="auth__preview-item">
+                <span class="auth__preview-label">Sector</span>
+                <span class="auth__preview-value">{{ selectedSector() }}</span>
+              </div>
+
+              <div class="auth__preview-item">
+                <span class="auth__preview-label">Oficio</span>
+                <span class="auth__preview-value">{{ workshopCategory }}</span>
+              </div>
+
+              <div class="auth__preview-item auth__preview-item--full">
+                <span class="auth__preview-label">Titular responsable</span>
+                <span class="auth__preview-value">
+                  {{ registerName || 'Nombre del artesano' }}
+                  @if (registerEmail) {
+                    <span class="auth__preview-sub font-mono">({{ registerEmail }})</span>
+                  }
+                </span>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <nav class="auth__visual-nav auth__visual-nav--fade" aria-label="Navegación general">
+            <a href="#talleres" (click)="$event.preventDefault()" class="auth__visual-link">Talleres</a>
+            <a href="#catalogo" (click)="$event.preventDefault()" class="auth__visual-link">Catálogo</a>
+            <a href="#proceso" (click)="$event.preventDefault()" class="auth__visual-link">Proceso</a>
+          </nav>
+        }
       </aside>
 
     </section>

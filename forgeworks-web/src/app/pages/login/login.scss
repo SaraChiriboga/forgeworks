@@ -49,9 +49,9 @@
     grid-template-columns: 1.15fr 1fr;
     width: 100%;
     height: 100%;
-    max-height: min(630px, calc(100vh - 2rem));
+    max-height: min(640px, calc(100vh - 2rem));
     background: linear-gradient(to right, #ffffff 0%, #ffffff 53.488%, transparent 53.488%, transparent 100%);
-    overflow: visible; // permite que la letra F sobresalga del contenedor hacia la izquierda
+    overflow: hidden; // recorta estrictamente paneles hijos a los bordes redondeados de la tarjeta
 
     @include m.respond-to(tablet) {
       grid-template-columns: 1.1fr 1fr;
@@ -74,10 +74,28 @@
     z-index: 20;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    padding: 1.5rem 2.5rem;
-    background: transparent; // el fondo blanco lo proyecta la card perfectamente
-    overflow: visible; // permite que el logo sobrepase ambos limites
+    height: 100%;
+    max-height: 100%;
+    min-height: 0; // evita que el panel crezca mas alla de la tarjeta
+    padding: 1.5rem 2.25rem 2rem 2.25rem;
+    background: transparent;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(31, 64, 50, 0.25) transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(31, 64, 50, 0.25);
+      border-radius: 4px;
+    }
 
     @include m.respond-to(tablet) {
       padding: 1.25rem 1.75rem;
@@ -86,55 +104,44 @@
     @include m.respond-to(mobile) {
       padding: 1.25rem;
       border-radius: v.$radius-card;
-      overflow-y: auto;
     }
   }
 
-  // logo oficial que sobresale de los limites del contenedor en ambos extremos
+  // bloque de contenido que agrupa logo, tabs y formulario centrado en la tarjeta
+  &__form-content {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: auto 0;
+  }
+
+  // logo institucional centrado en el formulario con su color verde por defecto
   &__logo {
-    display: block;
-    width: calc(100% + 7.5rem); // se extiende para sobrepasar ambos limites
-    margin-left: -3.85rem; // la letra F sale del contenedor por el borde izquierdo
-    margin-right: -3.65rem; // las letras finales salen hacia el panel derecho
-    margin-bottom: 0.65rem;
-    background: transparent;
-    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 1.25rem 0;
     padding: 0;
     z-index: 25;
-
-    @include m.respond-to(tablet) {
-      width: calc(100% + 5.5rem);
-      margin-left: -2.85rem;
-      margin-right: -2.65rem;
-    }
-
-    @include m.respond-to(mobile) {
-      width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 0.5rem;
-    }
   }
 
-  // logo que abarca de extremo a extremo y revela el hero trasero
-  &__logo-cutout {
-    width: 100%;
-    aspect-ratio: 185 / 38.24;
-    height: auto;
-    max-height: 125px;
-    background-image: url('/images/auth-hero.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    -webkit-mask: url('/images/logo.svg') no-repeat center center / 100% 100%;
-    mask: url('/images/logo.svg') no-repeat center center / 100% 100%;
-    filter: drop-shadow(0 3px 6px rgba(35, 31, 32, 0.22));
+  &__logo-img {
+    height: 68px;
+    width: auto;
+    max-width: 330px;
+    object-fit: contain;
+
+    @include m.respond-to(tablet) {
+      height: 58px;
+      max-width: 280px;
+    }
 
     @include m.respond-to(mobile) {
-      max-height: 65px;
+      height: 46px;
+      max-width: 220px;
     }
   }
 
@@ -145,7 +152,7 @@
     background-color: #f1f5f9;
     border-radius: v.$radius-pill;
     padding: 0.25rem;
-    margin: 0 auto 0.75rem auto;
+    margin: 0 auto 1.25rem auto;
     width: fit-content;
   }
 
@@ -158,7 +165,7 @@
     background: transparent;
     border-radius: v.$radius-pill;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease-out;
 
     &:hover {
       color: v.$text-primary;
@@ -168,12 +175,13 @@
       background: #ffffff;
       color: v.$primary-color;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      animation: fadeInSimple 0.25s ease-out;
     }
   }
 
   // subtitulo sobrio y refinado
   &__header {
-    margin-bottom: 0.85rem;
+    margin: 0;
   }
 
   &__subtitle {
@@ -184,18 +192,108 @@
     line-height: 1.35;
   }
 
-  // formulario
+  // selector de tipo de cuenta: crear negocio / cliente
+  &__type-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+    background-color: #f1f5f9;
+    border-radius: v.$radius-input;
+    padding: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__type-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: v.$text-secondary;
+    border: none;
+    background: transparent;
+    border-radius: calc(v.$radius-input - 2px);
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+
+    &:hover {
+      color: v.$text-primary;
+    }
+
+    &--active {
+      background: #ffffff;
+      color: v.$primary-color;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(31, 64, 50, 0.15);
+      animation: fadeInSimple 0.25s ease-out;
+    }
+  }
+
+  &__type-icon {
+    flex-shrink: 0;
+  }
+
+  // encabezados de seccion dentro del formulario de registro
+  &__section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.15rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  &__section-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    background-color: rgba(31, 64, 50, 0.08);
+    color: v.$primary-color;
+  }
+
+  &__section-title {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: v.$text-secondary;
+  }
+
+  &__field-hint {
+    font-size: 0.68rem;
+    font-weight: normal;
+    color: #94a3b8;
+  }
+
+  // selector dropdown estilizado para las categorias
+  &__select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23738079' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+    padding-right: 2rem;
+  }
+
+  // formulario centrado verticalmente
   &__form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 0.65rem;
+    width: 100%;
+    animation: fadeInForm 0.35s ease-out forwards;
   }
 
-  // fila de dos columnas para nombre y apellido en el registro
+  // fila de dos columnas para campos en el registro
   &__form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
+    gap: 0.45rem;
 
     @include m.respond-to(mobile) {
       grid-template-columns: 1fr;
@@ -206,16 +304,29 @@
   &__field {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.15rem;
   }
 
   &__label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.78rem;
+    font-size: 0.73rem;
     font-weight: 600;
     color: v.$text-secondary;
+  }
+
+  &__field-status {
+    font-size: 0.68rem;
+    font-weight: 600;
+
+    &--valid {
+      color: v.$primary-color;
+    }
+
+    &--invalid {
+      color: #b91c1c;
+    }
   }
 
   &__input-wrapper {
@@ -226,11 +337,22 @@
 
   &__input {
     @include m.form-input;
-    padding: 0.55rem 0.9rem;
-    font-size: 0.85rem;
+    padding: 0.42rem 0.85rem;
+    font-size: 0.825rem;
+    height: 38px;
 
     &--has-icon {
-      padding-right: 2.5rem;
+      padding-right: 2.25rem;
+    }
+
+    &--success {
+      border-color: v.$primary-color;
+      background-color: #f7fdf9;
+    }
+
+    &--error {
+      border-color: #ef4444;
+      background-color: #fef2f2;
     }
   }
 
@@ -287,8 +409,10 @@
   &__submit-btn {
     @include m.pill-btn(v.$accent-color, #ffffff, v.$accent-hover);
     margin-top: 0.25rem;
-    height: 42px;
-    font-size: 0.88rem;
+    height: 40px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    width: 100%;
   }
 
   // divisor 'o continua con'
@@ -296,9 +420,9 @@
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 0.65rem 0;
+    margin: 0.75rem 0;
     color: v.$text-muted;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
 
     &::before,
     &::after {
@@ -318,13 +442,13 @@
   &__socials {
     display: flex;
     justify-content: center;
-    gap: 0.65rem;
+    gap: 0.75rem;
   }
 
   &__social-btn {
     @include m.flex-center;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background-color: #f1f5f9;
     border: 1px solid #e2e8f0;
@@ -341,6 +465,7 @@
 
   // avisos de alerta
   &__alert {
+    animation: fadeInForm 0.3s ease-out;
     padding: 0.65rem 0.85rem;
     border-radius: v.$radius-input;
     font-size: 0.825rem;
@@ -368,11 +493,27 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 2rem;
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
     background: transparent; // completamente transparente para que se vea el fondo general continuo
 
     @include m.respond-to(mobile) {
       display: none; // solo se oculta en telefonos moviles estrechos (<640px)
     }
+  }
+
+  // formularios y flujos con fade in
+  &__client-flow,
+  &__workshop-flow,
+  &__step-content {
+    animation: fadeInForm 0.35s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    width: 100%;
+    padding-bottom: 0.5rem;
   }
 
   // navegacion sutil en la parte superior derecha de la imagen como en el wireframe
@@ -381,6 +522,10 @@
     justify-content: flex-end;
     align-items: center;
     gap: 1.5rem;
+
+    &--fade {
+      animation: fadeInSimple 0.4s ease-out forwards;
+    }
   }
 
   &__visual-link {
@@ -396,5 +541,264 @@
       color: #ffffff;
       opacity: 0.9;
     }
+  }
+
+  // indicador de pasos (stepper progresivo de taller)
+  &__stepper {
+    animation: fadeInForm 0.35s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.35rem 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #94a3b8;
+
+    &--active {
+      color: v.$primary-color;
+      .auth__step-number {
+        background: v.$primary-color;
+        color: #ffffff;
+      }
+    }
+
+    &--done {
+      color: v.$secondary-color;
+      .auth__step-number {
+        background: v.$secondary-color;
+        color: #ffffff;
+      }
+    }
+  }
+
+  &__step-number {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  &__step-label {
+    letter-spacing: 0.02em;
+  }
+
+  &__step-divider {
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+  }
+
+  &__grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+
+    @include m.respond-to(mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__stepper-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.65rem;
+  }
+
+  &__btn-secondary {
+    height: 38px;
+    padding: 0 1.15rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: v.$radius-input;
+    background-color: transparent;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: #f1f5f9;
+      color: v.$text-primary;
+    }
+  }
+
+  &__submit-btn--inline {
+    width: auto;
+    margin-top: 0;
+    padding: 0 1.25rem;
+    height: 38px;
+  }
+
+  // estado preview en la seccion derecha
+  &__visual-pane--preview {
+    animation: fadeInPreview 0.4s ease-out forwards;
+    background: v.$primary-color;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    justify-content: center;
+    align-items: stretch;
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+  }
+
+  &__preview-card {
+    animation: fadeInPreview 0.45s ease-out forwards;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    color: #ffffff;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__preview-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 0.85rem;
+  }
+
+  &__preview-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: v.$surface-cream;
+    opacity: 0.9;
+  }
+
+  &__preview-name {
+    margin: 0.25rem 0 0 0;
+    font-family: v.$font-title;
+    font-size: 1.15rem;
+    color: #ffffff;
+    line-height: 1.25;
+    word-break: break-word;
+  }
+
+  &__preview-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 243, 202, 0.15);
+    color: v.$surface-cream;
+    border: 1px solid rgba(255, 243, 202, 0.25);
+    white-space: nowrap;
+  }
+
+  &__preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  &__preview-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    &--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__preview-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  &__preview-value {
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  &__preview-sub {
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 0.35rem;
+  }
+
+  &__preview-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 0.75rem;
+  }
+
+  &__preview-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #34d399;
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+  }
+
+  &__preview-status {
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+@keyframes fadeInPreview {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInForm {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInSimple {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
   }
 }

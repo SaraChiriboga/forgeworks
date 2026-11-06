@@ -34,6 +34,16 @@ export const routes: Routes = [
 
   // gestion de usuarios y acceso
   { path: 'login', component: Login, title: 'Login - ForgeWorks' },
+  {
+    path: 'cliente',
+    loadComponent: () => import('./pages/client-home/client-home.component').then(m => m.ClientHomeComponent),
+    title: 'Portal de Clientes - ForgeWorks'
+  },
+  {
+    path: 'onboarding',
+    loadComponent: () => import('./pages/onboarding/onboarding').then(m => m.Onboarding),
+    title: 'Registro de taller - ForgeWorks'
+  },
   { path: 'users', component: Users, title: 'Gestión de Usuarios' },
 
   { path: '**', redirectTo: 'recursos' }

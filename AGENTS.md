@@ -67,3 +67,16 @@ La paleta institucional de ForgeWorks proviene de la identidad artesanal oficial
 
 - **Títulos y Encabezados (`h1`, `h2`, `h3`, `$font-title`):** `Alfa Slab One`, cursive, serif (display slab pesado de fuerte carácter artesanal y de forja).
 - **Cuerpo, Formularios y UI (`$font-body`):** `Roboto`, sans-serif (alta legibilidad técnica y sobria en todas las escalas).
+
+---
+
+## 6. Estándar de Controles UI: Dropdowns y Selects (Frontend)
+
+- **No usar selects nativos (`<select>`)** para dropdowns de la aplicación.
+- **Implementación VanillaJS / Custom Component:** Todo dropdown debe ser estilizado con una interfaz personalizada moderna y consistente (Vanilla JS / Angular Custom Dropdown con ControlValueAccessor o Signal inputs/outputs).
+- **Estilo y Paleta:**
+  - Botón selector y contenedor desplegable con bordes redondeados (`$radius-input`), borde sutil (`#e2e8f0`), tipografía `$font-body` sobria y chevron animado.
+  - Opciones de lista con hover cálido, estado seleccionado resaltado con verde institucional (`$color-forest` / `#1F4032`) o terracota (`$color-rust` / `#A14827`) según contexto.
+  - Cierre automático al hacer clic fuera (*click outside*), soporte de teclado (Escape, Enter, flechas) y compatibilidad con formularios reactivos y Signals.
+  - Animación suave de apertura y cierre (*fade in / scale*).
+- **Consistencia obligatoria:** Cualquier dropdown nuevo o refactorizado en ForgeWorks debe seguir estrictamente este componente y estándar.
