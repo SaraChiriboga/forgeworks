@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import { Instancias } from './instancias';
 
 describe('Instancias', () => {
@@ -7,7 +9,8 @@ describe('Instancias', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Instancias]
+      imports: [Instancias],
+      providers: [provideHttpClient(), provideRouter([])]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Instancias);
@@ -25,3 +28,4 @@ describe('Instancias', () => {
     expect(filtered.every(i => i.status === 'Producción')).toBe(true);
   });
 });
+

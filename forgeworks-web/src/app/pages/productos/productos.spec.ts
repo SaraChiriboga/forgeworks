@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import { Productos } from './productos';
 
 describe('Productos', () => {
@@ -7,7 +9,8 @@ describe('Productos', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Productos]
+      imports: [Productos],
+      providers: [provideHttpClient(), provideRouter([])]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Productos);
@@ -33,3 +36,4 @@ describe('Productos', () => {
     expect(filtered.every(p => p.category.toLowerCase() === 'mobiliario')).toBe(true);
   });
 });
+

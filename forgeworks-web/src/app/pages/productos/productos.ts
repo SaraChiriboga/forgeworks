@@ -1,6 +1,8 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../core/services/auth.service';
 
 interface ProductItem {
   id: number;
@@ -17,11 +19,13 @@ interface ProductItem {
 
 @Component({
   selector: 'app-productos',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './productos.html',
   styleUrl: './productos.css'
 })
 export class Productos {
+  private authService = inject(AuthService);
+
   // estado de productos
   searchTerm = signal<string>('');
   selectedTab = signal<string>('todos');
@@ -188,4 +192,9 @@ export class Productos {
     const euros = (cents / 100).toFixed(2).replace('.', ',');
     return `${euros} €`;
   }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }
+

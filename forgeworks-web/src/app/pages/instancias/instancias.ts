@@ -1,6 +1,8 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../core/services/auth.service';
 
 interface InstanceItem {
   id: number;
@@ -20,11 +22,13 @@ interface InstanceItem {
 
 @Component({
   selector: 'app-instancias',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './instancias.html',
   styleUrl: './instancias.css'
 })
 export class Instancias {
+  private authService = inject(AuthService);
+
   searchTerm = signal<string>('');
   selectedTab = signal<string>('todos');
 
@@ -200,4 +204,9 @@ export class Instancias {
     const euros = (cents / 100).toFixed(2).replace('.', ',');
     return `${euros} €`;
   }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }
+

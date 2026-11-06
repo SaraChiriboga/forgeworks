@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import { Recursos } from './recursos';
 
 describe('Recursos', () => {
@@ -9,7 +10,7 @@ describe('Recursos', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Recursos],
-      providers: [provideHttpClient()]
+      providers: [provideHttpClient(), provideRouter([])]
     }).compileComponents();
 
     fixture = TestBed.createComponent(Recursos);
@@ -34,3 +35,4 @@ describe('Recursos', () => {
     expect(filtered.some(r => r.name.toLowerCase().includes('roble'))).toBe(true);
   });
 });
+

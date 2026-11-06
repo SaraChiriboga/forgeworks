@@ -1,9 +1,13 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../core/services/auth.service';
+import { ResponsiveService } from '../../core/services/responsive.service';
 import {
   InventoryService,
+  Workshop,
   Resource,
   ResourceLot,
   NewResource,
@@ -19,14 +23,18 @@ interface SubstituteItem {
 
 @Component({
   selector: 'app-recursos',
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, RouterLink],
   templateUrl: './recursos.html',
   styleUrl: './recursos.css'
 })
 export class Recursos implements OnInit {
   private inventoryService = inject(InventoryService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  public responsiveService = inject(ResponsiveService);
 
-  // estado reactivo de datos
+  // estado reactivo
+  workshop = signal<Workshop | null>(null);
   resources = signal<Resource[]>([]);
   selectedResourceId = signal<number | null>(null);
   lots = signal<ResourceLot[]>([]);
@@ -39,16 +47,15 @@ export class Recursos implements OnInit {
   showNewWorkshopModal = signal<boolean>(false);
   showNewSubstituteModal = signal<boolean>(false);
 
-  // parametro de ensamble (vida util minima en dias)
+  // parametro de ensamble
   minShelfLifeDays = signal<number>(7);
 
-  // sustitutos dinamicos por recurso
+  // sustitutos dinamicos
   substitutes = signal<SubstituteItem[]>([
     { name: 'Peonías blush', type: 'perecedero equivalente', factor: '1.15x' },
     { name: 'Rosas spray silvestres', type: 'perecedero equivalente', factor: '1.40x' }
   ]);
 
-  // modelos para formularios
   newResource: NewResource = {
     name: '',
     internal_name: '',
@@ -79,7 +86,7 @@ export class Recursos implements OnInit {
   newSubstituteName = signal<string>('');
   newSubstituteFactor = signal<string>('1.10x');
 
-  // recurso actualmente seleccionado en la ficha tecnica
+  // recurso actualmente seleccionado
   selectedResource = computed(() => {
     const list = this.resources();
     const id = this.selectedResourceId();
@@ -87,12 +94,12 @@ export class Recursos implements OnInit {
     return list.find(r => r.id === id) || (list.length > 0 ? list[0] : null);
   });
 
-  // filtrado por texto y por pestana de categoria
+  // filtro combinado
   filteredResources = computed(() => {
     const query = this.searchTerm().trim().toLowerCase();
     const tab = this.selectedTab();
+
     return this.resources().filter(item => {
-      // filtro por tipo
       const matchesTab =
         tab === 'todos' ||
         (tab === 'consumibles' && item.resource_type === 'consumible') ||
@@ -101,7 +108,6 @@ export class Recursos implements OnInit {
 
       if (!matchesTab) return false;
 
-      // filtro por texto
       if (!query) return true;
       return (
         item.name.toLowerCase().includes(query) ||
@@ -112,23 +118,36 @@ export class Recursos implements OnInit {
     });
   });
 
-  // conteo de categorias activas
   categoriesCount = computed(() => {
     const types = new Set(this.resources().map(r => r.resource_type));
     return types.size || 1;
   });
 
+  artisanName = computed(() => {
+    return 'Martín Valdés';
+  });
+
   ngOnInit(): void {
-    this.loadResources();
+    this.checkWorkshopAndLoad();
   }
 
-  // cargar recursos desde el backend o usar semillas si la base de datos esta vacia
+  checkWorkshopAndLoad(): void {
+    this.inventoryService.getMyWorkshop().subscribe({
+      next: (ws) => {
+        this.workshop.set(ws);
+        this.loadResources();
+      },
+      error: () => {
+        this.useSeedResources();
+      }
+    });
+  }
+
   loadResources(): void {
     this.inventoryService.getResources().subscribe({
       next: (data) => {
         if (data && data.length > 0) {
           this.resources.set(data);
-          // seleccionar el primer recurso por defecto
           if (!this.selectedResourceId() && data[0]) {
             this.selectResource(data[0]);
           }
@@ -142,7 +161,6 @@ export class Recursos implements OnInit {
     });
   }
 
-  // semillas predeterminadas alineadas a la especificacion y prototipo stitch
   private useSeedResources(): void {
     const seed: Resource[] = [
       {
@@ -268,12 +286,10 @@ export class Recursos implements OnInit {
     ];
 
     this.resources.set(seed);
-    // seleccionar rosas rojas por defecto como en el prototipo
     const rosas = seed.find(r => r.id === 2) || seed[0];
     this.selectResource(rosas);
   }
 
-  // seleccionar un recurso y cargar sus lotes FIFO
   selectResource(resource: Resource): void {
     this.selectedResourceId.set(resource.id);
     this.newLot.resource_id = resource.id;
@@ -292,7 +308,6 @@ export class Recursos implements OnInit {
     });
   }
 
-  // lotes de ejemplo si aun no hay cargados en base de datos
   private useSeedLots(resource: Resource): void {
     if (resource.id === 2 || resource.name.toLowerCase().includes('rosa')) {
       this.lots.set([
@@ -337,12 +352,10 @@ export class Recursos implements OnInit {
     }
   }
 
-  // seleccionar tab de filtro
   setTab(tab: string): void {
     this.selectedTab.set(tab);
   }
 
-  // abrir modal para crear nuevo insumo
   openNewResourceModal(): void {
     this.newResource = {
       name: '',
@@ -356,12 +369,8 @@ export class Recursos implements OnInit {
     this.showNewResourceModal.set(true);
   }
 
-  // guardar nuevo recurso
   saveResource(): void {
-    if (!this.newResource.name.trim()) {
-      Swal.fire({ icon: 'warning', title: 'Nombre requerido', text: 'Ingresa un nombre para el insumo' });
-      return;
-    }
+    if (!this.newResource.name.trim()) return;
 
     this.inventoryService.createResource(this.newResource).subscribe({
       next: (created) => {
@@ -376,7 +385,6 @@ export class Recursos implements OnInit {
         this.loadResources();
       },
       error: () => {
-        // soporte offline / simulacion local
         const localCreated: Resource = {
           id: Date.now(),
           workshop_id: 1,
@@ -406,7 +414,6 @@ export class Recursos implements OnInit {
     });
   }
 
-  // abrir modal para anadir un lote al recurso seleccionado
   openNewLotModal(): void {
     const res = this.selectedResource();
     if (!res) return;
@@ -421,7 +428,6 @@ export class Recursos implements OnInit {
     this.showNewLotModal.set(true);
   }
 
-  // guardar nuevo lote
   saveLot(): void {
     const res = this.selectedResource();
     if (!res) return;
@@ -439,7 +445,6 @@ export class Recursos implements OnInit {
         this.selectResource(res);
       },
       error: () => {
-        // simulacion local
         const simulatedLot: ResourceLot = {
           id: Date.now(),
           resource_id: res.id,
@@ -453,7 +458,6 @@ export class Recursos implements OnInit {
           created_at: new Date().toISOString()
         };
         this.lots.update(l => [simulatedLot, ...l]);
-        // actualizar stock acumulado del recurso
         this.resources.update(list =>
           list.map(r => r.id === res.id ? { ...r, available_stock: r.available_stock + simulatedLot.quantity } : r)
         );
@@ -469,7 +473,6 @@ export class Recursos implements OnInit {
     });
   }
 
-  // eliminar lote
   deleteLot(lotId: number): void {
     Swal.fire({
       title: '¿Eliminar este lote?',
@@ -495,7 +498,6 @@ export class Recursos implements OnInit {
     });
   }
 
-  // agregar sustituto
   openAddSubstituteModal(): void {
     this.newSubstituteName.set('');
     this.newSubstituteFactor.set('1.15x');
@@ -512,7 +514,6 @@ export class Recursos implements OnInit {
     this.showNewSubstituteModal.set(false);
   }
 
-  // helpers de formato
   formatCurrency(cents?: number): string {
     if (cents === undefined || cents === null) return '0,00 €';
     const euros = (cents / 100).toFixed(2).replace('.', ',');
@@ -548,5 +549,9 @@ export class Recursos implements OnInit {
 
   private getTodayDateString(): string {
     return new Date().toISOString().slice(0, 10);
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

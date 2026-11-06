@@ -1,4 +1,53 @@
-<!-- CONTROL Y FILTROS DE INSTANCIAS -->
+<div class="flex h-screen w-screen overflow-hidden select-none bg-tech-white">
+<!-- 1. BARRA LATERAL IZQUIERDA (Verde Jungla #1F4032) -->
+<aside class="w-[268px] h-full bg-jungle-green flex flex-col shrink-0 border-r border-jungle-deep justify-between relative z-20 shadow-xl">
+<div>
+<!-- Centrado de logo vectorial de ForgeWorks -->
+<div class="h-24 pt-4 pb-2 px-6 border-b border-white/10 flex items-center justify-center"><svg class="h-10 w-auto fill-white" viewBox="0 0 185 38.24" xmlns="http://www.w3.org/2000/svg"><path d="M17.13,9.77V0H0v6.18h1.43v16.97H0v6.18h13.2v-6.18h-3.75v-6.41h4.32v-4.3h-4.32v-6.26h2.6v3.58h5.08Z" fill="#ffffff"></path><path d="M31.83,10.69c-1.51-1.89-3.63-2.85-6.38-2.85s-4.84.94-6.36,2.82c-1.53,1.87-2.29,4.61-2.29,8.2s.76,6.33,2.29,8.2c1.52,1.88,3.64,2.82,6.36,2.82s4.83-.94,6.36-2.82c1.52-1.87,2.28-4.61,2.28-8.2s-.75-6.27-2.26-8.17ZM27.1,20.74c0,.83-.14,1.44-.42,1.82-.28.39-.7.59-1.24.59s-.97-.2-1.25-.59c-.27-.39-.41-.99-.41-1.82v-3.78c0-.83.14-1.44.41-1.82.28-.39.7-.59,1.25-.59s.97.2,1.24.59c.28.39.42.99.42,1.82v3.78Z" fill="#ffffff"></path><path d="M48.33,7.99c-.34-.09-.71-.15-1.09-.15-.97,0-1.81.28-2.5.85-.69.57-1.29,1.37-1.83,2.43v-2.75h-7.85v6.18h1.26v8.61h-1.26v6.18h10.43v-6.18h-2.58v-3.28c0-1.64.33-2.87.97-3.7.65-.83,1.58-1.25,2.78-1.25.89,0,1.74.21,2.52.64v-7.2c-.23-.15-.52-.28-.86-.38Z" fill="#ffffff"></path><path d="M80.13,20.22l6.8-2.18v-.54c0-1.59-.2-3.03-.61-4.32-.28-.93-.68-1.78-1.18-2.56-1.2-1.85-3.14-2.78-5.83-2.78s-4.83.94-6.36,2.82c-1.45,1.77-2.2,4.31-2.28,7.62,0,.19,0,.39,0,.58,0,1.58.15,3,.44,4.24.38,1.59.99,2.9,1.85,3.95,1.53,1.88,3.65,2.82,6.36,2.82,1.51,0,2.91-.2,4.2-.58,1.29-.39,2.27-.83,2.93-1.3v-6.03c-.78.35-1.69.64-2.74.87-1.06.22-2.16.34-3.32.34-.97,0-1.68-.22-2.1-.66-.33-.35-.53-.84-.6-1.5-.02-.17-.03-.36-.03-.56v-.22h2.48ZM77.65,15.61c0-.83.14-1.44.42-1.83.28-.39.69-.58,1.24-.58s.97.19,1.24.57c.2.27.33.65.38,1.16.02.21.03.43.03.69v.46h-3.32v-.46Z" fill="#ffffff"></path><path d="M110.4,0v6.18h1.09l-1.12,9.62h-.28l-2.52-15.8h-8.26l-2.71,15.8h-.29l-1.11-9.62h1.09V0h-25.11v9.99c.05-.07.11-.14.16-.21,1.87-2.3,4.63-3.52,7.98-3.52,2.11,0,3.92.49,5.35,1.43l2.15-1.19,1.11,5.53.93,4.61,2.53,12.7h8.55l2.76-16.3h.29l2.61,16.3h8.55l4.27-23.16h1.15V0h-9.17Z" fill="#ffffff"></path><path d="M133.35,10.69c-1.51-1.89-3.63-2.85-6.38-2.85s-4.83.94-6.36,2.82c-1.53,1.87-2.29,4.61-2.29,8.2s.76,6.33,2.29,8.2c1.53,1.88,3.65,2.82,6.36,2.82s4.83-.94,6.36-2.82c1.52-1.87,2.29-4.61,2.29-8.2s-.75-6.27-2.27-8.17ZM128.62,20.74c0,.83-.14,1.44-.42,1.82-.28.39-.69.59-1.24.59s-.97-.2-1.24-.59c-.28-.39-.42-.99-.42-1.82v-3.78c0-.83.14-1.44.42-1.82.27-.39.69-.59,1.24-.59s.97.2,1.24.59c.28.39.42.99.42,1.82v3.78Z" fill="#ffffff"></path><path d="M149.85,7.99c-.34-.09-.7-.15-1.09-.15-.97,0-1.8.28-2.49.85-.69.57-1.3,1.37-1.83,2.43v-2.75h-7.85v6.18h1.26v8.61h-1.26v6.18h10.43v-6.18h-2.58v-3.28c0-1.64.32-2.87.97-3.7.65-.83,1.57-1.25,2.78-1.25.9,0,1.74.21,2.52.64v-7.2c-.23-.15-.52-.28-.86-.38Z" fill="#ffffff"></path><path d="M168.9,23.16l-2.75-5.02,2.44-3.59h1.17v-6.18h-6.04l-3.55,6.94h-.69V0h-7.85v6.18h1.26v16.97h-1.26v6.18h7.85v-7.24h.69l2.95,7.24h7.02v-6.18h-1.24Z" fill="#ffffff"></path><path d="M183.91,18.36c-.73-1.15-1.94-1.95-3.63-2.37l-1.64-.42c-.7-.2-1.2-.41-1.46-.64-.27-.22-.4-.55-.4-.98,0-.8.47-1.21,1.43-1.21.49,0,.87.13,1.13.39.25.27.38.65.38,1.15v.38h4.35v-5.25c-1.65-1.06-3.66-1.59-6.04-1.59-2.14,0-3.84.61-5.1,1.81-1.26,1.21-1.89,2.9-1.89,5.09,0,3.77,1.5,6.01,4.49,6.71l1.43.35c.74.17,1.27.39,1.56.64.29.25.44.62.44,1.13,0,.93-.52,1.4-1.55,1.4-1.16,0-1.74-.6-1.74-1.81v-.38h-4.64v5.58c2.23,1.01,4.55,1.51,6.96,1.51,2.23,0,3.96-.61,5.17-1.81,1.21-1.21,1.82-2.95,1.82-5.24,0-1.81-.36-3.3-1.09-4.46Z" fill="#ffffff"></path><path d="M62.9,19.98l3.61-1.17.26-.09v-4.17h1.26v-6.18h-7.84v2.56c-.48-.8-1.1-1.51-1.85-2.15-.75-.63-1.62-.95-2.59-.95-1.95,0-3.41.95-4.4,2.87-.98,1.91-1.47,4.62-1.47,8.15s.49,6.23,1.47,8.14c.98,1.92,2.45,2.87,4.4,2.87.97,0,1.84-.32,2.59-.95.75-.62,1.37-1.34,1.85-2.15v1.62c0,1.21-.25,2.04-.74,2.47-.48.44-1.27.66-2.36.66-1.6,0-3.42-.24-5.44-.72v6.18c.69.33,1.65.62,2.91.87,1.25.25,2.56.38,3.94.38,2.77,0,4.84-.82,6.21-2.47s2.06-4.29,2.06-7.94v-4.61l-3.87-3.25ZM60.19,20.74c0,.83-.14,1.44-.42,1.82-.28.39-.7.59-1.24.59s-.97-.2-1.25-.59c-.28-.39-.41-.99-.41-1.82v-3.78c0-.83.13-1.44.41-1.82.28-.39.7-.59,1.25-.59s.97.2,1.24.59c.28.39.42.99.42,1.82v3.78Z" fill="#ffffff"></path><path d="M86.93,17.5v.54l-6.8,2.18-2.45.78-6.58,2.11-2.34.75-1.99-1.67-2.26-1.89,2.26-.73,3.9-1.28,6.98-2.28,3.29-1.07,5.38-1.75c.41,1.29.61,2.73.61,4.32Z" fill="#ffffff"></path></svg></div>
+<!-- Menú de navegación principal -->
+<nav class="mt-6 px-3.5 space-y-1.5">
+<!-- Recursos -->
+<a routerLink="/recursos" class="flex items-center px-4 py-3 rounded-md text-[#9DB2A7] hover:text-white hover:bg-white/5 text-base font-medium tracking-wide transition-all group cursor-pointer"><span class="w-1.5 h-5 rounded-full mr-3 -ml-0.5 opacity-0"></span><svg class="w-5 h-5 mr-3 text-[#7E968A] group-hover:text-white shrink-0 transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="flex-1">Recursos</span></a>
+<!-- Productos -->
+<a routerLink="/productos" class="flex items-center px-4 py-3 rounded-md text-[#9DB2A7] hover:text-white hover:bg-white/5 text-base font-medium tracking-wide transition-all group cursor-pointer"><span class="w-1.5 h-5 rounded-full mr-3 -ml-0.5 opacity-0"></span><svg class="w-5 h-5 mr-3 text-[#7E968A] group-hover:text-white shrink-0 transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="7" rx="1.5" stroke-linecap="round" stroke-linejoin="round" width="7" x="3" y="3"></rect><rect height="7" rx="1.5" stroke-linecap="round" stroke-linejoin="round" width="7" x="14" y="3"></rect><rect height="7" rx="1.5" stroke-linecap="round" stroke-linejoin="round" width="7" x="3" y="14"></rect><rect height="7" rx="1.5" stroke-linecap="round" stroke-linejoin="round" width="7" x="14" y="14"></rect></svg><span class="">Productos</span></a>
+<!-- Instancias (Item activo) -->
+<a routerLink="/instancias" class="flex items-center px-4 py-3 rounded-md bg-white/10 active-nav-glow text-white text-base font-semibold tracking-wide group transition-all cursor-pointer"><span class="w-1.5 h-5 rounded-full bg-emerald-400 mr-3 -ml-0.5"></span><svg class="w-5 h-5 mr-3 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="">Instancias</span></a>
+</nav>
+</div>
+<!-- Indicador de estado y sesión inferior -->
+<div class="p-3.5 border-t border-white/10 mx-3 mb-3 bg-white/5 rounded-lg flex items-center justify-between text-xs text-[#9DB2A7]">
+  <div class="flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+    <span class="font-mono text-[11px] text-zinc-300">Taller Activo</span>
+  </div>
+  <button (click)="logout()" title="Cerrar sesión" class="text-zinc-400 hover:text-white text-xs font-mono transition-colors flex items-center gap-1 cursor-pointer">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <span>Salir</span>
+  </button>
+</div>
+</aside>
+<!-- ÁREA DE CONTENIDO PRINCIPAL -->
+<div class="flex-1 flex flex-col h-full overflow-hidden bg-tech-white bg-grid-subtle" style="background-size: 24px 24px; background-image: radial-gradient(circle, rgba(31, 64, 50, 0.22) 1.5px, transparent 1.5px);">
+<!-- 2. BARRA SUPERIOR / CABECERA PRINCIPAL -->
+<header class="h-20 px-10 flex items-center justify-between border-b custom-border bg-white/60 backdrop-blur-md shrink-0 z-10">
+  <div class="flex items-center gap-3.5 text-base font-medium tracking-tight text-concrete-gray"><span class="hover:text-forge-black cursor-pointer transition-colors text-base font-mono font-medium tracking-wide uppercase">Taller</span><span class="text-zinc-400 font-mono text-base font-medium">/</span><span class="hover:text-forge-black cursor-pointer transition-colors text-base font-mono font-medium tracking-wide uppercase">Instancias</span><span class="text-zinc-400 font-mono text-base font-medium">/</span><span class="text-forge-black font-semibold font-mono tracking-wide bg-zinc-100 px-4 py-1.5 rounded text-base shadow-xs border border-zinc-200/60 uppercase">Seguimiento de encargos</span></div>
+  <div class="flex items-center gap-4">
+    <div class="text-right">
+      <div class="text-base font-semibold text-forge-black leading-tight">Taller Ébano &amp; Forja</div>
+      <div class="text-xs font-mono text-concrete-gray mt-1 flex items-center justify-end gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+        <span class="">Martín Valdés</span>
+      </div>
+    </div>
+    <div class="w-11 h-11 rounded-lg bg-jungle-green/10 border border-jungle-green/20 flex items-center justify-center text-jungle-green font-mono text-sm font-bold tracking-wider shadow-xs">
+      EF
+    </div>
+  </div>
+</header>
+
+<!-- 3. CONTENEDOR DE CONTROL Y FILTROS -->
 <div class="px-10 pt-8 pb-3 shrink-0 space-y-3">
   <div class="flex items-center justify-between">
     <div class="space-y-1">
@@ -11,7 +60,6 @@
     </div>
 
     <div class="flex items-center gap-3.5">
-      <!-- Buscador -->
       <div class="relative flex items-center">
         <svg class="w-4 h-4 absolute left-3 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
@@ -26,7 +74,6 @@
         />
       </div>
 
-      <!-- Boton Nuevo Encargo -->
       <button
         (click)="openNewInstanceModal()"
         class="h-10 px-4 rounded bg-[#C85A27] hover:bg-[#a23f0a] text-white text-sm font-semibold tracking-wide flex items-center gap-2 shadow-sm transition-colors cursor-pointer"
@@ -37,7 +84,6 @@
     </div>
   </div>
 
-  <!-- Tabs de estados -->
   <div class="flex items-center gap-2.5 pt-1">
     <button
       (click)="setTab('todos')"
@@ -66,9 +112,8 @@
   </div>
 </div>
 
-<!-- CONTENIDO PRINCIPAL: TABLA (~62%) Y FICHA TECNICA (~38%) -->
+<!-- CONTENIDO PRINCIPAL: TABLA (~62%) Y FICHA TÉCNICA (~38%) -->
 <main class="flex-1 px-10 pb-7 flex gap-6 min-h-0 overflow-hidden">
-  <!-- TABLA DE INSTANCIAS -->
   <section class="w-[62%] bg-white rounded-lg border custom-border shadow-sm flex flex-col overflow-hidden">
     <div class="overflow-y-auto flex-1">
       <table class="w-full text-left border-collapse">
@@ -89,34 +134,17 @@
               (click)="selectInstance(inst)"
               [class]="isSelected ? 'bg-emerald-50/50 hover:bg-emerald-50/70 border-l-[3px] border-l-jungle-green transition-colors cursor-pointer' : 'hover:bg-zinc-50/80 transition-colors cursor-pointer group'"
             >
-              <!-- Encargo -->
               <td class="py-3 px-6" [class.font-semibold]="isSelected" [class.text-jungle-green]="isSelected" [class.text-forge-black]="!isSelected">
                 <div class="flex items-center gap-2.5">
-                  <span
-                    class="w-2 h-2 rounded-full"
-                    [class.bg-jungle-green]="isSelected"
-                    [class.bg-zinc-300]="!isSelected"
-                  ></span>
+                  <span class="w-2 h-2 rounded-full" [class.bg-jungle-green]="isSelected" [class.bg-zinc-300]="!isSelected"></span>
                   <span class="font-mono text-sm font-semibold">{{ inst.code }}</span>
                 </div>
               </td>
-
-              <!-- Cliente -->
-              <td class="py-3 px-4 font-medium text-forge-black">
-                {{ inst.client }}
-              </td>
-
-              <!-- Producto -->
-              <td class="py-3 px-4 text-zinc-600 text-xs font-sans">
-                {{ inst.product }}
-              </td>
-
-              <!-- Cotizacion -->
+              <td class="py-3 px-4 font-medium text-forge-black">{{ inst.client }}</td>
+              <td class="py-3 px-4 text-zinc-600 text-xs font-sans">{{ inst.product }}</td>
               <td class="py-3 px-4 font-mono tabular-nums text-right text-sm font-semibold text-forge-black">
                 {{ formatCurrency(inst.quote_cents) }}
               </td>
-
-              <!-- SSE -->
               <td class="py-3 px-4 text-center">
                 @if (inst.sse_connected) {
                   <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
@@ -127,8 +155,6 @@
                   <span class="text-[10px] font-mono text-zinc-400">Offline</span>
                 }
               </td>
-
-              <!-- Estado -->
               <td class="py-3 px-6 text-right">
                 <span
                   class="inline-flex items-center justify-end gap-1.5 text-xs font-mono font-medium"
@@ -151,19 +177,14 @@
       </table>
     </div>
 
-    <!-- Pie de tabla -->
     <div class="h-10 px-5 border-t custom-border bg-zinc-50 flex items-center justify-between text-xs font-mono text-concrete-gray shrink-0">
       <div>Mostrando {{ filteredInstances().length }} encargos activos</div>
-      <div class="flex items-center gap-2.5">
-        <span class="w-1 h-1 rounded-full bg-zinc-300"></span>
-      </div>
+      <div class="flex items-center gap-2.5"><span class="w-1 h-1 rounded-full bg-zinc-300"></span></div>
     </div>
   </section>
 
-  <!-- PANEL DERECHO: INSPECTOR DE INSTANCIA (~38%) -->
   <section class="w-[38%] bg-white rounded-lg border custom-border shadow-sm flex flex-col overflow-hidden">
     @if (selectedInstance(); as inst) {
-      <!-- Encabezado de la ficha técnica -->
       <div class="p-5 border-b custom-border bg-[#FAFBFA] shrink-0">
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
@@ -193,9 +214,7 @@
         </div>
       </div>
 
-      <!-- Cuerpo del inspector -->
       <div class="flex-1 overflow-y-auto divide-y custom-border p-5 space-y-5">
-        <!-- Bloque 1: Progreso del Grafo (RF-24) -->
         <div class="space-y-3 pt-0.5">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -209,14 +228,12 @@
 
           <div class="p-3.5 rounded border custom-border bg-zinc-50 space-y-2">
             <div class="font-semibold text-sm text-forge-black">{{ inst.current_step }}</div>
-            <!-- Barra de progreso -->
             <div class="w-full bg-zinc-200 rounded-full h-1.5 overflow-hidden">
               <div class="bg-jungle-green h-1.5 rounded-full" [style.width.%]="(inst.completed_steps / inst.total_steps) * 100"></div>
             </div>
           </div>
         </div>
 
-        <!-- Bloque 2: Reserva Concurrente de Recursos (RF-29) -->
         <div class="pt-4 space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -239,15 +256,10 @@
                 </div>
                 <span class="font-bold text-jungle-green">{{ rec.quantity }}</span>
               </div>
-            } @empty {
-              <div class="p-3 rounded border border-dashed custom-border text-center text-xs text-zinc-500 font-mono">
-                No hay recursos reservados para este paso.
-              </div>
             }
           </div>
         </div>
 
-        <!-- Bloque 3: Historial Append-Only (RF-25) -->
         <div class="pt-4 space-y-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -272,6 +284,8 @@
     }
   </section>
 </main>
+</div>
+</div>
 
 <!-- MODAL: NUEVO ENCARGO -->
 @if (showNewInstanceModal()) {
