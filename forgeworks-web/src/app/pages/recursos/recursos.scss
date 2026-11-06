@@ -1,0 +1,1777 @@
+// Estilos SCSS con BEM para el panel de administración de recursos de ForgeWorks
+@use '../../../styles/variables' as v;
+@use '../../../styles/mixins' as m;
+
+:host, button, input {
+  font-family: v.$font-body;
+}
+
+// Títulos con tipografía oficial institucional 'Alfa Slab One' con espaciado no tupido
+h1, h2, h3 {
+  font-family: v.$font-title;
+  font-weight: 400;
+  letter-spacing: 0.035em;
+  line-height: 1.4;
+}
+
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  color: v.$text-primary;
+}
+
+// Resets y defaults compartidos
+button, a {
+  cursor: pointer;
+}
+
+button, input, a {
+  @include m.smooth-transition;
+}
+
+.rc {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: v.$surface-bg;
+
+  // 1. BARRA LATERAL (Sidebar verde forja compacta)
+  &__sidebar {
+    width: 220px;
+    height: 100%;
+    background-color: v.$color-forest;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    z-index: 20;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.06);
+
+    &-brand {
+      height: 52px;
+      @include m.flex-center;
+      padding: 0 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      .rc__sidebar-logo {
+        height: 24px;
+        width: auto;
+        object-fit: contain;
+        filter: brightness(0) invert(1); // Muestra el logo en blanco nítido sobre el fondo verde bosque
+      }
+    }
+
+    &-nav {
+      margin-top: 1rem;
+      padding: 0 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    &-nav-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      padding: 0 0.6rem 0.25rem;
+    }
+
+    &-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+
+      &--active {
+        background-color: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+
+        .rc__sidebar-nav-indicator {
+          background-color: #34D399;
+        }
+      }
+
+      &:hover:not(&--active) {
+        background-color: rgba(255, 255, 255, 0.06);
+        color: #ffffff;
+      }
+    }
+
+    &-nav-indicator {
+      width: 3px;
+      height: 14px;
+      border-radius: 3px;
+      background-color: transparent;
+      flex-shrink: 0;
+    }
+
+    &-nav-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+  }
+
+  // 2. CONTENIDO PRINCIPAL
+  &__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: #FAF9F5 radial-gradient(circle, rgba(31, 64, 50, 0.16) 1.25px, transparent 1.25px) 0 0 / 20px 20px;
+  }
+
+  // CABECERA SUPERIOR
+  &__header {
+    height: 48px;
+    padding: 0 1.25rem;
+    @include m.flex-between;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #E5E9E6;
+    flex-shrink: 0;
+    z-index: 10;
+
+    &-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.775rem;
+      font-family: v.$font-body;
+      color: #6C7570;
+    }
+
+    .rc__breadcrumb-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #555E59;
+      text-decoration: none;
+      padding: 0.2rem 0.45rem;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: all 0.18s ease;
+
+      &:hover {
+        color: v.$color-forest;
+        background-color: rgba(31, 64, 50, 0.06);
+      }
+    }
+
+    .rc__breadcrumb-home-icon {
+      width: 13px;
+      height: 13px;
+      color: #7B8580;
+      transition: color 0.18s ease;
+    }
+
+    .rc__breadcrumb-link:hover .rc__breadcrumb-home-icon {
+      color: v.$color-forest;
+    }
+
+    .rc__breadcrumb-sep {
+      display: inline-flex;
+      align-items: center;
+      color: #A3ACA7;
+
+      svg {
+        width: 11px;
+        height: 11px;
+      }
+    }
+
+    .rc__breadcrumb-section {
+      color: #555E59;
+      font-weight: 500;
+      padding: 0.2rem 0.35rem;
+    }
+
+    .rc__breadcrumb-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.6rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: v.$color-forest;
+    }
+
+    .rc__breadcrumb-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: v.$color-forest;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    &-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    &-info {
+      text-align: right;
+    }
+
+    &-workshop {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: v.$text-primary;
+      line-height: 1.15;
+    }
+
+    &-artisan {
+      font-size: 0.725rem;
+      color: #6C7570;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.3rem;
+      margin-top: 0.1rem;
+    }
+
+    &-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background-color: rgba(31, 64, 50, 0.1);
+      border: 1px solid rgba(31, 64, 50, 0.2);
+      color: v.$color-forest;
+      font-weight: 600;
+      font-size: 0.75rem;
+      @include m.flex-center;
+    }
+
+    &-logout {
+      background-color: transparent;
+      border: 1px solid #D2DBD5;
+      color: #555E59;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.3rem 0.6rem;
+      border-radius: 5px;
+
+      &:hover {
+        color: v.$color-rust;
+        border-color: rgba(161, 72, 39, 0.4);
+        background-color: rgba(161, 72, 39, 0.05);
+      }
+    }
+  }
+
+  // BARRA DE CONTROL COMPACTA
+  &__toolbar {
+    padding: 0.85rem 1.25rem 0.65rem;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+
+    &-top {
+      @include m.flex-between;
+      gap: 1rem;
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    &-title {
+      font-family: v.$font-title;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: v.$color-charcoal;
+      margin: 0;
+      line-height: 1.35;
+      letter-spacing: 0.010em;
+    }
+
+    &-subtitle {
+      font-size: 0.78rem;
+      color: #555E59;
+      margin: 0;
+      line-height: 1.35;
+      font-weight: 400;
+      letter-spacing: 0.010em;
+    }
+
+    &-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    &-search {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      &-icon {
+        position: absolute;
+        left: 0.65rem;
+        width: 14px;
+        height: 14px;
+        color: #8C9690;
+        pointer-events: none;
+      }
+
+      &-input {
+        width: 210px;
+        height: 32px;
+        padding: 0 0.65rem 0 2rem;
+        font-size: 0.8rem;
+        background-color: #ffffff;
+        border: 1px solid #D9E0DC;
+        border-radius: 6px;
+        color: v.$text-primary;
+        outline: none;
+
+        &::placeholder {
+          color: #9AA39E;
+        }
+
+        &:focus {
+          border-color: v.$color-forest;
+          box-shadow: 0 0 0 2px rgba(31, 64, 50, 0.1);
+        }
+      }
+    }
+
+    &-btn-add {
+      height: 32px;
+      padding: 0 0.85rem;
+      background-color: v.$color-rust;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      box-shadow: 0 1px 4px rgba(161, 72, 39, 0.2);
+
+      &:hover {
+        background-color: #88391C;
+        transform: translateY(-1px);
+      }
+
+      .rc__btn-plus {
+        font-size: 0.95rem;
+        line-height: 1;
+        font-weight: 600;
+      }
+    }
+
+    &-filters {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    &-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    &-extra-filters {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+
+      .rc__filter-item {
+        width: 160px;
+
+        &--tag {
+          width: 175px;
+        }
+
+        &--sort {
+          width: 185px;
+        }
+
+        // Dropdown styling compacto para toolbar
+        ::ng-deep .fw-dropdown__trigger {
+          height: 30px;
+          padding: 0 0.65rem;
+          font-family: v.$font-body !important;
+          font-size: 0.74rem;
+          background-color: #ffffff;
+          border-color: #D9E0DC;
+        }
+
+        ::ng-deep .fw-dropdown__text {
+          font-family: v.$font-body !important;
+          font-size: 0.74rem;
+        }
+
+        ::ng-deep .fw-dropdown__option {
+          font-family: v.$font-body !important;
+          font-size: 0.76rem;
+        }
+      }
+    }
+
+    &-tab {
+      padding: 0.25rem 0.65rem;
+      font-size: 0.76rem;
+      font-weight: 500;
+      border-radius: 5px;
+      border: 1px solid #D9E0DC;
+      background-color: #ffffff;
+      color: #4B534E;
+
+      &:hover:not(&--active) {
+        background-color: #F1F4F2;
+        color: v.$text-primary;
+      }
+
+      &--active {
+        background-color: v.$color-forest;
+        color: #ffffff;
+        border-color: v.$color-forest;
+        box-shadow: 0 1px 2px rgba(31, 64, 50, 0.15);
+      }
+    }
+  }
+
+  // 3. ESPACIO DE TRABAJO (Tabla adaptable con Drawer lateral derecho)
+  &__workspace {
+    flex: 1;
+    min-height: 0;
+    padding: 0 1.25rem 1rem;
+    display: flex;
+    gap: 1rem;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.25s ease;
+  }
+
+  // TABLA DE RECURSOS (100% por defecto, se adapta al abrir el drawer)
+  &__card-table {
+    flex: 1 1 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    background-color: #ffffff;
+    border: 1px solid #DCE3DF;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: flex 0.25s ease;
+  }
+
+  &__table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+
+  &__workspace--drawer-open {
+    .rc__card-table {
+      flex: 1 1 calc(100% - 370px);
+    }
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: v.$font-body;
+
+    thead tr {
+      background-color: #F7FAF8;
+      border-bottom: 1px solid #DCE3DF;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    th {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #4E5752;
+      letter-spacing: 0.01em;
+      padding: 0.55rem 0.75rem;
+      line-height: 1.3;
+
+      &.rc__th--right {
+        text-align: right;
+      }
+
+      &.rc__th--center {
+        text-align: center;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #EDF1EE;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        &:hover:not(.rc__tr--selected):not(.rc__table-row--empty) {
+          background-color: #F9FAF9;
+        }
+
+        &.rc__tr--selected {
+          background-color: #F0F6F2;
+          border-left: 3px solid v.$color-forest;
+        }
+
+        &.rc__table-row--empty {
+          cursor: default;
+
+          &:hover {
+            background-color: transparent;
+          }
+
+          td {
+            padding: 0;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+
+    &:has(.rc__table-row--empty) {
+      height: 100%;
+      flex: 1;
+
+      tbody {
+        height: 100%;
+
+        .rc__table-row--empty {
+          height: 100%;
+
+          td {
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    td {
+      padding: 0.55rem 0.75rem;
+      font-size: 0.8rem;
+      color: v.$text-primary;
+      line-height: 1.35;
+
+      &.rc__td--right {
+        text-align: right;
+      }
+
+      &.rc__td--center {
+        text-align: center;
+      }
+    }
+
+    &-name {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    &-title {
+      font-weight: 500;
+      color: v.$text-primary;
+      letter-spacing: 0.01em;
+    }
+
+    &-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+    }
+
+    &-code, &-tag {
+      font-size: 0.7rem;
+      background-color: #F1F4F2;
+      color: #555E59;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      border: 1px solid #DFE5E1;
+    }
+
+    &-type-text {
+      font-size: 0.78rem;
+      color: #555E59;
+      font-weight: 400;
+    }
+
+    &-stock {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: v.$color-forest;
+
+      &--empty {
+        color: #8C9690;
+      }
+
+      .rc__table-unit {
+        font-weight: 400;
+        font-size: 0.75rem;
+        color: #6C7570;
+        margin-left: 0.2rem;
+      }
+    }
+
+    &-cost {
+      color: #1F2925;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+
+    &-status {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+
+      &.rc__status--active {
+        color: v.$color-forest;
+      }
+
+      &.rc__status--empty {
+        color: #8C9690;
+      }
+    }
+
+    &-row-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      justify-content: center;
+    }
+  }
+
+  &__th--center, &__td--center {
+    text-align: center;
+  }
+
+  &__btn-row-action {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 0.25rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #7A8580;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &--inspect:hover {
+      color: v.$color-forest;
+      background-color: #EBF2EE;
+      border-color: rgba(31, 64, 50, 0.2);
+    }
+
+    &--edit:hover {
+      color: v.$color-forest;
+      background-color: #EBF2EE;
+      border-color: rgba(31, 64, 50, 0.2);
+    }
+
+    &--delete:hover {
+      color: v.$color-rust;
+      background-color: #FDF2EE;
+      border-color: rgba(161, 72, 39, 0.25);
+    }
+  }
+
+  &__table-footer {
+    height: 32px;
+    padding: 0 0.85rem;
+    border-top: 1px solid #DCE3DF;
+    background-color: #F9FAF9;
+    @include m.flex-between;
+    font-size: 0.72rem;
+    color: #6C7570;
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+
+  // ESTADO VACIO
+  &__empty {
+    padding: 3rem 1.5rem;
+    height: 100%;
+    min-height: 280px;
+    box-sizing: border-box;
+    text-align: center;
+    @include m.flex-center;
+    flex-direction: column;
+
+    &-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #EEF3F0;
+      color: v.$color-forest;
+      @include m.flex-center;
+      margin-bottom: 0.5rem;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    &-title {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: v.$text-primary;
+      margin: 0 0 0.3rem;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    &-desc {
+      font-size: 0.75rem;
+      color: #6C7570;
+      max-width: 260px;
+      line-height: 1.35;
+      margin: 0 0 0.75rem;
+    }
+
+    &-btn {
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      background-color: v.$color-forest;
+      color: #ffffff;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 500;
+
+      &:hover {
+        background-color: v.$primary-hover;
+      }
+    }
+  }
+
+  // 4. DRAWER LATERAL DERECHO (Ficha Tecnica y Lotes)
+  &__drawer {
+    flex: 0 0 355px;
+    width: 355px;
+    background-color: #ffffff;
+    border: 1px solid #DCE3DF;
+    border-radius: 8px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: drawerSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    &--closing {
+      animation: drawerSlideOut 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+      pointer-events: none;
+    }
+
+    &-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #DCE3DF;
+      background-color: #FBFDFB;
+      flex-shrink: 0;
+
+      &-top {
+        @include m.flex-between;
+        margin-bottom: 0.4rem;
+      }
+    }
+
+    &-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    &-kicker {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #6C7570;
+    }
+
+    &-code {
+      font-size: 0.7rem;
+      color: v.$text-primary;
+      background-color: #F1F4F2;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+    }
+
+    &-close {
+      background: transparent;
+      border: none;
+      color: #7A8580;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.35rem;
+      border-radius: 4px;
+      line-height: 1;
+
+      &:hover {
+        background-color: #EEF3F0;
+        color: v.$color-forest;
+      }
+    }
+
+    &-header-main {
+      @include m.flex-between;
+      align-items: flex-end;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    &-main-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &-title {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: v.$text-primary;
+      margin: 0;
+      line-height: 1.35;
+      letter-spacing: 0.03em;
+    }
+
+    &-sub {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.74rem;
+      color: #6C7570;
+      margin-top: 0.2rem;
+    }
+
+    &-dot {
+      color: #BDC5C0;
+    }
+
+    &-cost {
+      font-weight: 500;
+      color: v.$text-primary;
+    }
+
+    &-desc {
+      font-size: 0.73rem;
+      color: #6C7570;
+      margin: 0.35rem 0 0;
+      line-height: 1.35;
+    }
+
+    &-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.55rem;
+      align-items: center;
+    }
+
+    &-tag {
+      font-size: 0.69rem;
+      background-color: #F1F4F2;
+      color: #4B544F;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid #DCE3DF;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+
+    &-stock-box {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    &-stock-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #7A8580;
+    }
+
+    &-stock-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: v.$color-forest;
+      line-height: 1.15;
+      margin-top: 0.1rem;
+
+      .rc__drawer-unit {
+        font-size: 0.72rem;
+        font-weight: 400;
+        color: #6C7570;
+      }
+    }
+
+    &-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    &-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    &-lots-header {
+      @include m.flex-between;
+    }
+
+    &-lots-title {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #4A524D;
+
+      svg {
+        width: 14px;
+        height: 14px;
+        color: #7A8580;
+      }
+    }
+
+    &-lots-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    &-lot-card {
+      border: 1px solid #E2E8E4;
+      border-radius: 6px;
+      padding: 0.5rem 0.65rem;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+
+      &--priority {
+        border-color: rgba(161, 72, 39, 0.35);
+        background-color: #FDF9F6;
+      }
+
+      &-top {
+        @include m.flex-between;
+      }
+
+      &-code {
+        font-size: 0.75rem;
+        color: v.$text-primary;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      &-actions {
+        display: flex;
+        gap: 0.2rem;
+      }
+    }
+
+    &-priority-pill {
+      font-size: 0.63rem;
+      padding: 0.05rem 0.3rem;
+      border-radius: 3px;
+      background-color: rgba(161, 72, 39, 0.12);
+      color: v.$color-rust;
+      font-weight: 600;
+    }
+
+    &-lot-details {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      color: #6C7570;
+      flex-wrap: wrap;
+    }
+
+    &-lots-empty {
+      padding: 0.75rem;
+      background-color: #F9FAF9;
+      border: 1px dashed #D2DBD5;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 0.72rem;
+      color: #6C7570;
+    }
+  }
+
+  &__btn-drawer {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.725rem;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 1px solid #D2DBD5;
+    background-color: #ffffff;
+    color: #4A524D;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    &--edit:hover {
+      background-color: #EEF3F0;
+      color: v.$color-forest;
+      border-color: v.$color-forest;
+    }
+
+    &--delete:hover {
+      background-color: #FDF2EE;
+      color: v.$color-rust;
+      border-color: rgba(161, 72, 39, 0.4);
+    }
+  }
+
+  &__btn-drawer-add-lot {
+    background: transparent;
+    border: 1px solid #D2DBD5;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    font-size: 0.69rem;
+    font-weight: 500;
+    color: v.$color-forest;
+
+    &:hover {
+      background-color: #EBF2EE;
+      border-color: v.$color-forest;
+    }
+  }
+
+  &__lot-icon-btn {
+    background: transparent;
+    border: none;
+    color: #9AA39E;
+    padding: 0.1rem 0.25rem;
+    border-radius: 3px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    &:hover {
+      color: v.$color-forest;
+      background-color: #EBF2EE;
+    }
+
+    &--delete:hover {
+      color: v.$color-rust;
+      background-color: #FDF2EE;
+    }
+  }
+
+  @keyframes drawerSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes drawerSlideOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+  }
+
+  // 4. MODALES
+  &__modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    z-index: 100;
+    @include m.flex-center;
+    padding: 1.5rem 1rem;
+    backdrop-filter: blur(3px);
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  &__modal {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16);
+    border: 1px solid #DCE3DF;
+    width: 100%;
+    max-width: 600px;
+    max-height: calc(100vh - 3rem);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    animation: rcModalIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &-header, &-footer {
+      padding: 0.65rem 1rem;
+      border-color: #E5EBE7;
+      background-color: #F8FAF8;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    &-header {
+      border-bottom: 1px solid #E5EBE7;
+      justify-content: space-between;
+    }
+
+    &-title {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: v.$text-primary;
+      margin: 0;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+    }
+
+    &-close {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      color: #7A8580;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      line-height: 1;
+
+      &:hover {
+        color: v.$text-primary;
+        background-color: #EBF0EC;
+      }
+    }
+
+    &-body {
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      overflow-y: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+
+      // Barra de desplazamiento estilizada y sutil
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(31, 64, 50, 0.15);
+        border-radius: 3px;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(31, 64, 50, 0.3);
+      }
+    }
+
+    &-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    &-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    &-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #4A524D;
+      line-height: 1.35;
+    }
+
+    &-input {
+      width: 100%;
+      height: 32px;
+      padding: 0 0.65rem;
+      font-size: 0.8rem;
+      color: v.$text-primary;
+      background-color: #ffffff;
+      border: 1px solid #D2DBD5;
+      border-radius: 6px;
+      outline: none;
+      box-sizing: border-box;
+
+      &--mono {
+        font-family: monospace;
+      }
+
+      &--rust-focus {
+        border-color: rgba(161, 72, 39, 0.4);
+
+        &:focus {
+          border-color: v.$color-rust;
+          box-shadow: 0 0 0 2px rgba(161, 72, 39, 0.15);
+        }
+      }
+
+      &:focus {
+        border-color: v.$color-forest;
+        box-shadow: 0 0 0 2px rgba(31, 64, 50, 0.1);
+      }
+    }
+
+    &-section {
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-top: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+
+      &--perishable {
+        background-color: #FDF9F7;
+        border: 1px solid rgba(161, 72, 39, 0.2);
+      }
+
+      &-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+
+      &-badge {
+        display: inline-block;
+        align-self: flex-start;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        background-color: v.$color-rust;
+        color: #ffffff;
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+        line-height: 1.2;
+      }
+
+      &-title {
+        font-family: v.$font-title;
+        font-size: 0.82rem;
+        font-weight: 400;
+        color: v.$color-charcoal;
+        margin: 0.25rem 0 0;
+        letter-spacing: 0.02em;
+      }
+
+      &-desc {
+        font-size: 0.72rem;
+        color: #6C7570;
+        margin: 0;
+        line-height: 1.35;
+      }
+    }
+
+    &-cost-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+
+      .rc__modal-input {
+        flex: 1;
+      }
+    }
+
+    &-cost-converted {
+      font-family: monospace;
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: v.$color-forest;
+      background-color: #EEF3F0;
+      padding: 0 0.5rem;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px;
+      border: 1px solid #D2DBD5;
+      white-space: nowrap;
+    }
+
+    &-help {
+      font-family: monospace;
+      font-size: 0.68rem;
+      color: #7A8580;
+    }
+
+    // Selector interactivo de etiquetas en modales
+    .rc__tag-selector-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .rc__tag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background-color: #EBF2EE;
+      color: v.$color-forest;
+      border: 1px solid rgba(31, 64, 50, 0.2);
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+
+      &-remove {
+        background: transparent;
+        border: none;
+        color: #7A8580;
+        font-size: 0.65rem;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+
+        &:hover {
+          color: v.$color-rust;
+        }
+      }
+    }
+
+    .rc__tag-selector-row {
+      display: flex;
+      gap: 0.45rem;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .rc__tag-selector-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .rc__tag-selector-new {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+      flex: 1;
+    }
+
+    .rc__tag-input-custom {
+      height: 32px;
+      font-size: 0.76rem;
+    }
+
+    .rc__tag-btn-add {
+      height: 32px;
+      padding: 0 0.6rem;
+      font-size: 0.74rem;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid rgba(31, 64, 50, 0.3);
+      background-color: #EBF2EE;
+      color: v.$color-forest;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+
+      &:hover:not(:disabled) {
+        background-color: v.$color-forest;
+        color: #ffffff;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    &-footer {
+      border-top: 1px solid #E5EBE7;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    &-btn-cancel {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.76rem;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid #D2DBD5;
+      background-color: #ffffff;
+      color: #4A524D;
+
+      &:hover {
+        background-color: #EEF2EF;
+      }
+    }
+
+    &-btn-submit {
+      padding: 0.4rem 1rem;
+      font-size: 0.76rem;
+      font-weight: 500;
+      border-radius: 6px;
+      border: none;
+      background-color: v.$color-forest;
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(31, 64, 50, 0.2);
+
+      &:hover {
+        background-color: v.$primary-hover;
+      }
+    }
+
+    // Tarjeta destacada de configuración de lote para recursos perecederos
+    .rc__modal-perishable-card {
+      margin-top: 0.85rem;
+      padding: 0.85rem;
+      background-color: #FDF9F6;
+      border: 1.5px dashed rgba(161, 72, 39, 0.4);
+      border-radius: 8px;
+      animation: rcModalIn 0.2s ease-out;
+
+      .rc__modal-perishable-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 0.75rem;
+
+        .rc__modal-perishable-icon {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          background-color: rgba(161, 72, 39, 0.12);
+          color: v.$color-rust;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+
+        .rc__modal-perishable-title {
+          font-family: v.$font-title;
+          font-size: 0.78rem;
+          color: v.$color-rust;
+          margin: 0 0 0.15rem 0;
+          letter-spacing: 0.02em;
+        }
+
+        .rc__modal-perishable-desc {
+          font-family: v.$font-body;
+          font-size: 0.7rem;
+          color: #6A4B3D;
+          margin: 0;
+          line-height: 1.35;
+        }
+      }
+
+      .rc__modal-input--required-highlight {
+        border-color: rgba(161, 72, 39, 0.5);
+        background-color: #ffffff;
+
+        &:focus {
+          border-color: v.$color-rust;
+          box-shadow: 0 0 0 2px rgba(161, 72, 39, 0.15);
+        }
+      }
+    }
+  }
+
+  // 5. MODAL DE CONFIRMACIÓN PROPIO
+  &__confirm-modal {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+    border: 1px solid #DCE3DF;
+    width: 100%;
+    max-width: 380px;
+    padding: 1.5rem 1.25rem 1.25rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: rcModalIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &__confirm-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #F8FAF8;
+    color: v.$color-forest;
+    border: 1px solid #E1E8E4;
+    @include m.flex-center;
+    margin-bottom: 0.75rem;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    &--destructive {
+      background-color: #FDF2EE;
+      color: v.$color-rust;
+      border-color: rgba(161, 72, 39, 0.25);
+    }
+  }
+
+  &__confirm-title {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: v.$text-primary;
+    margin: 0 0 0.35rem;
+    line-height: 1.35;
+    letter-spacing: 0.03em;
+  }
+
+  &__confirm-desc {
+    font-size: 0.78rem;
+    color: #6C7570;
+    line-height: 1.45;
+    margin: 0 0 1.25rem;
+  }
+
+  &__confirm-actions {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  &__confirm-btn-cancel {
+    flex: 1;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid #D2DBD5;
+    background-color: #ffffff;
+    color: #4A524D;
+
+    &:hover {
+      background-color: #F1F4F2;
+    }
+  }
+
+  &__confirm-btn-confirm {
+    flex: 1;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    background-color: v.$color-forest;
+    color: #ffffff;
+
+    &:hover {
+      background-color: v.$primary-hover;
+    }
+
+    &--destructive {
+      background-color: v.$color-rust;
+
+      &:hover {
+        background-color: #88391C;
+      }
+    }
+  }
+
+  // 6. SISTEMA PROPIO DE TOASTS
+  &__toast-container {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 360px;
+    width: calc(100% - 2.5rem);
+    pointer-events: none;
+  }
+
+  &__toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.7rem 0.85rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #DCE3DF;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    animation: rcToastIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &-icon {
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &-title {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: v.$text-primary;
+      line-height: 1.3;
+    }
+
+    &-message {
+      font-size: 0.72rem;
+      color: #6C7570;
+      margin: 0.15rem 0 0;
+      line-height: 1.35;
+    }
+
+    &-close {
+      background: transparent;
+      border: none;
+      color: #9AA39E;
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+
+      &:hover {
+        color: v.$text-primary;
+      }
+    }
+
+    &--success {
+      border-left: 3.5px solid v.$color-forest;
+      .rc__toast-icon { color: v.$color-forest; }
+    }
+
+    &--error {
+      border-left: 3.5px solid v.$color-rust;
+      .rc__toast-icon { color: v.$color-rust; }
+    }
+
+    &--warning {
+      border-left: 3.5px solid #D97706;
+      .rc__toast-icon { color: #D97706; }
+    }
+
+    &--info {
+      border-left: 3.5px solid #2563EB;
+      .rc__toast-icon { color: #2563EB; }
+    }
+  }
+
+  @keyframes rcToastIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  &__status {
+    &--empty {
+      color: #7A8580;
+    }
+
+    &--active {
+      color: #065F46;
+      font-weight: 500;
+    }
+
+    &-dot--empty {
+      background-color: #CBD5E1;
+    }
+
+    &-dot--active {
+      background-color: #10B981;
+    }
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+}
+
+@keyframes rcModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
