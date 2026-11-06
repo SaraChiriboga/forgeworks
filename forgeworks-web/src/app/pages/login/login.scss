@@ -50,20 +50,21 @@
     width: 100%;
     height: 100%;
     max-height: min(630px, calc(100vh - 2rem));
-    background: transparent; // siempre transparente para efecto de continuidad con el hero
-    overflow: hidden; // cero esquinas vacias
+    background: linear-gradient(to right, #ffffff 0%, #ffffff 53.488%, transparent 53.488%, transparent 100%);
+    overflow: visible; // permite que la letra F sobresalga del contenedor hacia la izquierda
 
     @include m.respond-to(tablet) {
       grid-template-columns: 1.1fr 1fr;
       max-width: 920px;
-      background: transparent; // se mantiene transparente en tablet
+      background: linear-gradient(to right, #ffffff 0%, #ffffff 52.38%, transparent 52.38%, transparent 100%);
     }
 
     @include m.respond-to(mobile) {
       grid-template-columns: 1fr;
       max-width: 480px;
       max-height: calc(100vh - 2rem);
-      background: transparent;
+      background: #ffffff;
+      overflow: hidden;
     }
   }
 
@@ -75,8 +76,8 @@
     flex-direction: column;
     justify-content: center;
     padding: 1.5rem 2.5rem;
-    background: #ffffff;
-    overflow: visible; // permite que el logo sobrepase el limite hacia el panel derecho
+    background: transparent; // el fondo blanco lo proyecta la card perfectamente
+    overflow: visible; // permite que el logo sobrepase ambos limites
 
     @include m.respond-to(tablet) {
       padding: 1.25rem 1.75rem;
@@ -89,12 +90,12 @@
     }
   }
 
-  // logo oficial que topa el limite del contenedor y sobrepasa hacia el panel derecho
+  // logo oficial que sobresale de los limites del contenedor en ambos extremos
   &__logo {
     display: block;
-    width: calc(100% + 6.5rem); // sobrepasa el contenedor cruzando hacia el panel derecho
-    margin-left: -3rem; // topa el limite exterior izquierdo
-    margin-right: -3.5rem;
+    width: calc(100% + 7.5rem); // se extiende para sobrepasar ambos limites
+    margin-left: -3.85rem; // la letra F sale del contenedor por el borde izquierdo
+    margin-right: -3.65rem; // las letras finales salen hacia el panel derecho
     margin-bottom: 0.65rem;
     background: transparent;
     border: none;
@@ -102,9 +103,9 @@
     z-index: 25;
 
     @include m.respond-to(tablet) {
-      width: calc(100% + 4.5rem);
-      margin-left: -2.25rem;
-      margin-right: -2.25rem;
+      width: calc(100% + 5.5rem);
+      margin-left: -2.85rem;
+      margin-right: -2.65rem;
     }
 
     @include m.respond-to(mobile) {
@@ -122,20 +123,18 @@
     width: 100%;
     aspect-ratio: 185 / 38.24;
     height: auto;
-    max-height: 120px;
+    max-height: 125px;
     background-image: url('/images/auth-hero.jpg');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    -webkit-mask: url('/images/logo.svg') no-repeat left center / contain;
-    mask: url('/images/logo.svg') no-repeat left center / contain;
+    -webkit-mask: url('/images/logo.svg') no-repeat center center / 100% 100%;
+    mask: url('/images/logo.svg') no-repeat center center / 100% 100%;
     filter: drop-shadow(0 3px 6px rgba(35, 31, 32, 0.22));
 
     @include m.respond-to(mobile) {
       max-height: 65px;
-      -webkit-mask-position: center;
-      mask-position: center;
     }
   }
 
