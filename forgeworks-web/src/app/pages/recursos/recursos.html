@@ -1,0 +1,594 @@
+<!-- 3. CONTENEDOR DE CONTROL Y FILTROS -->
+<div class="px-10 pt-8 pb-3 shrink-0 space-y-3">
+  <div class="flex items-center justify-between">
+    <div class="space-y-1">
+      <div class="flex items-baseline gap-3.5">
+        <h1 class="text-3xl font-bold text-forge-black tracking-tight font-sans">Recursos del taller</h1>
+      </div>
+      <p class="text-sm text-zinc-600 font-normal">
+        Gestión de inventario de materias primas, insumos perecederos y capacidad operativa del taller artesanal
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3.5">
+      <!-- Buscador -->
+      <div class="relative flex items-center">
+        <svg class="w-4 h-4 absolute left-3 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <input
+          type="text"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          placeholder="Buscar recurso por código, lote o nombre..."
+          class="w-80 h-10 pl-9 pr-3 text-sm bg-white border custom-border rounded text-forge-black placeholder:text-zinc-400 focus:outline-none focus:border-jungle-green font-sans"
+        />
+      </div>
+
+      <!-- Boton Agregar Recurso -->
+      <button
+        (click)="openNewResourceModal()"
+        class="h-10 px-4 rounded bg-[#C85A27] hover:bg-[#a23f0a] text-white text-sm font-semibold tracking-wide flex items-center gap-2 shadow-sm transition-colors cursor-pointer"
+      >
+        <span class="text-base leading-none font-bold">+</span>
+        <span>Agregar recurso</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Fila de filtros segmentados -->
+  <div class="flex items-center gap-2.5 pt-1">
+    <button
+      (click)="setTab('todos')"
+      [class]="selectedTab() === 'todos' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Todos
+    </button>
+    <button
+      (click)="setTab('consumibles')"
+      [class]="selectedTab() === 'consumibles' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Consumibles
+    </button>
+    <button
+      (click)="setTab('perecederos')"
+      [class]="selectedTab() === 'perecederos' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Perecederos
+    </button>
+    <button
+      (click)="setTab('capacidad')"
+      [class]="selectedTab() === 'capacidad' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Capacidad
+    </button>
+  </div>
+</div>
+
+<!-- CONTENIDO PRINCIPAL: TABLA (~62%) Y FICHA TECNICA UNIFICADA (~38%) -->
+<main class="flex-1 px-10 pb-7 flex gap-6 min-h-0 overflow-hidden">
+  <!-- 4. TABLA TECNICA DE RECURSOS (~62%) -->
+  <section class="w-[62%] bg-white rounded-lg border custom-border shadow-sm flex flex-col overflow-hidden">
+    <div class="overflow-y-auto flex-1">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b custom-border bg-[#F9FAF9] text-xs font-semibold text-concrete-gray uppercase tracking-wider sticky top-0 z-10">
+            <th class="py-3.5 px-6">Nombre</th>
+            <th class="py-3.5 px-4">Tipo</th>
+            <th class="py-3.5 px-4 text-right">Disponible</th>
+            <th class="py-3.5 px-4 text-right">Costo unitario</th>
+            <th class="py-3.5 px-4">Etiquetas</th>
+            <th class="py-3.5 px-6 text-right">Estado</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y custom-border text-sm">
+          @for (item of filteredResources(); track item.id) {
+            @let isSelected = selectedResource()?.id === item.id;
+            <tr
+              (click)="selectResource(item)"
+              [class]="isSelected ? 'bg-emerald-50/50 hover:bg-emerald-50/70 border-l-[3px] border-l-jungle-green transition-colors cursor-pointer' : 'hover:bg-zinc-50/80 transition-colors cursor-pointer group'"
+            >
+              <!-- Nombre -->
+              <td class="py-3 px-6" [class.font-semibold]="isSelected" [class.text-jungle-green]="isSelected" [class.text-forge-black]="!isSelected">
+                <div class="flex items-center gap-2.5">
+                  <span
+                    class="w-2 h-2 rounded-full"
+                    [class.bg-jungle-green]="isSelected"
+                    [class.bg-zinc-300]="!isSelected && item.resource_type !== 'perecedero'"
+                    [class.bg-emerald-500]="!isSelected && item.resource_type === 'perecedero'"
+                  ></span>
+                  <span class="text-sm" [class.font-semibold]="isSelected" [class.font-medium]="!isSelected">{{ item.name }}</span>
+                  @if (item.internal_name) {
+                    <span
+                      class="text-[11px] font-mono px-2 py-0.5 rounded font-normal"
+                      [class.bg-jungle-green/10]="isSelected"
+                      [class.text-jungle-green]="isSelected"
+                      [class.bg-zinc-100]="!isSelected"
+                      [class.text-zinc-600]="!isSelected"
+                    >
+                      {{ item.internal_name }}
+                    </span>
+                  }
+                </div>
+              </td>
+
+              <!-- Tipo -->
+              <td class="py-3 px-4">
+                <span
+                  class="inline-flex items-center px-2.5 py-1 rounded text-xs font-mono"
+                  [class]="getTypeBadgeClass(item.resource_type)"
+                >
+                  {{ item.resource_type }}
+                </span>
+              </td>
+
+              <!-- Disponible -->
+              <td
+                class="py-3 px-4 font-mono tabular-nums text-right text-sm"
+                [class.font-bold]="isSelected"
+                [class.text-jungle-green]="isSelected"
+                [class.font-semibold]="!isSelected"
+                [class.text-forge-black]="!isSelected"
+              >
+                {{ item.available_stock }} {{ item.unit }}
+              </td>
+
+              <!-- Costo unitario -->
+              <td class="py-3 px-4 font-mono tabular-nums text-zinc-700 text-right text-sm" [class.font-semibold]="isSelected">
+                {{ formatCurrency(item.cost_cents) }}
+              </td>
+
+              <!-- Etiquetas -->
+              <td class="py-3 px-4">
+                @if (item.tags && item.tags.length > 0) {
+                  @for (t of item.tags; track t) {
+                    <span
+                      class="inline-block px-2.5 py-1 rounded text-xs font-mono mr-1"
+                      [class]="t === 'de_temporada' ? 'border border-emerald-300 text-emerald-800 bg-white font-medium' : (t === 'escaso' ? 'border border-industrial-rust/30 text-industrial-rust bg-white font-medium' : 'border custom-border text-zinc-600 bg-zinc-50')"
+                    >
+                      {{ t }}
+                    </span>
+                  }
+                } @else {
+                  <span class="inline-block px-2.5 py-1 rounded text-xs font-mono border custom-border text-zinc-600 bg-zinc-50">
+                    estándar
+                  </span>
+                }
+              </td>
+
+              <!-- Estado -->
+              @let status = getStatusClass(item);
+              <td class="py-3 px-6 text-right">
+                <span class="inline-flex items-center justify-end gap-1.5" [class]="status.text">
+                  <span class="w-2 h-2 rounded-full" [class]="status.dot"></span>
+                  {{ status.label }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pie de tabla -->
+    <div class="h-10 px-5 border-t custom-border bg-zinc-50 flex items-center justify-between text-xs font-mono text-concrete-gray shrink-0">
+      <div>Mostrando {{ filteredResources().length }} recursos activos de {{ categoriesCount() }} categorías</div>
+      <div class="flex items-center gap-2.5">
+        <span class="w-1 h-1 rounded-full bg-zinc-300"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. REFACTOR RADICAL: PANEL DERECHO UNIFICADO (Inspector Técnico de Recurso) (~38%) -->
+  <section class="w-[38%] bg-white rounded-lg border custom-border shadow-sm flex flex-col overflow-hidden">
+    @if (selectedResource(); as res) {
+      <!-- Encabezado de la ficha técnica -->
+      <div class="p-5 border-b custom-border bg-[#FAFBFA] shrink-0">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono uppercase tracking-wider font-semibold text-concrete-gray">Ficha Técnica de Recurso</span>
+            <span class="text-zinc-300">•</span>
+            <span class="text-xs font-mono text-zinc-600 font-medium">#{{ res.internal_name || res.id }}</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono font-medium bg-jungle-green text-white">
+              {{ res.resource_type }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-end justify-between">
+          <div class="space-y-0.5">
+            <h2 class="text-xl font-bold text-forge-black tracking-tight font-sans">{{ res.name }}</h2>
+            <div class="text-xs text-concrete-gray font-mono">{{ res.description || 'Insumo artesanal de taller' }}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] font-mono text-concrete-gray uppercase font-semibold">Inventario Total</div>
+            <div class="text-2xl font-bold font-mono text-jungle-green tabular-nums leading-none mt-1">
+              {{ res.available_stock }} <span class="text-sm font-normal text-zinc-500">{{ res.unit }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuerpo deslizable del inspector -->
+      <div class="flex-1 overflow-y-auto divide-y custom-border p-5 space-y-5">
+        <!-- Bloque 1: Trazabilidad de Lotes (FIFO) -->
+        <div class="space-y-3 pt-0.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-forge-black font-sans">Trazabilidad de Lotes (FIFO)</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono text-concrete-gray font-medium">{{ lots().length }} lotes registrados</span>
+              <button
+                (click)="openNewLotModal()"
+                title="Registrar nuevo lote"
+                class="px-2 py-0.5 text-xs font-mono font-semibold text-jungle-green hover:bg-emerald-50 rounded border border-emerald-200 transition-colors cursor-pointer"
+              >
+                + Lote
+              </button>
+            </div>
+          </div>
+
+          <!-- Tarjetas de Lotes -->
+          <div class="space-y-2.5">
+            @for (lot of lots(); track lot.id) {
+              @let isExpiringSoon = lot.notes === 'Prioridad salida' || lot.is_expired;
+              <div
+                class="rounded p-3.5 space-y-2 transition-all shadow-xs relative group"
+                [class]="isExpiringSoon ? 'border border-industrial-rust/40 bg-rust-light/50' : 'border custom-border bg-white hover:border-zinc-300'"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full" [class]="isExpiringSoon ? 'bg-industrial-rust' : 'bg-emerald-500'"></span>
+                    <span class="font-mono text-sm font-bold text-forge-black">{{ lot.lot_number }}</span>
+                    @if (isExpiringSoon) {
+                      <span class="text-[11px] font-mono px-2 py-0.5 bg-white rounded border border-industrial-rust/30 text-industrial-rust font-semibold">
+                        Prioridad salida
+                      </span>
+                    }
+                  </div>
+
+                  <div class="flex items-center gap-1.5">
+                    @if (isExpiringSoon) {
+                      <span class="px-2.5 py-0.5 rounded text-[11px] font-mono font-semibold bg-industrial-rust text-white uppercase tracking-wider">
+                        Más próximo a vencer
+                      </span>
+                    } @else {
+                      <span class="px-2.5 py-0.5 rounded text-[11px] font-mono font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        Estable
+                      </span>
+                    }
+                    <button
+                      (click)="deleteLot(lot.id)"
+                      title="Dar de baja lote"
+                      class="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-industrial-rust transition-opacity text-xs font-mono ml-1 px-1 cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2.5 pt-1 font-mono text-xs">
+                  <div>
+                    <span class="text-concrete-gray block text-[11px] font-sans">Cantidad</span>
+                    <span class="font-bold text-sm text-forge-black">{{ lot.quantity }} {{ res.unit }}</span>
+                  </div>
+                  <div>
+                    <span class="text-concrete-gray block text-[11px] font-sans">Fecha ingreso</span>
+                    <span class="text-zinc-700 font-semibold text-xs">{{ lot.received_at | date:'dd/MM/yyyy' }}</span>
+                  </div>
+                  <div>
+                    <span class="text-concrete-gray block text-[11px] font-sans">Caducidad</span>
+                    <span
+                      class="font-bold text-sm"
+                      [class]="isExpiringSoon ? 'text-industrial-rust' : 'text-forge-black'"
+                    >
+                      {{ (lot.expires_at | date:'dd/MM/yyyy') || 'Sin caducidad' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            } @empty {
+              <div class="p-4 rounded border border-dashed custom-border text-center text-xs text-concrete-gray font-mono">
+                No hay lotes registrados para este recurso.
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Bloque 2: Parámetros de Ensamble -->
+        <div class="pt-4 space-y-3">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-forge-black font-sans">Parámetros de Ensamble</h3>
+          </div>
+
+          <div class="bg-zinc-50 border custom-border rounded p-3.5 flex items-center justify-between">
+            <div>
+              <label class="block text-sm font-semibold text-forge-black">Vida útil mínima</label>
+              <span class="text-xs text-concrete-gray">Requisito de despacho para producción</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <input
+                type="number"
+                [ngModel]="minShelfLifeDays()"
+                (ngModelChange)="minShelfLifeDays.set($event)"
+                class="w-18 h-8 px-2.5 text-center border custom-border rounded font-mono text-sm font-bold text-forge-black bg-white focus:outline-none focus:border-jungle-green shadow-xs"
+              />
+              <span class="text-xs font-mono text-zinc-600 font-semibold">días</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloque 3: Sustitutos y Equivalencias -->
+        <div class="pt-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-forge-black font-sans">Sustitutos y Equivalencias</h3>
+            </div>
+            <span class="text-xs font-mono text-concrete-gray font-medium">{{ substitutes().length }} activos</span>
+          </div>
+
+          <div class="space-y-2.5">
+            @for (sub of substitutes(); track sub.name) {
+              <div class="p-3 rounded border custom-border bg-white hover:border-zinc-300 transition-colors flex items-center justify-between shadow-xs">
+                <div>
+                  <div class="font-semibold text-sm text-forge-black">{{ sub.name }}</div>
+                  <div class="text-xs font-mono text-concrete-gray">{{ sub.type }}</div>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] uppercase font-mono text-concrete-gray block font-semibold">Factor</span>
+                  <span class="font-mono font-bold text-xs text-jungle-green px-2 py-0.5 rounded bg-emerald-50 border border-emerald-100">
+                    {{ sub.factor }}
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+
+          <button
+            (click)="openAddSubstituteModal()"
+            class="w-full mt-2 py-2.5 px-3 rounded border border-dashed border-zinc-300 hover:border-jungle-green text-zinc-700 hover:text-jungle-green hover:bg-emerald-50/50 text-xs font-semibold transition-all flex items-center justify-center gap-2 group cursor-pointer"
+          >
+            <span class="font-bold text-zinc-400 group-hover:text-jungle-green text-sm">+</span>
+            <span>Agregar sustituto</span>
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="flex-1 flex items-center justify-center p-8 text-center text-concrete-gray font-mono text-sm">
+        Selecciona un recurso de la tabla para ver su ficha técnica.
+      </div>
+    }
+  </section>
+</main>
+
+<!-- MODAL: AGREGAR RECURSO -->
+@if (showNewResourceModal()) {
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-xl shadow-2xl border custom-border max-w-lg w-full overflow-hidden">
+      <div class="p-5 border-b custom-border bg-zinc-50 flex items-center justify-between">
+        <h3 class="text-lg font-bold text-forge-black font-sans">Nuevo Recurso de Taller</h3>
+        <button (click)="showNewResourceModal.set(false)" class="text-zinc-400 hover:text-zinc-700 font-mono text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Nombre del recurso</label>
+          <input
+            type="text"
+            [(ngModel)]="newResource.name"
+            placeholder="Ej: Madera de Nogal, Cuero crudo..."
+            class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Código interno</label>
+            <input
+              type="text"
+              [(ngModel)]="newResource.internal_name"
+              placeholder="MAT-0200"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Tipo de insumo</label>
+            <select
+              [(ngModel)]="newResource.resource_type"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+            >
+              <option value="consumible">Consumible</option>
+              <option value="perecedero">Perecedero</option>
+              <option value="capacidad">Capacidad de Taller</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Unidad de medida</label>
+            <input
+              type="text"
+              [(ngModel)]="newResource.unit"
+              placeholder="m, kg, tallos, uds, horas..."
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Costo (centavos)</label>
+            <input
+              type="number"
+              [(ngModel)]="newResource.cost_cents"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Descripción técnica</label>
+          <textarea
+            [(ngModel)]="newResource.description"
+            rows="2"
+            placeholder="Especificaciones de calidad, procedencia o tolerancias..."
+            class="w-full p-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="p-4 border-t custom-border bg-zinc-50 flex items-center justify-end gap-3">
+        <button
+          (click)="showNewResourceModal.set(false)"
+          class="px-4 py-2 rounded border custom-border text-xs font-semibold text-zinc-600 hover:bg-zinc-100 cursor-pointer"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="saveResource()"
+          class="px-5 py-2 rounded bg-jungle-green text-white text-xs font-semibold shadow-xs hover:bg-jungle-deep cursor-pointer"
+        >
+          Guardar recurso
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: REGISTRAR LOTE FIFO -->
+@if (showNewLotModal()) {
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-xl shadow-2xl border custom-border max-w-md w-full overflow-hidden">
+      <div class="p-5 border-b custom-border bg-zinc-50 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-forge-black font-sans">Registrar Lote FIFO</h3>
+          <p class="text-xs text-concrete-gray font-mono">{{ selectedResource()?.name }}</p>
+        </div>
+        <button (click)="showNewLotModal.set(false)" class="text-zinc-400 hover:text-zinc-700 font-mono text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Identificador de lote</label>
+          <input
+            type="text"
+            [(ngModel)]="newLot.lot_number"
+            class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">
+              Cantidad ({{ selectedResource()?.unit }})
+            </label>
+            <input
+              type="number"
+              [(ngModel)]="newLot.quantity"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Fecha de caducidad</label>
+            <input
+              type="date"
+              [(ngModel)]="newLot.expires_at"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Observaciones / Prioridad</label>
+          <input
+            type="text"
+            [(ngModel)]="newLot.notes"
+            placeholder="Ej: Prioridad salida, Estable..."
+            class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+          />
+        </div>
+      </div>
+
+      <div class="p-4 border-t custom-border bg-zinc-50 flex items-center justify-end gap-3">
+        <button
+          (click)="showNewLotModal.set(false)"
+          class="px-4 py-2 rounded border custom-border text-xs font-semibold text-zinc-600 hover:bg-zinc-100 cursor-pointer"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="saveLot()"
+          class="px-5 py-2 rounded bg-jungle-green text-white text-xs font-semibold shadow-xs hover:bg-jungle-deep cursor-pointer"
+        >
+          Guardar lote
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL: AGREGAR SUSTITUTO -->
+@if (showNewSubstituteModal()) {
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-xl shadow-2xl border custom-border max-w-sm w-full overflow-hidden">
+      <div class="p-4 border-b custom-border bg-zinc-50 flex items-center justify-between">
+        <h3 class="text-base font-bold text-forge-black font-sans">Nuevo Sustituto</h3>
+        <button (click)="showNewSubstituteModal.set(false)" class="text-zinc-400 hover:text-zinc-700 font-mono text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Nombre del material sustituto</label>
+          <input
+            type="text"
+            [ngModel]="newSubstituteName()"
+            (ngModelChange)="newSubstituteName.set($event)"
+            placeholder="Ej: Rosas spray silvestres..."
+            class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Factor de equivalencia</label>
+          <input
+            type="text"
+            [ngModel]="newSubstituteFactor()"
+            (ngModelChange)="newSubstituteFactor.set($event)"
+            placeholder="1.15x"
+            class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+          />
+        </div>
+      </div>
+
+      <div class="p-4 border-t custom-border bg-zinc-50 flex items-center justify-end gap-3">
+        <button
+          (click)="showNewSubstituteModal.set(false)"
+          class="px-4 py-2 rounded border custom-border text-xs font-semibold text-zinc-600 hover:bg-zinc-100 cursor-pointer"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="saveSubstitute()"
+          class="px-5 py-2 rounded bg-jungle-green text-white text-xs font-semibold shadow-xs hover:bg-jungle-deep cursor-pointer"
+        >
+          Añadir sustituto
+        </button>
+      </div>
+    </div>
+  </div>
+}

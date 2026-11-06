@@ -140,7 +140,7 @@ export class Login implements OnInit {
     if (this.authService.isAdmin()) {
       this.router.navigate(['/users']);
     } else {
-      this.router.navigate(['/inventory']);
+      this.router.navigate(['/recursos']);
     }
   }
 }

@@ -19,7 +19,7 @@ export class Users implements OnInit {
   public responsiveService = inject(ResponsiveService);
 
   goToInventory(): void {
-    this.router.navigate(['/inventory']);
+    this.router.navigate(['/recursos']);
   }
 
   users = signal<User[]>([]); // señal con array vacio

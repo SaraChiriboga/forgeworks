@@ -1,0 +1,326 @@
+<!-- CONTROL Y FILTROS DE PRODUCTOS -->
+<div class="px-10 pt-8 pb-3 shrink-0 space-y-3">
+  <div class="flex items-center justify-between">
+    <div class="space-y-1">
+      <div class="flex items-baseline gap-3.5">
+        <h1 class="text-3xl font-bold text-forge-black tracking-tight font-sans">Productos del taller</h1>
+      </div>
+      <p class="text-sm text-zinc-600 font-normal">
+        Modelado de procesos artesanales, árbol de decisiones, fórmulas de cotización y versiones activas
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3.5">
+      <!-- Buscador -->
+      <div class="relative flex items-center">
+        <svg class="w-4 h-4 absolute left-3 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <input
+          type="text"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          placeholder="Buscar producto por código o nombre..."
+          class="w-80 h-10 pl-9 pr-3 text-sm bg-white border custom-border rounded text-forge-black placeholder:text-zinc-400 focus:outline-none focus:border-jungle-green font-sans"
+        />
+      </div>
+
+      <!-- Boton Nuevo Producto -->
+      <button
+        (click)="openNewProductModal()"
+        class="h-10 px-4 rounded bg-[#C85A27] hover:bg-[#a23f0a] text-white text-sm font-semibold tracking-wide flex items-center gap-2 shadow-sm transition-colors cursor-pointer"
+      >
+        <span class="text-base leading-none font-bold">+</span>
+        <span>Nuevo producto</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs de categorias -->
+  <div class="flex items-center gap-2.5 pt-1">
+    <button
+      (click)="setTab('todos')"
+      [class]="selectedTab() === 'todos' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Todos
+    </button>
+    <button
+      (click)="setTab('mobiliario')"
+      [class]="selectedTab() === 'mobiliario' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Mobiliario
+    </button>
+    <button
+      (click)="setTab('floristería')"
+      [class]="selectedTab() === 'floristería' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Floristería
+    </button>
+    <button
+      (click)="setTab('cerámica')"
+      [class]="selectedTab() === 'cerámica' ? 'px-4 py-1.5 text-xs font-semibold rounded bg-jungle-green text-white shadow-xs flex items-center gap-2 cursor-pointer' : 'px-4 py-1.5 text-xs font-medium rounded border custom-border bg-white text-zinc-700 hover:text-forge-black hover:bg-zinc-50 transition-colors shadow-xs cursor-pointer'"
+    >
+      Cerámica
+    </button>
+  </div>
+</div>
+
+<!-- CONTENIDO PRINCIPAL: TABLA (~62%) Y FICHA TECNICA (~38%) -->
+<main class="flex-1 px-10 pb-7 flex gap-6 min-h-0 overflow-hidden">
+  <!-- TABLA DE PRODUCTOS -->
+  <section class="w-[62%] bg-white rounded-lg border custom-border shadow-sm flex flex-col overflow-hidden">
+    <div class="overflow-y-auto flex-1">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b custom-border bg-[#F9FAF9] text-xs font-semibold text-concrete-gray uppercase tracking-wider sticky top-0 z-10">
+            <th class="py-3.5 px-6">Producto</th>
+            <th class="py-3.5 px-4">Categoría</th>
+            <th class="py-3.5 px-4 text-center">Versiones</th>
+            <th class="py-3.5 px-4 text-right">Precio base</th>
+            <th class="py-3.5 px-4 text-center">Grafo</th>
+            <th class="py-3.5 px-6 text-right">Estado</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y custom-border text-sm">
+          @for (prod of filteredProducts(); track prod.id) {
+            @let isSelected = selectedProduct().id === prod.id;
+            <tr
+              (click)="selectProduct(prod)"
+              [class]="isSelected ? 'bg-emerald-50/50 hover:bg-emerald-50/70 border-l-[3px] border-l-jungle-green transition-colors cursor-pointer' : 'hover:bg-zinc-50/80 transition-colors cursor-pointer group'"
+            >
+              <!-- Producto -->
+              <td class="py-3 px-6" [class.font-semibold]="isSelected" [class.text-jungle-green]="isSelected" [class.text-forge-black]="!isSelected">
+                <div class="flex items-center gap-2.5">
+                  <span
+                    class="w-2 h-2 rounded-full"
+                    [class.bg-jungle-green]="isSelected"
+                    [class.bg-zinc-300]="!isSelected"
+                  ></span>
+                  <span class="text-sm font-medium">{{ prod.name }}</span>
+                  <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 font-normal">
+                    {{ prod.code }}
+                  </span>
+                </div>
+              </td>
+
+              <!-- Categoria -->
+              <td class="py-3 px-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-mono bg-zinc-100 text-zinc-700 border border-zinc-200">
+                  {{ prod.category }}
+                </span>
+              </td>
+
+              <!-- Versiones -->
+              <td class="py-3 px-4 text-center font-mono text-xs text-zinc-700">
+                <span class="px-2 py-0.5 rounded bg-zinc-100 font-semibold">{{ prod.versions_count }}</span>
+              </td>
+
+              <!-- Precio base -->
+              <td class="py-3 px-4 font-mono tabular-nums text-zinc-700 text-right text-sm font-semibold">
+                {{ formatCurrency(prod.base_price_cents) }}
+              </td>
+
+              <!-- Grafo -->
+              <td class="py-3 px-4 text-center">
+                <span class="inline-block px-2 py-0.5 rounded text-xs font-mono border custom-border text-zinc-600 bg-zinc-50">
+                  {{ prod.steps_count }} pasos
+                </span>
+              </td>
+
+              <!-- Estado -->
+              <td class="py-3 px-6 text-right">
+                <span class="inline-flex items-center justify-end gap-1.5 text-xs font-mono"
+                      [class.text-emerald-800]="prod.status === 'Publicado'"
+                      [class.text-zinc-600]="prod.status !== 'Publicado'">
+                  <span class="w-2 h-2 rounded-full"
+                        [class.bg-emerald-500]="prod.status === 'Publicado'"
+                        [class.bg-amber-400]="prod.status !== 'Publicado'"></span>
+                  {{ prod.status }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pie de tabla -->
+    <div class="h-10 px-5 border-t custom-border bg-zinc-50 flex items-center justify-between text-xs font-mono text-concrete-gray shrink-0">
+      <div>Mostrando {{ filteredProducts().length }} productos configurables</div>
+      <div class="flex items-center gap-2.5">
+        <span class="w-1 h-1 rounded-full bg-zinc-300"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL DERECHO: INSPECTOR DE PRODUCTO (~38%) -->
+  <section class="w-[38%] bg-white rounded-lg border custom-border shadow-sm flex flex-col overflow-hidden">
+    @if (selectedProduct(); as prod) {
+      <!-- Encabezado de la ficha técnica -->
+      <div class="p-5 border-b custom-border bg-[#FAFBFA] shrink-0">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono uppercase tracking-wider font-semibold text-concrete-gray">Ficha de Producto</span>
+            <span class="text-zinc-300">•</span>
+            <span class="text-xs font-mono text-zinc-600 font-medium">#{{ prod.code }}</span>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono font-medium bg-jungle-green text-white">
+            {{ prod.category }}
+          </span>
+        </div>
+
+        <div class="flex items-end justify-between">
+          <div class="space-y-0.5">
+            <h2 class="text-xl font-bold text-forge-black tracking-tight font-sans">{{ prod.name }}</h2>
+            <div class="text-xs text-concrete-gray font-mono">{{ prod.description }}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] font-mono text-concrete-gray uppercase font-semibold">Precio Base</div>
+            <div class="text-2xl font-bold font-mono text-jungle-green tabular-nums leading-none mt-1">
+              {{ formatCurrency(prod.base_price_cents) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuerpo del inspector -->
+      <div class="flex-1 overflow-y-auto divide-y custom-border p-5 space-y-5">
+        <!-- Bloque 1: Versiones Publicadas Inmutables (RF-21, RF-25) -->
+        <div class="space-y-3 pt-0.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-forge-black font-sans">Versiones Inmutables (Snapshot)</h3>
+            </div>
+            <span class="text-xs font-mono text-concrete-gray font-medium">{{ prod.versions.length }} snapshots</span>
+          </div>
+
+          <div class="space-y-2">
+            @for (v of prod.versions; track v.version) {
+              <div class="rounded p-3 border custom-border bg-white flex items-center justify-between shadow-xs">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-sm font-bold text-forge-black">{{ v.version }}</span>
+                    @if (v.is_active) {
+                      <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+                        Activa
+                      </span>
+                    }
+                  </div>
+                  <div class="text-xs font-mono text-zinc-500 mt-0.5">SHA: {{ v.sha }} • {{ v.published_at }}</div>
+                </div>
+                <button class="text-xs font-mono text-jungle-green hover:underline cursor-pointer">
+                  Ver snapshot
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Bloque 2: Grafo y Nodos de Decisión -->
+        <div class="pt-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-forge-black font-sans">Grafo de Flujo (No Monótono)</h3>
+            </div>
+            <span class="text-xs font-mono text-concrete-gray font-medium">{{ prod.steps_count }} nodos</span>
+          </div>
+
+          <div class="p-3 bg-zinc-50 border custom-border rounded text-xs space-y-2 font-mono">
+            <div class="flex items-center justify-between text-zinc-700">
+              <span>Nodo Inicio → Elección Tablero</span>
+              <span class="text-emerald-700 font-semibold">Prioridad 1</span>
+            </div>
+            <div class="flex items-center justify-between text-zinc-700">
+              <span>Bifurcación: d.madera == 'roble'</span>
+              <span class="text-emerald-700 font-semibold">si(Cond, Exp)</span>
+            </div>
+            <div class="flex items-center justify-between text-zinc-700">
+              <span>Cotización Dinámica → Ensamble</span>
+              <span class="text-emerald-700 font-semibold">Int64 centavos</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloque 3: Acciones del Proceso -->
+        <div class="pt-4 space-y-2">
+          <button class="w-full py-2.5 px-4 rounded bg-jungle-green hover:bg-jungle-deep text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2">
+            <span>Abrir diseñador de grafo</span>
+          </button>
+        </div>
+      </div>
+    }
+  </section>
+</main>
+
+<!-- MODAL: NUEVO PRODUCTO -->
+@if (showNewProductModal()) {
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div class="bg-white rounded-xl shadow-2xl border custom-border max-w-md w-full overflow-hidden">
+      <div class="p-5 border-b custom-border bg-zinc-50 flex items-center justify-between">
+        <h3 class="text-base font-bold text-forge-black font-sans">Nuevo Producto Artesanal</h3>
+        <button (click)="showNewProductModal.set(false)" class="text-zinc-400 hover:text-zinc-700 font-mono text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Nombre del producto</label>
+          <input
+            type="text"
+            [ngModel]="newProductName()"
+            (ngModelChange)="newProductName.set($event)"
+            placeholder="Ej: Mesa de Roble y Latón..."
+            class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Categoría</label>
+            <select
+              [ngModel]="newProductCategory()"
+              (ngModelChange)="newProductCategory.set($event)"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black focus:outline-none focus:border-jungle-green"
+            >
+              <option value="Mobiliario">Mobiliario</option>
+              <option value="Floristería">Floristería</option>
+              <option value="Cerámica">Cerámica</option>
+              <option value="Forja">Forja</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase font-mono text-concrete-gray mb-1">Precio Base (€)</label>
+            <input
+              type="number"
+              [ngModel]="newProductBasePrice()"
+              (ngModelChange)="newProductBasePrice.set($event)"
+              class="w-full h-10 px-3 border custom-border rounded text-sm text-forge-black font-mono focus:outline-none focus:border-jungle-green"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t custom-border bg-zinc-50 flex items-center justify-end gap-3">
+        <button
+          (click)="showNewProductModal.set(false)"
+          class="px-4 py-2 rounded border custom-border text-xs font-semibold text-zinc-600 hover:bg-zinc-100 cursor-pointer"
+        >
+          Cancelar
+        </button>
+        <button
+          (click)="saveProduct()"
+          class="px-5 py-2 rounded bg-jungle-green text-white text-xs font-semibold shadow-xs hover:bg-jungle-deep cursor-pointer"
+        >
+          Crear producto
+        </button>
+      </div>
+    </div>
+  </div>
+}

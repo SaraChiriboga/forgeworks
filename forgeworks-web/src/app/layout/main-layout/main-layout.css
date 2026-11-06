@@ -1,0 +1,7 @@
+/* estilos del contenedor de layout principal */
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
