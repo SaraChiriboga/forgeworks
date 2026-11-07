@@ -5,7 +5,6 @@ databases:
   - name: forgeworks-db
     databaseName: forgeworks_api_production
     user: forgeworks
-    plan: free
 
 services:
   # =========================================================================
@@ -16,7 +15,6 @@ services:
     runtime: docker
     dockerfilePath: forgeworks_api/Dockerfile
     dockerContext: forgeworks_api
-    plan: free
     healthCheckPath: /
     envVars:
       - key: LUCKY_ENV
@@ -46,7 +44,6 @@ services:
     runtime: static
     buildCommand: cd forgeworks-web && npm install && npm run build
     staticPublishPath: forgeworks-web/dist/forgeworks-web/browser
-    plan: free
     routes:
       # Regla de reescritura para enrutamiento SPA (HTML5 PushState Routing)
       - type: rewrite
