@@ -5,6 +5,7 @@ databases:
   - name: forgeworks-db
     databaseName: forgeworks_api_production
     user: forgeworks
+    plan: free
 
 services:
   # =========================================================================
@@ -13,6 +14,7 @@ services:
   - type: web
     name: forgeworks-api
     runtime: docker
+    plan: free
     dockerfilePath: forgeworks_api/Dockerfile
     dockerContext: forgeworks_api
     healthCheckPath: /
