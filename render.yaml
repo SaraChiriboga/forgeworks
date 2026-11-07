@@ -30,7 +30,7 @@ services:
       - key: SEND_GRID_KEY
         value: unused
       - key: APP_DOMAIN
-        value: https://forgeworks-api.onrender.com
+        value: https://forgeworks-api-eb3i.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: forgeworks-db
