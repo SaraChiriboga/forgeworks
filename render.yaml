@@ -1,0 +1,64 @@
+# Render Blueprint Specification for ForgeWorks
+# Docs: https://render.com/docs/blueprint-spec
+
+databases:
+  - name: forgeworks-db
+    databaseName: forgeworks_api_production
+    user: forgeworks
+    plan: free
+    region: oregon
+
+services:
+  # =========================================================================
+  # 1. Backend Web Service: API REST (Crystal 1.20 + Lucky Framework 1.5)
+  # =========================================================================
+  - type: web
+    name: forgeworks-api
+    runtime: docker
+    dockerfilePath: forgeworks_api/Dockerfile
+    dockerContext: forgeworks_api
+    plan: free
+    region: oregon
+    healthCheckPath: /
+    envVars:
+      - key: LUCKY_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: SEND_GRID_KEY
+        value: unused
+      - key: APP_DOMAIN
+        value: https://forgeworks-api.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: forgeworks-db
+          property: connectionString
+      - key: RUN_SEEDS
+        value: "false"
+
+  # =========================================================================
+  # 2. Frontend Web Service: Angular 20 SPA (Static Site con CDN)
+  # =========================================================================
+  - type: web
+    name: forgeworks-web
+    runtime: static
+    buildCommand: cd forgeworks-web && npm install && npm run build
+    staticPublishPath: forgeworks-web/dist/forgeworks-web/browser
+    plan: free
+    region: oregon
+    routes:
+      # Regla de reescritura para enrutamiento SPA (HTML5 PushState Routing)
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff

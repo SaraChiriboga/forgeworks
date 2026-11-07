@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 // interfaces para taller, recursos y lotes
 export interface Workshop {
@@ -80,7 +81,7 @@ export interface NewWorkshop {
 })
 export class InventoryService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
 
   // consultar taller de la sesion actual
   getMyWorkshop(): Observable<Workshop> {

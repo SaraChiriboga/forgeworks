@@ -96,7 +96,7 @@ sequenceDiagram
 
 ---
 
-## 🔒 Aislamiento Multi-Taller Estricto (RF-02)
+## 🔒 Aislamiento Multi-Taller Estricto
 
 Para garantizar la seguridad de los datos:
 1. **Sesión Activa:** El token JWT emitido al iniciar sesión amarra al usuario a su `workshop_id`.
@@ -175,3 +175,18 @@ npm install
 npm start
 ```
 Abrir el navegador en `http://localhost:4200`, iniciar sesión y navegar a `/recursos`.
+
+---
+
+## ☁️ Despliegue Automatizado en Render (Blueprint)
+
+El repositorio incluye el archivo de infraestructura como código [`render.yaml`](render.yaml) para desplegar toda la plataforma con un solo clic:
+
+1. **Base de Datos PostgreSQL Gestionada:** Instancia `forgeworks-db` con esquema `forgeworks_api_production`.
+2. **Backend Web Service (`forgeworks-api`):** Contenedor Docker compilado en Crystal 1.20 con Lucky Framework, con ejecución automática de migraciones (`db.migrate`) al arrancar.
+3. **Frontend SPA (`forgeworks-web`):** Sitio estático con CDN global y reescritura de rutas para Angular (`/* -> /index.html`).
+
+### Pasos para desplegar en Render:
+1. Conecta tu repositorio de GitHub en [dashboard.render.com](https://dashboard.render.com/).
+2. Haz clic en **"New +"** y selecciona **"Blueprint"**.
+3. Elige el repositorio `forgeworks`. Render detectará automáticamente el archivo `render.yaml` y orquestará la base de datos, el backend y el frontend de forma sincronizada.

@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 // el molde de datos que envia el backend para cada usuario
 export interface User {
@@ -27,7 +28,7 @@ export interface NewUser {
 
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/users';
+  private apiUrl = `${environment.apiUrl}/users`;
 
   // llamar a GET /api/users (el interceptor le inyecta el JWT automáticamente)
   getUsers(): Observable<User[]> {
