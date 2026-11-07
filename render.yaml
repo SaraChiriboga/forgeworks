@@ -6,7 +6,6 @@ databases:
     databaseName: forgeworks_api_production
     user: forgeworks
     plan: free
-    region: oregon
 
 services:
   # =========================================================================
@@ -18,7 +17,6 @@ services:
     dockerfilePath: forgeworks_api/Dockerfile
     dockerContext: forgeworks_api
     plan: free
-    region: oregon
     healthCheckPath: /
     envVars:
       - key: LUCKY_ENV
@@ -49,7 +47,6 @@ services:
     buildCommand: cd forgeworks-web && npm install && npm run build
     staticPublishPath: forgeworks-web/dist/forgeworks-web/browser
     plan: free
-    region: oregon
     routes:
       # Regla de reescritura para enrutamiento SPA (HTML5 PushState Routing)
       - type: rewrite
