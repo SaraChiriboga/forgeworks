@@ -26,6 +26,11 @@ Este módulo implementa la **Administración MVC que alimenta al Core de ForgeWo
 ---
 
 ## 📹 Video Demostrativo
+<p align="center">
+  <a href="https://youtu.be/98zBya63qEE">
+    <img src="https://img.youtube.com/vi/k4cG2EDcUBQ/maxresdefault.jpg" alt="Demostración del avance" width="700">
+  </a>
+</p>
 
 ---
 
